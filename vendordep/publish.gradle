@@ -2,9 +2,10 @@ apply plugin: 'maven-publish'
 
 ext.licenseFile = files("$rootDir/LICENSE.txt")
 
+def templateVendorFile = "yagsl.json"
 def pubVersion = System.getenv("releaseVersion") ?: "test"
 
-def releasesRepoUrl = "yagsl/repos/"
+def releasesRepoUrl = "$releasePath/releases"
 
 def outputsFolder = file("$buildDir/outputs")
 
@@ -117,14 +118,14 @@ task outputJavadocJar(type: Jar, dependsOn: javadoc) {
 task vendordepJson() {
     description = 'Builds the vendordep json file.'
     group = 'Build'
-    outputs.file("yagsl/yagsl.json")
+    outputs.file("$releasePath/$templateVendorFile")
 
     copy {
-        from "yagsl.json"
-        into "yagsl/"
+        from templateVendorFile
+        into "$releasePath/"
         expand(version: pubVersion,
-        groupId: artifactGroupId,
-        artifactId: baseArtifactId)
+                groupId: artifactGroupId,
+                artifactId: baseArtifactId)
     }
 }
 

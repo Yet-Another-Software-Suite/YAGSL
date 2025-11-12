@@ -1,0 +1,40 @@
+name: "🚀 Feature Request"
+description: "Suggest new mechanism types, wrappers, or improvements to YAGSL"
+title: "[FEATURE] <short description>"
+labels: [enhancement]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to make YAGSL more powerful, flexible, or compatible? Let us know!
+
+  - type: input
+    id: use-case
+    attributes:
+      label: "What problem or use case does this address?"
+      placeholder: "e.g. I want to support KrakenX60 with closed-loop current limiting"
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: "Describe your proposed solution"
+      placeholder: |
+        Add a new `Krakenx60Wrapper` class that implements `SmartMotorController`.
+
+  - type: textarea
+    id: details
+    attributes:
+      label: "Additional context"
+      placeholder: "Schematics, code examples, vendor documentation links, etc."
+
+  - type: checkboxes
+    id: categories
+    attributes:
+      label: "Area of YAGSL"
+      options:
+        - label: "New MotorController wrapper"
+        - label: "New Mechanism type"
+        - label: "API improvement / cleanup"
+        - label: "Bugfix or inconsistency"
