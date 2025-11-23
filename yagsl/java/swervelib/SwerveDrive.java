@@ -241,10 +241,10 @@ public class SwerveDrive implements AutoCloseable
     {
       DriveTrainSimulationConfig simulationConfig = DriveTrainSimulationConfig.Default()
                                                                               .withBumperSize(
-                                                                                  Meters.of(config.getTracklength())
-                                                                                        .plus(Inches.of(5)),
-                                                                                  Meters.of(config.getTrackwidth())
-                                                                                        .plus(Inches.of(5)))
+                                                                                  Inches.of(config.physicalCharacteristics.frameSize.length)
+                                                                                        .plus(Inches.of(config.physicalCharacteristics.frameSize.bumperThickness)),
+                                                                                  Inches.of(config.physicalCharacteristics.frameSize.width)
+                                                                                        .plus(Inches.of(config.physicalCharacteristics.frameSize.bumperThickness)))
                                                                               .withRobotMass(Kilograms.of(config.physicalCharacteristics.robotMassKg))
                                                                               .withCustomModuleTranslations(config.moduleLocationsMeters)
                                                                               .withGyro(config.getGyroSim())

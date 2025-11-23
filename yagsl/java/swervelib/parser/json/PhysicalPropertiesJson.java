@@ -51,6 +51,10 @@ public class PhysicalPropertiesJson
    * The voltage to use for the smart motor voltage compensation, default is 12.
    */
   public double                optimalVoltage                 = 12;
+  /**
+   * Frame size of the robot in inches, default is 30in x 30in with 5in bumper thickness.
+   */
+  public FrameSizeJson         frameSize                      = new FrameSizeJson(30.0, 30.0, 5.0);
 
   /**
    * Create the physical characteristics based off the parsed data.
@@ -81,7 +85,8 @@ public class PhysicalPropertiesJson
         friction.drive,
         friction.angle,
         steerRotationalInertia,
-        Pounds.of(robotMass).in(Kilogram));
+        Pounds.of(robotMass).in(Kilogram),
+        frameSize);
   }
 }
 
