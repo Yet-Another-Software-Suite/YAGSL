@@ -1,5 +1,6 @@
 package swervelib.parser;
 
+import swervelib.parser.json.FrameSizeJson;
 import swervelib.parser.json.modules.ConversionFactorsJson;
 
 /**
@@ -32,6 +33,10 @@ public class SwerveModulePhysicalCharacteristics
    * Robot mass in Kilograms.
    */
   public final double                robotMassKg;
+  /**
+   * The width of the robot frame in meters.
+   */
+  public final FrameSizeJson         frameSize;   
   /**
    * The voltage to use for the smart motor voltage compensation.
    */
@@ -75,7 +80,8 @@ public class SwerveModulePhysicalCharacteristics
       double driveFrictionVoltage,
       double angleFrictionVoltage,
       double steerRotationalInertia,
-      double robotMassKg)
+      double robotMassKg,
+      FrameSizeJson frameSize)
   {
     this.wheelGripCoefficientOfFriction = wheelGripCoefficientOfFriction;
     this.optimalVoltage = optimalVoltage;
@@ -98,6 +104,7 @@ public class SwerveModulePhysicalCharacteristics
     this.angleFrictionVoltage = angleFrictionVoltage;
     this.steerRotationalInertia = steerRotationalInertia;
     this.robotMassKg = robotMassKg;
+    this.frameSize = frameSize;
   }
 
   /**
@@ -116,7 +123,8 @@ public class SwerveModulePhysicalCharacteristics
   public SwerveModulePhysicalCharacteristics(
       ConversionFactorsJson conversionFactors,
       double driveMotorRampRate,
-      double angleMotorRampRate)
+      double angleMotorRampRate,
+      FrameSizeJson frameSize)
   {
     this(
         conversionFactors,
@@ -129,6 +137,7 @@ public class SwerveModulePhysicalCharacteristics
         0.2,
         0.3,
         0.03,
-        50);
+        50,
+        frameSize);
   }
 }
