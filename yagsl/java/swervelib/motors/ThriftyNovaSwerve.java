@@ -165,20 +165,7 @@ public class ThriftyNovaSwerve extends SwerveMotor
     {
       if (RobotBase.isReal())
       {
-        motor.setInverted(false);
-        motor.setBrakeMode(false);
-        setCurrentLimit(40);
-        motor.setEncoderPosition(0);
-        motor.setMaxOutput(1.0);
-        motor.setRampDown(100);
-        motor.setRampUp(100);
-        configureCANStatusFrames(0.25, 0.1, 0.25, 0.5, 0.50);
-        motor.setSoftLimits(0, 0);
-        configurePIDF(new PIDFConfig());
-        motor.pid1.setP(0)
-                  .setI(0)
-                  .setD(0)
-                  .setFF(0.0);
+        motor.factoryReset();
       }
       factoryDefaultOccurred = true;
     }
