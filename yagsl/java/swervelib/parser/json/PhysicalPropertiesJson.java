@@ -17,38 +17,7 @@ public class PhysicalPropertiesJson
   /**
    * The current limit in AMPs to apply to the motors.
    */
-  public MotorConfigInt        currentLimit                   = new MotorConfigInt(40, 20);
+  public MotorConfigInt        statorCurrentLimit                   = new MotorConfigInt(40, 20);
 
-  /**
-   * Create the physical characteristics based off the parsed data.
-   *
-   * @return {@link SwerveModulePhysicalCharacteristics} based on parsed data.
-   */
-  public SwerveModulePhysicalCharacteristics createPhysicalProperties()
-  {
-    // Setup deprecation notice.
-    if (conversionFactor.drive != 0 && conversionFactor.angle != 0 && conversionFactors.isDriveEmpty() &&
-        conversionFactors.isAngleEmpty())
-    {
-      throw new RuntimeException(
-                "\n'conversionFactor': {'drive': " + conversionFactor.drive + ", 'angle': " + conversionFactor.angle +
-                "} \nis deprecated, please use\n" +
-                "'conversionFactors': {'drive': {'factor': " + conversionFactor.drive + "}, 'angle': {'factor': " +
-                conversionFactor.angle + "} }");
-    }
-
-    return new SwerveModulePhysicalCharacteristics(
-        conversionFactors,
-        wheelGripCoefficientOfFriction,
-        optimalVoltage,
-        currentLimit.drive,
-        currentLimit.angle,
-        rampRate.drive,
-        rampRate.angle,
-        friction.drive,
-        friction.angle,
-        steerRotationalInertia,
-        Pounds.of(robotMass).in(Kilogram));
-  }
 }
 
