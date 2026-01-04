@@ -8,11 +8,11 @@ public class LocationJson
 {
 
   /**
-   * Location of the swerve module in inches from the center of the robot horizontally.
+   * Location of the swerve module in {@link edu.wpi.first.units.Units#Inches} from the center of the robot horizontally.
    */
   public double front = 0;
   /**
-   * Location of the swerve module in inches from the center of the robot vertically.
+   * Location of the swerve module in {@link edu.wpi.first.units.Units#Inches} from the center of the robot vertically.
    */
   public double left = 0;
 }

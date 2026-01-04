@@ -1,7 +1,11 @@
 package swervelib.parser.json;
 
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Rotations;
+
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
@@ -9,10 +13,16 @@ import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
+import com.studica.frc.Navx;
 import com.thethriftybot.devices.ThriftyNova;
 import com.thethriftybot.devices.ThriftyNova.ExternalEncoder;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import java.util.function.Supplier;
+import swervelib.parser.json.SwerveDriveJson.GyroAxis;
 import yams.motorcontrollers.SmartMotorController;
 import yams.motorcontrollers.SmartMotorControllerConfig;
 import yams.motorcontrollers.local.NovaWrapper;
@@ -73,9 +83,94 @@ public class DeviceJson
     }
   }
 
+  public Supplier<Angle> getEncoderSupplier(Object azimuthVendorMotorController)
+  {
+    switch (getVendor(VENDOR.UNKNOWN))
+    {
+      case CTRE ->
+      {
+        return getCTREEncoder().getAbsolutePosition().asSupplier();
+      }
+      case REV ->
+      {
+        return () -> Rotations.of(getREVEncoder(azimuthVendorMotorController).getPosition());
+      }
+      case ANDYMARK ->
+      {
+        throw new UnsupportedOperationException("AndyMark hex bore encoder are not yet supported.");
+      }
+      case REDUX ->
+      {
+//        return getReduxEncoder()
+        throw new UnsupportedOperationException("Redux encoder are not yet supported.");
+      }
+      case SMARTIO ->
+      {
+        return () -> Rotations.of(getSmartIOEncoder().get());
+      }
+    }
+    throw new IllegalArgumentException("Invalid encoder type: " + type);
+  }
+
+  public Supplier<Angle> getGyroSupplier(GyroAxis axis)
+  {
+    switch (getVendor(VENDOR.UNKNOWN))
+    {
+      case CTRE ->
+      {
+        switch (axis)
+        {
+          case YAW -> getCTREGyro().getYaw().asSupplier();
+          case PITCH -> getCTREGyro().getPitch().asSupplier();
+          case ROLL -> getCTREGyro().getRoll().asSupplier();
+        }
+      }
+//      case REDUX -> {
+//        switch (axis){
+//
+//        }
+//      }
+      case STUDICA ->
+      {
+        if (getStudicaGyro() instanceof Navx)
+        {
+          switch (axis)
+          {
+            case YAW -> {
+              return () -> Degrees.of(((Navx) getStudicaGyro()).getYaw());
+            }
+            case PITCH -> {
+              return () -> Degrees.of(((Navx) getStudicaGyro()).getPitch());
+            }
+            case ROLL -> {
+              return () -> Degrees.of(((Navx) getStudicaGyro()).getRoll());
+            }
+          }
+        } else if (getStudicaGyro() instanceof AHRS)
+        {
+          switch (axis)
+          {
+            case YAW -> {
+              return () -> Degrees.of(((AHRS) getStudicaGyro()).getYaw());
+            }
+            case PITCH -> {
+              return () -> Degrees.of(((AHRS) getStudicaGyro()).getPitch());
+            }
+            case ROLL -> {
+              return () -> Degrees.of(((AHRS) getStudicaGyro()).getRoll());
+            }
+          }
+        }
+      }
+      case LIMELIGHT -> {
+        throw new UnsupportedOperationException("Limelight gyro are not yet supported.");
+      }
+    }
+    throw new IllegalArgumentException("Invalid gyro type: " + type);
+  }
+
   public enum VENDOR
   {CTRE, REV, THRIFTYBOT, ANDYMARK, REDUX, STUDICA, SMARTIO, LIMELIGHT, UNKNOWN}
-
 
   /**
    * Get the vendor of the device.
@@ -100,7 +195,6 @@ public class DeviceJson
         case "talonfx":
         case "talonfxs":
         case "cancoder":
-        case "pigeon1":
         case "pigeon2":
           return VENDOR.CTRE;
         case "sparkmax":
@@ -145,6 +239,46 @@ public class DeviceJson
     }
     return VENDOR.UNKNOWN;
   }
+
+  public Object getStudicaGyro()
+  {
+    String[] vendorData           = type.split("_");
+    String   vendorType           = vendorData[0];
+    String   vendorConnectionType = vendorData[1];
+    switch (vendorConnectionType)
+    {
+      case "can":
+        return new Navx(id);
+      case "mxp":
+        return new AHRS(NavXComType.kMXP_SPI);
+      case "usb1":
+        return new AHRS(NavXComType.kUSB1);
+      case "usb2":
+        return new AHRS(NavXComType.kUSB2);
+      case "i2c":
+        return new AHRS(NavXComType.kI2C);
+      default:
+        throw new IllegalArgumentException("Invalid gyro connection type: " + vendorType);
+    }
+
+  }
+
+  public Pigeon2 getCTREGyro()
+  {
+    return new Pigeon2(id);
+  }
+
+//  public Canandgyro getReduxGyro()
+//  {
+//    String[] vendorData           = type.split("_");
+//    String   vendorType           = vendorData[0];
+//    String   vendorConnectionType = vendorData[1];
+//    switch (vendorType)
+//    {
+//      case "canandgyro": return new Canandgyro(id);
+//      default: throw new IllegalArgumentException("Invalid encoder type: " + vendorType);
+//    }
+//  }
 
 //  public Canandmag getReduxEncoder()
 //  {
@@ -200,7 +334,7 @@ public class DeviceJson
    * @param vendorMotorController {@link SparkMax} or {@link SparkFlex} vendor motor controller
    * @return {@link SparkAbsoluteEncoder}
    */
-  public SparkAbsoluteEncoder getSparkEncoder(Object vendorMotorController)
+  public SparkAbsoluteEncoder getREVEncoder(Object vendorMotorController)
   {
     if (vendorMotorController instanceof SparkBase) {return ((SparkBase) vendorMotorController).getAbsoluteEncoder();}
     throw new IllegalArgumentException(

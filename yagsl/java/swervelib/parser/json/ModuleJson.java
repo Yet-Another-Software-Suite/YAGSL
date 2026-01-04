@@ -1,19 +1,18 @@
 package swervelib.parser.json;
 
+import static edu.wpi.first.units.Units.Inches;
+
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.util.Units;
-import swervelib.encoders.SparkMaxEncoderSwerve;
-import swervelib.encoders.SwerveAbsoluteEncoder;
-import swervelib.encoders.ThriftyNovaEncoderSwerve;
-import swervelib.motors.SwerveMotor;
-import swervelib.motors.ThriftyNovaSwerve;
 import swervelib.parser.PIDFConfig;
 import swervelib.parser.json.modules.BoolMotorJson;
 import swervelib.parser.json.modules.ConversionFactorsJson;
 import swervelib.parser.json.modules.LocationJson;
+import yams.mechanisms.config.SwerveModuleConfig;
+import yams.mechanisms.swerve.SwerveModule;
 
 /**
- * {@link swervelib.SwerveModule} JSON parsed class. Used to access the JSON data.
+ * {@link yams.mechanisms.swerve.SwerveModule} JSON parsed class. Used to access the JSON data.
  */
 public class ModuleJson
 {
@@ -46,6 +45,10 @@ public class ModuleJson
    * Absolute encoder inversion state.
    */
   public boolean               absoluteEncoderInverted = false;
+  /**
+   * Reduction ratio for the absolute encoder to the motor. X where "X:1"
+   */
+  public double absoluteEncoderGearRatio = 1;
   /**
    * The location of the swerve module from the center of the robot in inches.
    */

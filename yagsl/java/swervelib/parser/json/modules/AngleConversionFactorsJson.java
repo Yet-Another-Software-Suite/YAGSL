@@ -1,6 +1,5 @@
 package swervelib.parser.json.modules;
 
-import swervelib.math.SwerveMath;
 
 /**
  * Angle motor conversion factors composite JSON parse class.
@@ -9,25 +8,12 @@ public class AngleConversionFactorsJson
 {
 
   /**
-   * Gear ratio for the angle/steering/azimuth motor on the Swerve Module. Motor rotations to 1 wheel rotation.
+   * Reduction ratio for the motor to the wheel. X where "X:1"
    */
   public double gearRatio;
-  /**
-   * Calculated or given conversion factor.
-   */
-  public double factor = 0;
 
-  /**
-   * Calculate the drive conversion factor.
-   *
-   * @return Drive conversion factor, if factor isn't set.
-   */
-  public double calculate()
+  public boolean equals(DriveConversionFactorsJson o)
   {
-    if (factor == 0)
-    {
-      factor = SwerveMath.calculateDegreesPerSteeringRotation(gearRatio);
-    }
-    return factor;
+    return o.gearRatio == gearRatio;
   }
 }

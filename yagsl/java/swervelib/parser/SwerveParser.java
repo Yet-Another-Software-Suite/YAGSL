@@ -1,17 +1,35 @@
 package swervelib.parser;
 
+import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Millisecond;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import swervelib.math.SwerveMath;
+import java.util.function.Supplier;
+import swervelib.parser.json.DeviceJson.VENDOR;
 import swervelib.parser.json.ModuleJson;
 import swervelib.parser.json.PIDFPropertiesJson;
 import swervelib.parser.json.PhysicalPropertiesJson;
 import swervelib.parser.json.SwerveDriveJson;
+import swervelib.parser.json.SwerveDriveJson.GyroAxis;
+import yams.gearing.GearBox;
+import yams.mechanisms.config.SwerveDriveConfig;
+import yams.mechanisms.config.SwerveModuleConfig;
+import yams.mechanisms.swerve.SwerveDrive;
+import yams.mechanisms.swerve.SwerveModule;
+import yams.motorcontrollers.SmartMotorControllerConfig;
+import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
+import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
+import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 
 /**
  * Helper class used to parse the JSON directory with specified configuration options.
@@ -27,10 +45,6 @@ public class SwerveParser
    * Parsed swervedrive.json
    */
   public static        SwerveDriveJson          swerveDriveJson;
-  /**
-   * Parsed controllerproperties.json
-   */
-  public static        ControllerPropertiesJson controllerPropertiesJson;
   /**
    * Parsed modules/pidfproperties.json
    */
@@ -57,11 +71,6 @@ public class SwerveParser
         new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .readValue(new File(directory, "swervedrive.json"), SwerveDriveJson.class);
-    controllerPropertiesJson =
-        new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .readValue(
-                new File(directory, "controllerproperties.json"), ControllerPropertiesJson.class);
     pidfPropertiesJson =
         new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -83,19 +92,6 @@ public class SwerveParser
           .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
           .readValue(moduleFile, ModuleJson.class);
     }
-  }
-
-  /**
-   * Get the swerve module by the json name.
-   *
-   * @param name               JSON name.
-   * @param driveConfiguration {@link SwerveDriveConfiguration} to pull from.
-   * @return {@link SwerveModuleConfiguration} based on the file.
-   */
-  public static SwerveModule getModuleConfigurationByName(
-      String name, SwerveDriveConfiguration driveConfiguration)
-  {
-    return driveConfiguration.modules[moduleConfigs.get(name + ".json")];
   }
 
   /**
@@ -123,79 +119,88 @@ public class SwerveParser
   private void checkDirectory(File directory)
   {
     assert new File(directory, "swervedrive.json").exists();
-    assert new File(directory, "controllerproperties.json").exists();
     assert new File(directory, "modules").exists() && new File(directory, "modules").isDirectory();
     assert new File(directory, "modules/pidfproperties.json").exists();
     assert new File(directory, "modules/physicalproperties.json").exists();
   }
 
-  /**
-   * Create {@link SwerveDrive} from JSON configuration directory.
-   *
-   * @param maxSpeed Maximum speed of the robot in meters per second, used for both angular acceleration used in
-   *                 {@link swervelib.SwerveController} and drive feedforward in
-   *                 {@link SwerveMath#createDriveFeedforward(double, double, double)}.
-   * @return {@link SwerveDrive} instance.
-   */
-  public SwerveDrive createSwerveDrive(double maxSpeed)
+  public SwerveDrive createSwerveDrive(Subsystem subsys, Pose2d initialPose, SwerveDriveConfig swerveDriveConfig)
   {
-    return createSwerveDrive(maxSpeed, Pose2d.kZero);
-  }
-
-  /**
-   * Create {@link SwerveDrive} from JSON configuration directory.
-   *
-   * @param maxSpeed                   Maximum speed of the robot in meters per second, used for both angular
-   *                                   acceleration used in {@link swervelib.SwerveController} and drive feedforward in
-   *                                   {@link SwerveMath#createDriveFeedforward(double, double, double)}.
-   * @param angleMotorConversionFactor Angle (AKA azimuth) motor conversion factor to convert motor controller PID loop
-   *                                   units to degrees, usually created using
-   *                                   {@link SwerveMath#calculateDegreesPerSteeringRotation(double, double)}.
-   * @param driveMotorConversion       Drive motor conversion factor to convert motor controller PID loop units to
-   *                                   meters per rotation, usually created using
-   *                                   {@link SwerveMath#calculateMetersPerRotation(double, double, double)}.
-   * @return {@link SwerveDrive} instance.
-   */
-  public SwerveDrive createSwerveDrive(double maxSpeed, double angleMotorConversionFactor, double driveMotorConversion)
-  {
-    physicalPropertiesJson.conversionFactors.angle.factor = angleMotorConversionFactor;
-    physicalPropertiesJson.conversionFactors.drive.factor = driveMotorConversion;
-    return createSwerveDrive(maxSpeed, Pose2d.kZero);
-  }
-
-  /**
-   * Create {@link SwerveDrive} from JSON configuration directory.
-   *
-   * @param maxSpeed    Maximum speed of the robot in meters per second for normal+angular acceleration in
-   *                    {@link swervelib.SwerveController} of the robot
-   * @param initialPose {@link Pose2d} initial pose.
-   * @return {@link SwerveDrive} instance.
-   */
-  public SwerveDrive createSwerveDrive(double maxSpeed, Pose2d initialPose)
-  {
-    SwerveModuleConfiguration[] moduleConfigurations =
-        new SwerveModuleConfiguration[moduleJsons.length];
-    for (int i = 0; i < moduleConfigurations.length; i++)
+    SwerveModule[] modules = new SwerveModule[swerveDriveJson.modules.length];
+    for (var i = 0; i < modules.length; i++)
     {
-      ModuleJson module = moduleJsons[i];
-      moduleConfigurations[i] =
-          module.createModuleConfiguration(
-              pidfPropertiesJson.angle,
-              pidfPropertiesJson.drive,
-              physicalPropertiesJson.createPhysicalProperties(),
-              swerveDriveJson.modules[i]);
-    }
-    SwerveDriveConfiguration swerveDriveConfiguration =
-        new SwerveDriveConfiguration(
-            moduleConfigurations,
-            swerveDriveJson.imu.createIMU(),
-            swerveDriveJson.invertedIMU,
-            physicalPropertiesJson.createPhysicalProperties());
+      var moduleJson = moduleJsons[i];
+      var driveGearing = moduleJson.conversionFactors.drive.equals(physicalPropertiesJson.conversionFactors.drive)
+                         ? physicalPropertiesJson.conversionFactors.drive
+                         : moduleJson.conversionFactors.drive;
+      var azimuthGearing = moduleJson.conversionFactors.angle.equals(physicalPropertiesJson.conversionFactors.drive)
+                           ? physicalPropertiesJson.conversionFactors.angle
+                           : moduleJson.conversionFactors.angle;
+      SmartMotorControllerConfig driveMotorConfig = new SmartMotorControllerConfig(subsys)
+          .withMotorInverted(moduleJson.inverted.drive)
+          .withControlMode(ControlMode.CLOSED_LOOP)
+          .withWheelDiameter(Inches.of(driveGearing.diameter))
+          .withGearing(driveGearing.gearRatio)
+          .withClosedLoopController(pidfPropertiesJson.drive.p, pidfPropertiesJson.drive.i, pidfPropertiesJson.drive.d)
+          .withIdleMode(MotorMode.COAST)
+          .withStatorCurrentLimit(Amps.of(physicalPropertiesJson.statorCurrentLimit.drive))
+          .withTelemetry("drive_" + swerveDriveJson.modules[i], TelemetryVerbosity.LOW);
 
-    return new SwerveDrive(
-        swerveDriveConfiguration,
-        controllerPropertiesJson.createControllerConfiguration(swerveDriveConfiguration, maxSpeed),
-        maxSpeed,
-        initialPose);
+      SmartMotorControllerConfig azimuthMotorConfig = new SmartMotorControllerConfig(subsys)
+          .withMotorInverted(moduleJson.inverted.angle)
+          .withControlMode(ControlMode.CLOSED_LOOP)
+          .withGearing(azimuthGearing.gearRatio)
+          .withClosedLoopController(pidfPropertiesJson.angle.p, pidfPropertiesJson.angle.i, pidfPropertiesJson.angle.d)
+          .withIdleMode(MotorMode.COAST)
+          .withStatorCurrentLimit(Amps.of(physicalPropertiesJson.statorCurrentLimit.angle))
+          .withTelemetry("azimuth_" + swerveDriveJson.modules[i], TelemetryVerbosity.LOW);
+      var azimuthMotorVendor           = moduleJson.angle.getVendor(VENDOR.UNKNOWN);
+      var absoluteEncoderVendor        = moduleJson.encoder.getVendor(azimuthMotorVendor);
+      var azimuthVendorMotorController = moduleJson.angle.getVendorMotorController();
+      if (absoluteEncoderVendor == azimuthMotorVendor)
+      {
+        Object absoluteEncoder = null;
+        switch (absoluteEncoderVendor)
+        {
+          case CTRE -> {absoluteEncoder = moduleJson.encoder.getCTREEncoder();}
+          case REV -> {absoluteEncoder = moduleJson.encoder.getREVEncoder(azimuthVendorMotorController);}
+          case THRIFTYBOT -> {absoluteEncoder = moduleJson.encoder.getThriftyEncoder();}
+          case ANDYMARK -> {absoluteEncoder = moduleJson.encoder.getAndyMarkEncoder();}
+//          case REDUX -> {absoluteEncoder = moduleJson.encoder.getReduxEncoder();}
+          case SMARTIO -> {absoluteEncoder = moduleJson.encoder.getSmartIOEncoder();}
+        }
+        if (absoluteEncoder != null)
+        {
+          azimuthMotorConfig.withExternalEncoder(absoluteEncoder).withUseExternalFeedbackEncoder(true);
+        }
+      }
+      var azimuthMotorController = moduleJson.angle.getMotorController(azimuthMotorConfig,
+                                                                       azimuthVendorMotorController);
+      var driveMotorController = moduleJson.drive.getMotorController(driveMotorConfig, null);
+      SwerveModuleConfig moduleConfig = new SwerveModuleConfig(driveMotorController, azimuthMotorController)
+          .withOptimization(true)
+          .withCosineCompensation(moduleJson.useCosineCompensator)
+          .withAbsoluteEncoderOffset(Degrees.of(moduleJson.absoluteEncoderOffset))
+          .withAbsoluteEncoderGearing(GearBox.fromReductionStages(moduleJson.absoluteEncoderGearRatio))
+          .withLocation(Inches.of(moduleJson.location.front), Inches.of(moduleJson.location.left))
+          .withTelemetry(swerveDriveJson.modules[i], TelemetryVerbosity.HIGH);
+      if (absoluteEncoderVendor != azimuthMotorVendor)
+      {
+        Supplier<Angle> absoluteEncoderSupplier = moduleJson.encoder.getEncoderSupplier(azimuthVendorMotorController);
+        moduleConfig.withAbsoluteEncoder(absoluteEncoderSupplier);
+      }
+      SwerveModule module = new SwerveModule(moduleConfig);
+      modules[i] = module;
+    }
+    SwerveDriveConfig sdc = swerveDriveConfig
+        .withStartingPose(initialPose)
+        .withTelemetry(TelemetryVerbosity.HIGH)
+//        .withSubsystem(subsys)
+//        .withModules(modules)
+        .withDiscretizationTime(Millisecond.of(20))
+        .withSimDiscretizationTime(Millisecond.of(10))
+        .withGyro(swerveDriveJson.imu.getGyroSupplier(GyroAxis.valueOf(swerveDriveJson.gyroAxis.toUpperCase())))
+        .withGyroInverted(swerveDriveJson.invertedIMU);
+    return new SwerveDrive(sdc);
   }
 }
