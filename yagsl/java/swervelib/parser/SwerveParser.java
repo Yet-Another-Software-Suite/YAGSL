@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Millisecond;
+import static edu.wpi.first.units.Units.Rotations;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -149,6 +150,7 @@ public class SwerveParser
       SmartMotorControllerConfig azimuthMotorConfig = new SmartMotorControllerConfig(subsys)
           .withMotorInverted(moduleJson.inverted.angle)
           .withControlMode(ControlMode.CLOSED_LOOP)
+          .withContinuousWrapping(Rotations.of(-0.5), Rotations.of(0.5))
           .withGearing(azimuthGearing.gearRatio)
           .withClosedLoopController(pidfPropertiesJson.angle.p, pidfPropertiesJson.angle.i, pidfPropertiesJson.angle.d)
           .withIdleMode(MotorMode.BRAKE)
@@ -179,7 +181,6 @@ public class SwerveParser
       var driveMotorController = moduleJson.drive.getMotorController(driveMotorConfig, null);
       SwerveModuleConfig moduleConfig = new SwerveModuleConfig(driveMotorController, azimuthMotorController)
           .withOptimization(true)
-          .withCosineCompensation(moduleJson.useCosineCompensator)
           .withAbsoluteEncoderOffset(Degrees.of(moduleJson.absoluteEncoderOffset))
           .withAbsoluteEncoderGearing(GearBox.fromReductionStages(moduleJson.absoluteEncoderGearRatio))
           .withLocation(Inches.of(moduleJson.location.front), Inches.of(moduleJson.location.left))
