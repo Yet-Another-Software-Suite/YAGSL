@@ -8,7 +8,9 @@ import org.dyn4j.geometry.Rotation;
 import org.dyn4j.geometry.Transform;
 import org.dyn4j.geometry.Vector2;
 
-/** utils to convert between WPILIB and dyn4j geometry classes */
+/**
+ * utils to convert between WPILIB and dyn4j geometry classes
+ */
 public class GeometryConvertor {
     public static Vector2 toDyn4jVector2(Translation2d wpilibTranslation2d) {
         return new Vector2(wpilibTranslation2d.getX(), wpilibTranslation2d.getY());

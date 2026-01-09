@@ -1,13 +1,14 @@
 package swervelib.simulation.ironmaple.simulation.gamepieces;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.Timer;
+import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+import swervelib.simulation.ironmaple.utils.LegacyFieldMirroringUtils2024;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -15,8 +16,8 @@ import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import swervelib.simulation.ironmaple.simulation.SimulatedArena;
-import swervelib.simulation.ironmaple.utils.LegacyFieldMirroringUtils2024;
+
+import static edu.wpi.first.units.Units.*;
 
 /**
  *
@@ -69,9 +70,11 @@ public class GamePieceProjectile implements GamePiece {
      * <p>Optionally, this callback will be used to visualize the projectile flight trajectory in a telemetry system,
      * such as <a href='https://github.com/Mechanical-Advantage/AdvantageScope'>Advantage Scope</a>.
      */
-    private Consumer<List<Pose3d>> projectileTrajectoryDisplayCallBackHitTarget = projectileTrajectory -> {};
+    private Consumer<List<Pose3d>> projectileTrajectoryDisplayCallBackHitTarget = projectileTrajectory -> {
+    };
 
-    private Consumer<List<Pose3d>> projectileTrajectoryDisplayCallBackMiss = projectileTrajectory -> {};
+    private Consumer<List<Pose3d>> projectileTrajectoryDisplayCallBackMiss = projectileTrajectory -> {
+    };
 
     // Optional properties of the game piece, used if we want it to become a
     // GamePieceOnFieldSimulation upon touching ground:
@@ -80,7 +83,8 @@ public class GamePieceProjectile implements GamePiece {
     // Optional properties of the game piece, used if we want it to have a target:
     private Translation3d tolerance = new Translation3d(0.2, 0.2, 0.2);
     private Supplier<Translation3d> targetPositionSupplier = () -> new Translation3d(0, 0, -100);
-    private Runnable hitTargetCallBack = () -> {};
+    private Runnable hitTargetCallBack = () -> {
+    };
     private double heightAsTouchGround = 0.5;
 
     /**
@@ -105,17 +109,17 @@ public class GamePieceProjectile implements GamePiece {
      *
      * <h2>Creates a Game Piece Projectile Ejected from a Shooter.</h2>
      *
-     * @param info the info of the game piece
-     * @param robotPosition the position of the robot (not the shooter) at the time of launching the game piece
-     * @param shooterPositionOnRobot the translation from the shooter's position to the robot's center, in the robot's
-     *     frame of reference
+     * @param info                       the info of the game piece
+     * @param robotPosition              the position of the robot (not the shooter) at the time of launching the game piece
+     * @param shooterPositionOnRobot     the translation from the shooter's position to the robot's center, in the robot's
+     *                                   frame of reference
      * @param chassisSpeedsFieldRelative the field-relative velocity of the robot chassis when launching the game piece,
-     *     influencing the initial velocity of the game piece
-     * @param shooterFacing the direction in which the shooter is facing at launch
-     * @param initialHeight the initial height of the game piece when launched, i.e., the height of the shooter from the
-     *     ground
-     * @param launchingSpeed the speed at which the game piece is launch
-     * @param shooterAngle the pitch angle of the shooter when launching
+     *                                   influencing the initial velocity of the game piece
+     * @param shooterFacing              the direction in which the shooter is facing at launch
+     * @param initialHeight              the initial height of the game piece when launched, i.e., the height of the shooter from the
+     *                                   ground
+     * @param launchingSpeed             the speed at which the game piece is launch
+     * @param shooterAngle               the pitch angle of the shooter when launching
      */
     public GamePieceProjectile(
             GamePieceOnFieldSimulation.GamePieceInfo info,
@@ -148,11 +152,11 @@ public class GamePieceProjectile implements GamePiece {
      * translational and rotational motion as well as the shooter's ground speed.
      *
      * @param shooterPositionOnRobot the translation of the shooter on the robot, in the robot's frame of reference
-     * @param chassisSpeeds the speeds of the chassis when the game piece is launched, including translational and
-     *     rotational velocities
-     * @param chassisFacing the direction the chassis is facing at the time of the launch
-     * @param groundSpeedMPS the ground component of the projectile's initial velocity, provided as a scalar in meters
-     *     per second (m/s)
+     * @param chassisSpeeds          the speeds of the chassis when the game piece is launched, including translational and
+     *                               rotational velocities
+     * @param chassisFacing          the direction the chassis is facing at the time of the launch
+     * @param groundSpeedMPS         the ground component of the projectile's initial velocity, provided as a scalar in meters
+     *                               per second (m/s)
      * @return the calculated initial velocity of the projectile as a {@link Translation2d} in meters per second
      */
     private static Translation2d calculateInitialProjectileVelocityMPS(
@@ -162,7 +166,7 @@ public class GamePieceProjectile implements GamePiece {
             double groundSpeedMPS) {
         final Translation2d
                 chassisTranslationalVelocity =
-                        new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond),
+                new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond),
                 shooterGroundVelocityDueToChassisRotation =
                         shooterPositionOnRobot
                                 .rotateBy(chassisFacing)
@@ -178,15 +182,15 @@ public class GamePieceProjectile implements GamePiece {
      *
      * <h2>Creates a Game Piece Projectile Ejected from a Shooter.</h2>
      *
-     * @param info the info of the game piece
-     * @param initialPosition the position of the game piece at the moment it is launched into the air
+     * @param info                        the info of the game piece
+     * @param initialPosition             the position of the game piece at the moment it is launched into the air
      * @param initialLaunchingVelocityMPS the horizontal component of the initial velocity in the X-Y plane, in meters
-     *     per second (m/s)
-     * @param initialHeight the initial height of the game piece when launched (the height of the shooter from the
-     *     ground)
-     * @param initialVerticalSpeedMPS the vertical component of the initial velocity, in meters per second (m/s)
-     * @param gamePieceRotation the 3D rotation of the game piece during flight (only affects visualization of the game
-     *     piece)
+     *                                    per second (m/s)
+     * @param initialHeight               the initial height of the game piece when launched (the height of the shooter from the
+     *                                    ground)
+     * @param initialVerticalSpeedMPS     the vertical component of the initial velocity, in meters per second (m/s)
+     * @param gamePieceRotation           the 3D rotation of the game piece during flight (only affects visualization of the game
+     *                                    piece)
      */
     public GamePieceProjectile(
             GamePieceOnFieldSimulation.GamePieceInfo info,
@@ -266,7 +270,7 @@ public class GamePieceProjectile implements GamePiece {
      * </ul>
      *
      * @return <code>true</code> if the game piece has touched the ground, otherwise <code>false
-     *     </code>
+     * </code>
      */
     public boolean hasHitGround() {
         return getPositionAtTime(launchedTimer.get()).getZ() <= heightAsTouchGround
@@ -374,7 +378,7 @@ public class GamePieceProjectile implements GamePiece {
      *
      * @param t the time elapsed after the launch of the projectile, in seconds
      * @return a {@link Translation3d} object representing the calculated 3d velocity of the projectile at time <code>t
-     *     </code>, in meters per second
+     * </code>, in meters per second
      */
     private Translation3d getVelocityMPSAtTime(double t) {
         final double verticalVelocityMPS = initialVerticalSpeedMPS - GRAVITY * t;
@@ -402,9 +406,9 @@ public class GamePieceProjectile implements GamePiece {
      *
      * <h2>Calculates the Projectile's Velocity at a Given Time.</h2>
      *
-     * @see #getVelocityMPSAtTime(double)
      * @return a {@link Translation3d} object representing the calculated 3d velocity of the projectile at time <code>t
-     *     </code>, in meters per second
+     * </code>, in meters per second
+     * @see #getVelocityMPSAtTime(double)
      */
     @Override
     public Translation3d getVelocity3dMPS() {
@@ -425,7 +429,7 @@ public class GamePieceProjectile implements GamePiece {
      * touching the ground.
      *
      * @param simulatedArena the arena simulation to which the game piece will be added, usually obtained from
-     *     {@link SimulatedArena#getInstance()}
+     *                       {@link SimulatedArena#getInstance()}
      */
     public void addGamePieceAfterTouchGround(SimulatedArena simulatedArena) {
         if (!becomesGamePieceOnGroundAfterTouchGround) return;
@@ -469,6 +473,7 @@ public class GamePieceProjectile implements GamePiece {
     }
 
     // The rest are methods to configure a game piece projectile simulation
+
     /**
      *
      *
@@ -570,7 +575,7 @@ public class GamePieceProjectile implements GamePiece {
      * href='https://github.com/Mechanical-Advantage/AdvantageScope'>Advantage Scope</a>
      *
      * @param projectileTrajectoryDisplayCallBack the callback that will receive the list of {@link Pose3d} objects
-     *     representing the projectile's trajectory
+     *                                            representing the projectile's trajectory
      * @return the current instance of {@link GamePieceProjectile} to allow method chaining
      */
     public GamePieceProjectile withProjectileTrajectoryDisplayCallBack(
@@ -594,10 +599,10 @@ public class GamePieceProjectile implements GamePiece {
      * <p>This is usually for visualizing the trajectory of the projectile on a telemetry, like <a
      * href='https://github.com/Mechanical-Advantage/AdvantageScope'>Advantage Scope</a>
      *
-     * @param projectileTrajectoryDisplayCallBackHitTarget the callback that will receive the list of {@link Pose3d}
-     *     objects representing the projectile's trajectory, called if the projectile will hit the target on its path
+     * @param projectileTrajectoryDisplayCallBackHitTarget     the callback that will receive the list of {@link Pose3d}
+     *                                                         objects representing the projectile's trajectory, called if the projectile will hit the target on its path
      * @param projectileTrajectoryDisplayCallBackHitTargetMiss the callback that will receive the list of {@link Pose3d}
-     *     objects representing the projectile's trajectory, called if the projectile will be off the target
+     *                                                         objects representing the projectile's trajectory, called if the projectile will be off the target
      * @return the current instance of {@link GamePieceProjectile} to allow method chaining
      */
     public GamePieceProjectile withProjectileTrajectoryDisplayCallBack(

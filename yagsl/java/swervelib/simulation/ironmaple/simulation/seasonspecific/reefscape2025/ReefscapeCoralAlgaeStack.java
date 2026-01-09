@@ -1,14 +1,15 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import java.util.List;
 import org.dyn4j.geometry.Circle;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation;
 import swervelib.simulation.ironmaple.utils.mathutils.GeometryConvertor;
+
+import java.util.List;
+
+import static edu.wpi.first.units.Units.*;
 
 /**
  *
@@ -107,7 +108,9 @@ public class ReefscapeCoralAlgaeStack extends GamePieceOnFieldSimulation {
         return getStackedCoralPoses(SimulatedArena.getInstance());
     }
 
-    /** @see #getStackedCoralPoses() */
+    /**
+     * @see #getStackedCoralPoses()
+     */
     private static final Transform3d STACK_TO_CORAL =
             new Transform3d(new Translation3d(0, 0, 0.15), new Rotation3d(0, Math.toRadians(90), 0));
 
@@ -131,7 +134,9 @@ public class ReefscapeCoralAlgaeStack extends GamePieceOnFieldSimulation {
     private static final Transform3d STACK_TO_ALGAE = new Transform3d(
             new Translation3d(0, 0, 0.3 + edu.wpi.first.math.util.Units.inchesToMeters(8)), new Rotation3d());
 
-    /** @see #getStackedAlgaePoses() */
+    /**
+     * @see #getStackedAlgaePoses()
+     */
     public static List<Pose3d> getStackedAlgaePoses(SimulatedArena arena) {
         return arena.getGamePiecesPosesByType(REEFSCAPE_STACK_INFO.type()).stream()
                 .map(stackPose -> stackPose.plus(STACK_TO_ALGAE))

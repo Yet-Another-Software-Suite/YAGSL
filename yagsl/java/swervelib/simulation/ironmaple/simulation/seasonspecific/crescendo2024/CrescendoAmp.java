@@ -1,12 +1,15 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024;
 
-import static edu.wpi.first.units.Units.Centimeters;
-
-import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
-import java.util.*;
 import swervelib.simulation.ironmaple.simulation.Goal;
+
+import java.util.List;
+
+import static edu.wpi.first.units.Units.Centimeters;
 
 /**
  *
@@ -29,7 +32,7 @@ public class CrescendoAmp extends Goal {
      *
      * <h2>Creates an Amp of the specified color.</h2>
      *
-     * @param arena The host arena of this amp.
+     * @param arena  The host arena of this amp.
      * @param isBlue Wether this is the blue amp or the red one.
      */
     public CrescendoAmp(Arena2024Crescendo arena, boolean isBlue) {
@@ -63,6 +66,5 @@ public class CrescendoAmp extends Goal {
 
     @Override
     public void draw(List<Pose3d> drawList) {
-        return;
     }
 }

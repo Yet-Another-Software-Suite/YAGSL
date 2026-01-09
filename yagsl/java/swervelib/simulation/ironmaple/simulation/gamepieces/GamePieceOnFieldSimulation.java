@@ -1,17 +1,9 @@
 package swervelib.simulation.ironmaple.simulation.gamepieces;
 
-import static edu.wpi.first.units.Units.Kilogram;
-import static edu.wpi.first.units.Units.Meters;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
-import java.util.function.DoubleSupplier;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.geometry.Convex;
@@ -19,6 +11,11 @@ import org.dyn4j.geometry.MassType;
 import swervelib.simulation.ironmaple.simulation.IntakeSimulation;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.utils.mathutils.GeometryConvertor;
+
+import java.util.function.DoubleSupplier;
+
+import static edu.wpi.first.units.Units.Kilogram;
+import static edu.wpi.first.units.Units.Meters;
 
 /**
  *
@@ -60,7 +57,7 @@ public class GamePieceOnFieldSimulation extends Body implements GamePiece {
      *
      * <h2>Creates a Game Piece on the Field with Fixed Height.</h2>
      *
-     * @param info info about the game piece type
+     * @param info        info about the game piece type
      * @param initialPose the initial position of the game piece on the field
      */
     public GamePieceOnFieldSimulation(GamePieceInfo info, Pose2d initialPose) {
@@ -72,9 +69,9 @@ public class GamePieceOnFieldSimulation extends Body implements GamePiece {
      *
      * <h2>Creates a Game Piece on the Field with Custom Height Supplier and Initial Velocity.</h2>
      *
-     * @param info info about the game piece type
-     * @param zPositionSupplier a supplier that provides the current Z-height of the game piece
-     * @param initialPose the initial position of the game piece on the field
+     * @param info               info about the game piece type
+     * @param zPositionSupplier  a supplier that provides the current Z-height of the game piece
+     * @param initialPose        the initial position of the game piece on the field
      * @param initialVelocityMPS the initial velocity of the game piece, in meters per second
      */
     public GamePieceOnFieldSimulation(
@@ -150,10 +147,10 @@ public class GamePieceOnFieldSimulation extends Body implements GamePiece {
      *
      * <h2>Stores the info of a type of game piece</h2>
      *
-     * @param type the type of the game piece, affecting categorization within the arena
-     * @param shape the shape of the collision space for the game piece
+     * @param type            the type of the game piece, affecting categorization within the arena
+     * @param shape           the shape of the collision space for the game piece
      * @param gamePieceHeight the height (thickness) of the game piece, in meters
-     * @param gamePieceMass the mass of the game piece, in kilograms
+     * @param gamePieceMass   the mass of the game piece, in kilograms
      */
     public record GamePieceInfo(
             String type,
@@ -162,9 +159,11 @@ public class GamePieceOnFieldSimulation extends Body implements GamePiece {
             Mass gamePieceMass,
             double linearDamping,
             double angularDamping,
-            double coefficientOfRestitution) {}
+            double coefficientOfRestitution) {
+    }
 
-    public void onIntake(String intakeTargetGamePieceType) {}
+    public void onIntake(String intakeTargetGamePieceType) {
+    }
 
     @Override
     public String getType() {

@@ -1,11 +1,11 @@
 package swervelib.simulation.ironmaple.simulation.drivesims;
 
-import static edu.wpi.first.units.Units.*;
-import static edu.wpi.first.units.Units.KilogramSquareMeters;
-
 import edu.wpi.first.math.system.plant.DCMotor;
-import java.util.function.Supplier;
 import swervelib.simulation.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
+
+import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.*;
 
 public class COTS {
     /**
@@ -17,7 +17,9 @@ public class COTS {
      * 3847's Build Blog</a>.
      */
     public enum WHEELS {
-        /** <a href='https://www.vexrobotics.com/colsonperforma.html'>Colsons Wheels.</a> */
+        /**
+         * <a href='https://www.vexrobotics.com/colsonperforma.html'>Colsons Wheels.</a>
+         */
         COLSONS(0.899),
         /**
          * Default Neoprene Treads for <a
@@ -29,7 +31,9 @@ public class COTS {
          * Tread from AndyMark.</a>
          */
         BLUE_NITRILE_TREAD(1.542),
-        /** <a href='https://www.vexrobotics.com/217-9064.html'>Vex Grip V2 Wheel.</a> */
+        /**
+         * <a href='https://www.vexrobotics.com/217-9064.html'>Vex Grip V2 Wheel.</a>
+         */
         VEX_GRIP_V2(1.916),
         /**
          * <a href='https://www.thebluealliance.com/team/88'>Team 88</a>'s <a

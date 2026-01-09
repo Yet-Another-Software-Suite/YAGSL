@@ -1,7 +1,5 @@
 package swervelib.simulation.ironmaple.simulation.opponentsim;
 
-import static edu.wpi.first.units.Units.*;
-
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -10,17 +8,15 @@ import com.pathplanner.lib.path.*;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Pair;
-import edu.wpi.first.math.controller.HolonomicDriveController;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.networktables.*;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -32,13 +28,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import java.util.*;
-import java.util.function.Supplier;
-
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.drivesims.SelfControlledSwerveDriveSimulation;
 import swervelib.simulation.ironmaple.simulation.opponentsim.pathfinding.MapleADStar;
 import swervelib.simulation.ironmaple.utils.FieldMirroringUtils;
+
+import java.util.*;
+import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.*;
 
 public abstract class SmartOpponent extends SubsystemBase {
     /// Publishers
@@ -251,7 +249,7 @@ public abstract class SmartOpponent extends SubsystemBase {
     /**
      * Runs a state as a command.
      *
-     * @param state The state to run.
+     * @param state      The state to run.
      * @param forceState Whether to force the state to run even if it is already running.
      * @return The command to run the state.
      */
@@ -268,7 +266,7 @@ public abstract class SmartOpponent extends SubsystemBase {
         if (config.currentState.equals(state)
                 || getCurrentCommand() != null
                 || (getCurrentCommand() != null && !getCurrentCommand().isFinished())
-                        && (!RobotModeTriggers.disabled().getAsBoolean() && config.isAutoEnable)) {
+                && (!RobotModeTriggers.disabled().getAsBoolean() && config.isAutoEnable)) {
             setState(state); // Make state wait for command to finish.
             return Commands.none();
         }
@@ -537,8 +535,8 @@ public abstract class SmartOpponent extends SubsystemBase {
     /**
      * Checks if the {@link SmartOpponent} is near the given pose within a given tolerance.
      *
-     * @param pose the pose to check against.
-     * @param tolerance the translation tolerance in {@link Distance}.
+     * @param pose           the pose to check against.
+     * @param tolerance      the translation tolerance in {@link Distance}.
      * @param angleTolerance the rotation tolerance in {@link Angle}.
      * @return
      */
@@ -546,7 +544,7 @@ public abstract class SmartOpponent extends SubsystemBase {
         Pose2d robotPose = drivetrainSim.getActualPoseInSimulationWorld();
         return robotPose.getTranslation().getDistance(pose.getTranslation()) < tolerance.in(Meters)
                 && Math.abs(robotPose.getRotation().minus(pose.getRotation()).getDegrees())
-                        < angleTolerance.in(Degrees);
+                < angleTolerance.in(Degrees);
     }
 
     /**

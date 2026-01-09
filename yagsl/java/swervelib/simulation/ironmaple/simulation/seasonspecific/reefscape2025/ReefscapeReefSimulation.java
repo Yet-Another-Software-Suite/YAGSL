@@ -3,10 +3,11 @@ package swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
-import java.util.ArrayList;
-import java.util.List;
 import swervelib.simulation.ironmaple.simulation.Goal;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,7 +21,7 @@ import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 public class ReefscapeReefSimulation implements SimulatedArena.Simulatable {
     protected final List<ReefscapeReefBranch> branches;
     public ReefscapeAlgaeOnField algae;
-    private StructArrayPublisher<Pose3d> reefPub;
+    private final StructArrayPublisher<Pose3d> reefPub;
     Pose3d[] branchPoses;
 
     /**
@@ -28,7 +29,7 @@ public class ReefscapeReefSimulation implements SimulatedArena.Simulatable {
      *
      * <h2>Creates an reef of the specified color.</h2>
      *
-     * @param arena The host arena of this reef.
+     * @param arena  The host arena of this reef.
      * @param isBlue Wether this is the blue reef or the red one.
      */
     ReefscapeReefSimulation(Arena2025Reefscape arena, boolean isBlue) {

@@ -1,9 +1,9 @@
 package swervelib.simulation.ironmaple.simulation.motorsims;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+
+import static edu.wpi.first.units.Units.*;
 
 /**
  *

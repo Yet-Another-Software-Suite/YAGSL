@@ -1,13 +1,7 @@
 package swervelib.simulation.ironmaple.simulation;
 
-import static edu.wpi.first.units.Units.Meters;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Distance;
-import java.util.ArrayDeque;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.function.Predicate;
 import org.dyn4j.collision.CollisionBody;
 import org.dyn4j.collision.Fixture;
 import org.dyn4j.dynamics.Body;
@@ -22,6 +16,13 @@ import org.dyn4j.world.listener.ContactListener;
 import swervelib.simulation.ironmaple.simulation.drivesims.AbstractDriveTrainSimulation;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralAlgaeStack;
+
+import java.util.ArrayDeque;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.function.Predicate;
+
+import static edu.wpi.first.units.Units.Meters;
 
 /**
  *
@@ -78,10 +79,10 @@ public class IntakeSimulation extends BodyFixture {
      * <p>This typically represents an In-The-Frame (ITF) Intake.
      *
      * @param targetedGamePieceType the type of game pieces that this intake can collect
-     * @param driveTrainSimulation the chassis to which this intake is attached
-     * @param width the width of the intake
-     * @param side the side of the chassis where the intake is attached
-     * @param capacity the maximum number of game pieces that the intake can hold
+     * @param driveTrainSimulation  the chassis to which this intake is attached
+     * @param width                 the width of the intake
+     * @param side                  the side of the chassis where the intake is attached
+     * @param capacity              the maximum number of game pieces that the intake can hold
      */
     public static IntakeSimulation InTheFrameIntake(
             String targetedGamePieceType,
@@ -100,11 +101,11 @@ public class IntakeSimulation extends BodyFixture {
      * <p>This typically represents an Over-The-Bumper (OTB) Intake.
      *
      * @param targetedGamePieceType the type of game pieces that this intake can collect
-     * @param driveTrainSimulation the chassis to which this intake is attached
-     * @param width the valid width of the intake
-     * @param lengthExtended the length the intake extends out from the chassis when activated
-     * @param side the side of the chassis where the intake is attached
-     * @param capacity the maximum number of game pieces that the intake can hold
+     * @param driveTrainSimulation  the chassis to which this intake is attached
+     * @param width                 the valid width of the intake
+     * @param lengthExtended        the length the intake extends out from the chassis when activated
+     * @param side                  the side of the chassis where the intake is attached
+     * @param capacity              the maximum number of game pieces that the intake can hold
      * @return a new instance of {@link IntakeSimulation} that extends over the bumper
      */
     public static IntakeSimulation OverTheBumperIntake(
@@ -153,9 +154,9 @@ public class IntakeSimulation extends BodyFixture {
      * <p>This constructor initializes an intake with a custom shape that is used when the intake is fully extended.
      *
      * @param targetedGamePieceType the type of game pieces that this intake can collect
-     * @param driveTrainSimulation the chassis to which this intake is attached
-     * @param shape the shape of the intake when fully extended, represented as a {@link Convex} object
-     * @param capacity the maximum number of game pieces that the intake can hold
+     * @param driveTrainSimulation  the chassis to which this intake is attached
+     * @param shape                 the shape of the intake when fully extended, represented as a {@link Convex} object
+     * @param capacity              the maximum number of game pieces that the intake can hold
      */
     public IntakeSimulation(
             String targetedGamePieceType,
@@ -317,22 +318,28 @@ public class IntakeSimulation extends BodyFixture {
 
         /* functions not used */
         @Override
-        public void persist(ContactCollisionData collision, Contact oldContact, Contact newContact) {}
+        public void persist(ContactCollisionData collision, Contact oldContact, Contact newContact) {
+        }
 
         @Override
-        public void end(ContactCollisionData collision, Contact contact) {}
+        public void end(ContactCollisionData collision, Contact contact) {
+        }
 
         @Override
-        public void destroyed(ContactCollisionData collision, Contact contact) {}
+        public void destroyed(ContactCollisionData collision, Contact contact) {
+        }
 
         @Override
-        public void collision(ContactCollisionData collision) {}
+        public void collision(ContactCollisionData collision) {
+        }
 
         @Override
-        public void preSolve(ContactCollisionData collision, Contact contact) {}
+        public void preSolve(ContactCollisionData collision, Contact contact) {
+        }
 
         @Override
-        public void postSolve(ContactCollisionData collision, SolvedContact contact) {}
+        public void postSolve(ContactCollisionData collision, SolvedContact contact) {
+        }
     }
 
     /**
@@ -398,7 +405,7 @@ public class IntakeSimulation extends BodyFixture {
      * intake, and the intake is turned on, and it is the target game piece.
      *
      * @param customIntakeCondition a {@link Predicate} representing the custom condition for intake eligibility of game
-     *     pieces on the field
+     *                              pieces on the field
      */
     public void setCustomIntakeCondition(Predicate<GamePieceOnFieldSimulation> customIntakeCondition) {
         this.customIntakeCondition = customIntakeCondition;

@@ -8,7 +8,7 @@ public class SwerveStateProjection {
     /**
      * Projects the swerve module speed onto the direction of the current swerve facing.
      *
-     * @param swerveSpeed The current speed and direction of the swerve module.
+     * @param swerveSpeed         The current speed and direction of the swerve module.
      * @param currentSwerveFacing The desired direction to project onto.
      * @return The projected speed in the direction of currentSwerveFacing.
      */

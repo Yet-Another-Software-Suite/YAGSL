@@ -20,9 +20,10 @@ import java.io.FileReader;
 import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 /**
  * Implementation of AD* running locally in a background thread
- *
+ * <p>
  * COPIED INTO MapleSim with minor modifications exposing things.
  *
  * <p>I would like to apologize to anyone trying to understand this code. The implementation I
@@ -43,7 +44,7 @@ public class MapleADStar implements Pathfinder {
     private final ReadWriteLock pathLock = new ReentrantReadWriteLock();
     private final ReadWriteLock requestLock = new ReentrantReadWriteLock();
     public List<Waypoint> currentWaypoints = new ArrayList<>();
-    public List<Pose2d> currentPathPoses =  new ArrayList<>();
+    public List<Pose2d> currentPathPoses = new ArrayList<>();
     public List<GridPosition> currentPathFull = new ArrayList<>();
     private double fieldLength = 16.54;
     private double fieldWidth = 8.02;

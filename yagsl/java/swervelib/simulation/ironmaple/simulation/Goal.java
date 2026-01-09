@@ -1,17 +1,18 @@
 package swervelib.simulation.ironmaple.simulation;
 
-import static edu.wpi.first.units.Units.Degrees;
-
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
-import java.util.List;
 import org.dyn4j.geometry.Rectangle;
 import org.dyn4j.geometry.Vector2;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece;
+
+import java.util.List;
+
+import static edu.wpi.first.units.Units.Degrees;
 
 /**
  *
@@ -51,14 +52,14 @@ public abstract class Goal implements SimulatedArena.Simulatable {
      *
      * <h2>Creates a goal object </h2>
      *
-     * @param arena The host arena of this goal
-     * @param xDimension The x dimension of the default box collider.
-     * @param yDimension The y dimension of the default box collider.
-     * @param height The height or z dimension of the default box collider.
+     * @param arena         The host arena of this goal
+     * @param xDimension    The x dimension of the default box collider.
+     * @param yDimension    The y dimension of the default box collider.
+     * @param height        The height or z dimension of the default box collider.
      * @param gamePieceType the string game piece type to be handled by this goal.
-     * @param position The position of this goal.
-     * @param isBlue Wether this is a blue goal or a red one.
-     * @param max How many pieces can be scored in this goal.
+     * @param position      The position of this goal.
+     * @param isBlue        Wether this is a blue goal or a red one.
+     * @param max           How many pieces can be scored in this goal.
      */
     public Goal(
             SimulatedArena arena,
@@ -87,13 +88,13 @@ public abstract class Goal implements SimulatedArena.Simulatable {
      *
      * <h2>Creates a goal object with no scoring max.</h2>
      *
-     * @param arena The host arena of this goal.
-     * @param xDimension The x dimension of the default box collider.
-     * @param yDimension The y dimension of the default box collider.
-     * @param height The height or z dimension of the default box collider.
+     * @param arena         The host arena of this goal.
+     * @param xDimension    The x dimension of the default box collider.
+     * @param yDimension    The y dimension of the default box collider.
+     * @param height        The height or z dimension of the default box collider.
      * @param gamePieceType the string game piece type to be handled by this goal.
-     * @param position The position of this goal.
-     * @param isBlue Wether this is a blue goal or a red one.
+     * @param position      The position of this goal.
+     * @param isBlue        Wether this is a blue goal or a red one.
      */
     public Goal(
             SimulatedArena arena,
@@ -133,7 +134,7 @@ public abstract class Goal implements SimulatedArena.Simulatable {
      *
      * <h2>Sets the angle to be used when checking game piece rotation.
      *
-     * @param angle The angle that pieces should have when interacting with this goal
+     * @param angle          The angle that pieces should have when interacting with this goal
      * @param angleTolerance The tolerance to be used in checking said angle.
      */
     public void setNeededAngle(Rotation3d angle, Angle angleTolerance) {
@@ -188,7 +189,7 @@ public abstract class Goal implements SimulatedArena.Simulatable {
      *
      *
      * <h2>Checks wether or not the submitted game piece has a rotation able to be scored in this goal </h2>
-     *
+     * <p>
      * By default the rotation needed and tolerance may be set using the {@link Goal#setNeededAngle(Rotation3d, Angle)}
      * function. However rotation checks may be handled differently by some children making this not apply. Additionally
      * be aware that this function only supports pitch and yaw, not role. If support for roll is needed a custom
@@ -207,13 +208,13 @@ public abstract class Goal implements SimulatedArena.Simulatable {
                 flipRotation(gamePiece.getPose3d().getRotation()).minus(pieceAngle);
 
         return new Rotation3d(Degrees.of(0), normalDiff.getMeasureZ(), normalDiff.getMeasureZ())
-                                .getMeasureAngle()
-                                .in(Degrees)
-                        < pieceAngleTolerance.in(Degrees)
+                .getMeasureAngle()
+                .in(Degrees)
+                < pieceAngleTolerance.in(Degrees)
                 || new Rotation3d(Degrees.of(0), flippedDiff.getMeasureZ(), flippedDiff.getMeasureZ())
-                                .getMeasureAngle()
-                                .in(Degrees)
-                        < pieceAngleTolerance.in(Degrees);
+                .getMeasureAngle()
+                .in(Degrees)
+                < pieceAngleTolerance.in(Degrees);
     }
 
     /**
@@ -237,7 +238,7 @@ public abstract class Goal implements SimulatedArena.Simulatable {
      *
      *
      * <h2>Function to check wether the velocity of potential game pieces is acceptable.</h2>
-     *
+     * <p>
      * The default implementation of this function always returns true so any velocity checks will need to be
      * implemented by children classes.
      *
@@ -272,7 +273,7 @@ public abstract class Goal implements SimulatedArena.Simulatable {
      *
      *
      * <h2>Adds points when a piece has been successfully scored in this goal</h2>
-     *
+     * <p>
      * Since this function is the only trigger called when a piece is scored it may handle other small things outside of
      * adding points.
      */
@@ -284,7 +285,7 @@ public abstract class Goal implements SimulatedArena.Simulatable {
      * <h2>Displays game pieces to advantage scope if applicable.</h2>
      *
      * @param drawList a list of {@link Pose3d} objects used to visualize the positions of the game pieces on
-     *     AdvantageScope
+     *                 AdvantageScope
      */
     public abstract void draw(List<Pose3d> drawList);
 

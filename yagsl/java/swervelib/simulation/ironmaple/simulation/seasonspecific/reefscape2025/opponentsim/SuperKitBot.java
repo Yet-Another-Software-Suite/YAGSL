@@ -1,9 +1,5 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025.opponentsim;
 
-import static edu.wpi.first.units.Units.*;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,8 +11,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import java.util.Objects;
-
 import swervelib.simulation.ironmaple.simulation.IntakeSimulation;
 import swervelib.simulation.ironmaple.simulation.opponentsim.SmartOpponent;
 import swervelib.simulation.ironmaple.simulation.opponentsim.SmartOpponentConfig;
@@ -24,12 +18,16 @@ import swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025.Ar
 import swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeAlgaeOnFly;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
 
+import java.util.Objects;
+
+import static edu.wpi.first.units.Units.*;
+
 public class SuperKitBot extends SmartOpponent {
     /**
      * A SmartOpponent for FRC Reefscape. This robot breaks rules, hence "Super" KitBot.
      *
-     * @param name the opponent name. Typically just "SuperKitBot 1".
-     *             Names should not be the same.
+     * @param name     the opponent name. Typically just "SuperKitBot 1".
+     *                 Names should not be the same.
      * @param alliance the opponents {@link DriverStation.Alliance}.
      */
     public SuperKitBot(String name, DriverStation.Alliance alliance) {
@@ -78,7 +76,7 @@ public class SuperKitBot extends SmartOpponent {
                 .addProjectileSimulation("Reef L3", () -> newCoral(Meters.of(1.5)))
                 .addProjectileSimulation("Reef L4", () -> newCoral(Meters.of(3), Degrees.of(-75)));
 
-                System.out.println("Projectile Simulation Started: " + manipulatorSim.getProjectileSimulations().toString());
+        System.out.println("Projectile Simulation Started: " + manipulatorSim.getProjectileSimulations().toString());
     }
 
     /**
@@ -95,7 +93,7 @@ public class SuperKitBot extends SmartOpponent {
      * Creates a new CoralOnTheFly with static variables for the reef.
      *
      * @param height initial coral height.
-     * @param angle initial coral angle.
+     * @param angle  initial coral angle.
      * @return the new {@link ReefscapeCoralOnFly}.
      */
     private ReefscapeCoralOnFly newCoral(Distance height, Angle angle) {

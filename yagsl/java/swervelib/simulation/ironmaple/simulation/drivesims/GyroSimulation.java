@@ -1,15 +1,16 @@
 package swervelib.simulation.ironmaple.simulation.drivesims;
 
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-import static edu.wpi.first.units.Units.Seconds;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Time;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.utils.mathutils.MapleCommonMath;
+
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
 
 /**
  * Simulation for a IMU module used as gyro.
@@ -21,8 +22,8 @@ public class GyroSimulation {
     private static final double
             /* The threshold of instantaneous angular acceleration at which the chassis is considered to experience an "impact." */
             ANGULAR_ACCELERATION_THRESHOLD_START_DRIFTING = 500,
-            /* The amount of drift, in radians, that the gyro experiences as a result of each multiple of the angular acceleration threshold. */
-            DRIFT_DUE_TO_IMPACT_COEFFICIENT = Math.toRadians(1);
+    /* The amount of drift, in radians, that the gyro experiences as a result of each multiple of the angular acceleration threshold. */
+    DRIFT_DUE_TO_IMPACT_COEFFICIENT = Math.toRadians(1);
     private final double AVERAGE_DRIFTING_IN_30_SECS_MOTIONLESS_DEG, VELOCITY_MEASUREMENT_STANDARD_DEVIATION_PERCENT;
 
     private Rotation2d gyroReading;
@@ -34,11 +35,11 @@ public class GyroSimulation {
      *
      * <h2>Creates a Gyro Simulation.</h2>
      *
-     * @param AVERAGE_DRIFTING_IN_30_SECS_MOTIONLESS_DEG the average amount of drift, in degrees, the gyro experiences
-     *     if it remains motionless for 30 seconds on a vibrating platform. This value can often be found in the user
-     *     manual.
+     * @param AVERAGE_DRIFTING_IN_30_SECS_MOTIONLESS_DEG      the average amount of drift, in degrees, the gyro experiences
+     *                                                        if it remains motionless for 30 seconds on a vibrating platform. This value can often be found in the user
+     *                                                        manual.
      * @param VELOCITY_MEASUREMENT_STANDARD_DEVIATION_PERCENT the standard deviation of the velocity measurement,
-     *     typically around 0.05
+     *                                                        typically around 0.05
      */
     public GyroSimulation(
             double AVERAGE_DRIFTING_IN_30_SECS_MOTIONLESS_DEG, double VELOCITY_MEASUREMENT_STANDARD_DEVIATION_PERCENT) {
@@ -120,7 +121,7 @@ public class GyroSimulation {
      * {@link swervelib.simulation.ironmaple.simulation.SimulatedArena#overrideSimulationTimings(Time, int)}.
      *
      * @param actualAngularVelocityRadPerSec the actual angular velocity in radians per second, usually obtained from
-     *     {@link AbstractDriveTrainSimulation#getAngularVelocity()}
+     *                                       {@link AbstractDriveTrainSimulation#getAngularVelocity()}
      */
     public void updateSimulationSubTick(double actualAngularVelocityRadPerSec) {
         final Rotation2d driftingDueToImpact = getDriftingDueToImpact(actualAngularVelocityRadPerSec);
@@ -145,20 +146,20 @@ public class GyroSimulation {
      * exceeds a threshold, simulating the effects of impacts on the robot.
      *
      * @param actualAngularVelocityRadPerSec the actual angular velocity in radians per second, used to determine if an
-     *     impact is detected
+     *                                       impact is detected
      * @return the amount of drifting the IMU will experience if an impact is detected, or <code>
-     *     Rotation2d.fromRadians(0)</code> if no impact is detected
+     * Rotation2d.fromRadians(0)</code> if no impact is detected
      */
     private Rotation2d getDriftingDueToImpact(double actualAngularVelocityRadPerSec) {
         final double
                 angularAccelerationRadPerSecSq =
-                        (actualAngularVelocityRadPerSec - previousAngularVelocityRadPerSec)
-                                / SimulatedArena.getSimulationDt().in(Seconds),
+                (actualAngularVelocityRadPerSec - previousAngularVelocityRadPerSec)
+                        / SimulatedArena.getSimulationDt().in(Seconds),
                 driftingDueToImpactDegAbsVal =
                         Math.abs(angularAccelerationRadPerSecSq) > ANGULAR_ACCELERATION_THRESHOLD_START_DRIFTING
                                 ? Math.abs(angularAccelerationRadPerSecSq)
-                                        / ANGULAR_ACCELERATION_THRESHOLD_START_DRIFTING
-                                        * DRIFT_DUE_TO_IMPACT_COEFFICIENT
+                                / ANGULAR_ACCELERATION_THRESHOLD_START_DRIFTING
+                                * DRIFT_DUE_TO_IMPACT_COEFFICIENT
                                 : 0,
                 driftingDueToImpactDeg = Math.copySign(driftingDueToImpactDegAbsVal, -angularAccelerationRadPerSecSq);
 
@@ -178,7 +179,7 @@ public class GyroSimulation {
      * <p>The measurement includes random errors based on the configuration of the gyro.
      *
      * @param actualAngularVelocityRadPerSec the actual angular velocity in radians per second, used to calculate the
-     *     ΔTheta
+     *                                       ΔTheta
      * @return the measured ΔTheta, including any measurement errors
      */
     private Rotation2d getGyroDTheta(double actualAngularVelocityRadPerSec) {
@@ -202,9 +203,9 @@ public class GyroSimulation {
     private Rotation2d getNoMotionDrifting() {
         final double
                 AVERAGE_DRIFTING_1_PERIOD =
-                        this.AVERAGE_DRIFTING_IN_30_SECS_MOTIONLESS_DEG
-                                / 30
-                                * SimulatedArena.getSimulationDt().in(Seconds),
+                this.AVERAGE_DRIFTING_IN_30_SECS_MOTIONLESS_DEG
+                        / 30
+                        * SimulatedArena.getSimulationDt().in(Seconds),
                 driftingInThisPeriod = MapleCommonMath.generateRandomNormal(0, AVERAGE_DRIFTING_1_PERIOD);
 
         return Rotation2d.fromDegrees(driftingInThisPeriod);

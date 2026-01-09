@@ -1,7 +1,5 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -14,6 +12,8 @@ import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceProjectile;
 import swervelib.simulation.ironmaple.utils.FieldMirroringUtils;
+
+import static edu.wpi.first.units.Units.*;
 
 public class ReefscapeCoralOnFly extends GamePieceProjectile {
     public ReefscapeCoralOnFly(
@@ -58,25 +58,25 @@ public class ReefscapeCoralOnFly extends GamePieceProjectile {
                 : station.startingPose.getTranslation();
         return isHorizontal
                 ? new ReefscapeCoralOnFly(
-                        pos,
-                        new Translation2d(),
-                        ChassisSpeeds.fromRobotRelativeSpeeds(new ChassisSpeeds(3.0, 0, 0), rot),
-                        rot.rotateBy(Rotation2d.kCCW_90deg),
-                        Centimeters.of(98),
-                        MetersPerSecond.of(0),
-                        Degrees.of(0))
+                pos,
+                new Translation2d(),
+                ChassisSpeeds.fromRobotRelativeSpeeds(new ChassisSpeeds(3.0, 0, 0), rot),
+                rot.rotateBy(Rotation2d.kCCW_90deg),
+                Centimeters.of(98),
+                MetersPerSecond.of(0),
+                Degrees.of(0))
                 : new ReefscapeCoralOnFly(
-                        alliance == DriverStation.Alliance.Red
-                                ? FieldMirroringUtils.flip(station.startingPose.getTranslation())
-                                : station.startingPose.getTranslation(),
-                        new Translation2d(),
-                        new ChassisSpeeds(),
-                        alliance == DriverStation.Alliance.Red
-                                ? FieldMirroringUtils.flip(station.startingPose.getRotation())
-                                : station.startingPose.getRotation(),
-                        Centimeters.of(98),
-                        MetersPerSecond.of(3),
-                        Degrees.of(-50));
+                alliance == DriverStation.Alliance.Red
+                        ? FieldMirroringUtils.flip(station.startingPose.getTranslation())
+                        : station.startingPose.getTranslation(),
+                new Translation2d(),
+                new ChassisSpeeds(),
+                alliance == DriverStation.Alliance.Red
+                        ? FieldMirroringUtils.flip(station.startingPose.getRotation())
+                        : station.startingPose.getRotation(),
+                Centimeters.of(98),
+                MetersPerSecond.of(3),
+                Degrees.of(-50));
     }
 
     @Override
@@ -86,8 +86,8 @@ public class ReefscapeCoralOnFly extends GamePieceProjectile {
                 ReefscapeCoralOnField.REEFSCAPE_CORAL_INFO,
                 () -> Math.max(
                         ReefscapeCoralOnField.REEFSCAPE_CORAL_INFO
-                                        .gamePieceHeight()
-                                        .in(Meters)
+                                .gamePieceHeight()
+                                .in(Meters)
                                 / 2,
                         getPositionAtTime(super.launchedTimer.get()).getZ()),
                 new Pose2d(

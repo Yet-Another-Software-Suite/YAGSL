@@ -2,6 +2,7 @@ package swervelib.simulation.ironmaple.utils.mathutils;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+
 import java.util.Random;
 
 public class MapleCommonMath {
@@ -10,7 +11,7 @@ public class MapleCommonMath {
     /**
      * using the random number generator of a fixed seed, generate the next random normal variable
      *
-     * @param mean the center of the distribution
+     * @param mean   the center of the distribution
      * @param stdDev the standard deviation of the distribution
      * @return the next random variable x from the distribution
      */
@@ -27,7 +28,7 @@ public class MapleCommonMath {
      *
      * <h2>Constrains the magnitude of a value.</h2>
      *
-     * @param value the value to constrain
+     * @param value        the value to constrain
      * @param maxMagnitude the maximum allowed magnitude
      * @return the constrained value
      */

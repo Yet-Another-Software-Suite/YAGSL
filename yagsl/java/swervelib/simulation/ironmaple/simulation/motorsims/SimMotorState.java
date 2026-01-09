@@ -1,8 +1,8 @@
 package swervelib.simulation.ironmaple.simulation.motorsims;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.units.measure.*;
+
+import static edu.wpi.first.units.Units.*;
 
 /**
  *
@@ -49,8 +49,8 @@ public class SimMotorState {
      *
      * @param finalElectricTorque the final applied electric torque, in Newton-meters
      * @param finalFrictionTorque the final frictional torque, in Newton-meters
-     * @param loadMOI the moment of inertia of the load, in kilogram square meters
-     * @param dt the time step for the simulation, in seconds
+     * @param loadMOI             the moment of inertia of the load, in kilogram square meters
+     * @param dt                  the time step for the simulation, in seconds
      */
     public void step(Torque finalElectricTorque, Torque finalFrictionTorque, MomentOfInertia loadMOI, Time dt) {
         // Step 0: Convert all units to SI units (radians, radians per second, Newton-meters, seconds, kg*m²)
@@ -76,7 +76,7 @@ public class SimMotorState {
         // If friction causes the motor to reverse direction, or if the velocity reaches zero, set the angular velocity
         // to zero.
         if ((currentAngularVelocityRadiansPerSecond + deltaAngularVelocityDueToFrictionRadPerSec)
-                        * currentAngularVelocityRadiansPerSecond
+                * currentAngularVelocityRadiansPerSecond
                 <= 0)
             // The velocity has reversed direction or reached zero, so stop the motor
             currentAngularVelocityRadiansPerSecond = 0;

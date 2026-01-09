@@ -35,7 +35,7 @@ public interface GamePiece {
      *
      *
      * <h2>Gives the velocity of the game piece.</h2>
-     *
+     * <p>
      * For grounded game pieces the z access velocity does not exist and so will be set to 0 automatically.
      *
      * @return The velocity of the game piece as a Translation3d.
@@ -46,7 +46,7 @@ public interface GamePiece {
      *
      *
      * <h2>Gives wether or not the piece is "grounded".</h2>
-     *
+     * <p>
      * A grounded piece is likely a child of {@link GamePieceOnFieldSimulation} while a non grounded piece is likely a
      * child of{@link GamePieceProjectile}.
      *

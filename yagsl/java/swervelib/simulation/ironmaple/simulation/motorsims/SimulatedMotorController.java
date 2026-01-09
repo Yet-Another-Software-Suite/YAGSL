@@ -1,12 +1,12 @@
 package swervelib.simulation.ironmaple.simulation.motorsims;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
+
+import static edu.wpi.first.units.Units.*;
 
 public interface SimulatedMotorController {
     Voltage updateControlSignal(
@@ -53,8 +53,8 @@ public interface SimulatedMotorController {
          *
          * <p>Prevents motor from exceeding software limits
          *
-         * @param encoderAngle the angle of the encoder
-         * @param encoderVelocity the velocity of the encoder
+         * @param encoderAngle     the angle of the encoder
+         * @param encoderVelocity  the velocity of the encoder
          * @param requestedVoltage the requested voltage
          * @return the constrained voltage that satisfied the limits
          */

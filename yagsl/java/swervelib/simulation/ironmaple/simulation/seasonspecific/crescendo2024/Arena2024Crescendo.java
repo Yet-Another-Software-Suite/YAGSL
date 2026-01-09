@@ -25,7 +25,9 @@ public class Arena2024Crescendo extends SimulatedArena {
     protected final CrescendoAmp redAmp;
     protected final CrescendoAmp blueAmp;
 
-    /** the obstacles on the 2024 competition field */
+    /**
+     * the obstacles on the 2024 competition field
+     */
     public static final class CrescendoFieldObstaclesMap extends FieldMap {
         private static final double FIELD_WIDTH = 16.54;
 
@@ -74,18 +76,18 @@ public class Arena2024Crescendo extends SimulatedArena {
         }
     }
 
-    private static final Translation2d[] NOTE_INITIAL_POSITIONS = new Translation2d[] {
-        new Translation2d(2.9, 4.1),
-        new Translation2d(2.9, 5.55),
-        new Translation2d(2.9, 7),
-        new Translation2d(8.27, 0.75),
-        new Translation2d(8.27, 2.43),
-        new Translation2d(8.27, 4.1),
-        new Translation2d(8.27, 5.78),
-        new Translation2d(8.27, 7.46),
-        new Translation2d(13.64, 4.1),
-        new Translation2d(13.64, 5.55),
-        new Translation2d(13.64, 7),
+    private static final Translation2d[] NOTE_INITIAL_POSITIONS = new Translation2d[]{
+            new Translation2d(2.9, 4.1),
+            new Translation2d(2.9, 5.55),
+            new Translation2d(2.9, 7),
+            new Translation2d(8.27, 0.75),
+            new Translation2d(8.27, 2.43),
+            new Translation2d(8.27, 4.1),
+            new Translation2d(8.27, 5.78),
+            new Translation2d(8.27, 7.46),
+            new Translation2d(13.64, 4.1),
+            new Translation2d(13.64, 5.55),
+            new Translation2d(13.64, 7),
     };
 
     public Arena2024Crescendo() {
@@ -144,7 +146,7 @@ public class Arena2024Crescendo extends SimulatedArena {
      *
      *
      * <h2>Returns wether the specified team currently has an amped speaker</h2>
-     *
+     * <p>
      * This function returns true during autonomous since the autonomous mode behaves exactly like amplified game play.
      *
      * @param isBlue Wether to check the blue or red alliance.

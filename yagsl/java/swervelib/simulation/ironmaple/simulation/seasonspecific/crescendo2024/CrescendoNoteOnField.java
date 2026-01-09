@@ -1,14 +1,14 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024;
 
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Kilograms;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import org.dyn4j.geometry.Geometry;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation;
+
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Kilograms;
 
 public class CrescendoNoteOnField extends GamePieceOnFieldSimulation {
     /* https://www.andymark.com/products/frc-2024-am-4999 */

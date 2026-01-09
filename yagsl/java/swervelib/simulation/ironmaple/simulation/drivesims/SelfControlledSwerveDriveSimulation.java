@@ -1,7 +1,5 @@
 package swervelib.simulation.ironmaple.simulation.drivesims;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
@@ -9,16 +7,22 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.Timer;
-import java.util.Arrays;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import swervelib.simulation.ironmaple.simulation.motorsims.SimulatedMotorController;
 import swervelib.simulation.ironmaple.utils.mathutils.SwerveStateProjection;
+
+import java.util.Arrays;
+
+import static edu.wpi.first.units.Units.*;
 
 /**
  *
@@ -66,8 +70,8 @@ public class SelfControlledSwerveDriveSimulation {
      * <p>Constructs a simplified swerve simulation with specified standard deviations for odometry & vision pose
      * estimates.
      *
-     * @param swerveDriveSimulation the {@link SwerveDriveSimulation} to control.
-     * @param stateStdDevs the standard deviations for odometry encoders.
+     * @param swerveDriveSimulation    the {@link SwerveDriveSimulation} to control.
+     * @param stateStdDevs             the standard deviations for odometry encoders.
      * @param visionMeasurementStdDevs the standard deviations for vision pose estimates.
      */
     public SelfControlledSwerveDriveSimulation(
@@ -108,7 +112,7 @@ public class SelfControlledSwerveDriveSimulation {
             poseEstimator.updateWithTime(
                     Timer.getFPGATimestamp()
                             - SimulatedArena.getSimulationDt().in(Seconds)
-                                    * (SimulatedArena.getSimulationDt().in(Seconds) - i),
+                            * (SimulatedArena.getSimulationDt().in(Seconds) - i),
                     swerveDriveSimulation.gyroSimulation.getCachedGyroReadings()[i],
                     cachedModulePositions[i]);
     }
@@ -172,9 +176,9 @@ public class SelfControlledSwerveDriveSimulation {
      * <p>To obtain the facing of the robot retrieved from the odometry, use {@link #getOdometryEstimatedPose()}; to
      * obtain the actual facing of the robot, use {@link #getActualPoseInSimulationWorld()}.
      *
-     * @deprecated This rotation is <strong>NOT</strong> the actual facing of the robot; it is uncalibrated and is only
-     *     used for features like rotation lock.
      * @return the raw (uncalibrated) angle of the simulated gyro.
+     * @deprecated This rotation is <strong>NOT</strong> the actual facing of the robot; it is uncalibrated and is only
+     * used for features like rotation lock.
      */
     @Deprecated
     public Rotation2d getRawGyroAngle() {
@@ -228,7 +232,7 @@ public class SelfControlledSwerveDriveSimulation {
      * <p>Adds a vision measurement to the Kalman Filter, correcting the odometry pose estimate while accounting for
      * measurement noise.
      *
-     * @param robotPoseMeters The pose of the robot as measured by the vision camera.
+     * @param robotPoseMeters  The pose of the robot as measured by the vision camera.
      * @param timeStampSeconds The timestamp of the vision measurement, in seconds.
      */
     public void addVisionEstimation(Pose2d robotPoseMeters, double timeStampSeconds) {
@@ -245,10 +249,10 @@ public class SelfControlledSwerveDriveSimulation {
      * <p>Adds a vision measurement to the Kalman Filter, correcting the odometry pose estimate while accounting for
      * measurement noise.
      *
-     * @param robotPoseMeters The pose of the robot as measured by the vision camera.
-     * @param timeStampSeconds The timestamp of the vision measurement, in seconds.
+     * @param robotPoseMeters    The pose of the robot as measured by the vision camera.
+     * @param timeStampSeconds   The timestamp of the vision measurement, in seconds.
      * @param measurementStdDevs Standard deviations of the vision pose measurement (x position in meters, y position in
-     *     meters, and heading in radians). Increase these values to reduce the trust in the vision pose measurement.
+     *                           meters, and heading in radians). Increase these values to reduce the trust in the vision pose measurement.
      */
     public void addVisionEstimation(
             Pose2d robotPoseMeters, double timeStampSeconds, Matrix<N3, N1> measurementStdDevs) {
@@ -262,13 +266,13 @@ public class SelfControlledSwerveDriveSimulation {
      *
      * <p>Runs the specified chassis speeds, either robot-centric or field-centric.
      *
-     * @param chassisSpeeds The speeds to run, in either robot-centric or field-centric coordinates.
+     * @param chassisSpeeds          The speeds to run, in either robot-centric or field-centric coordinates.
      * @param centerOfRotationMeters The center of rotation. For example, if you set the center of rotation at one
-     *     corner of the robot and provide a chassis speed that has only a dtheta component, the robot will rotate
-     *     around that corner.
-     * @param fieldCentricDrive Whether to execute field-centric drive with the provided speed.
-     * @param discretizeSpeeds Whether to apply {@link ChassisSpeeds#discretize(ChassisSpeeds, double)} to the provided
-     *     speed.
+     *                               corner of the robot and provide a chassis speed that has only a dtheta component, the robot will rotate
+     *                               around that corner.
+     * @param fieldCentricDrive      Whether to execute field-centric drive with the provided speed.
+     * @param discretizeSpeeds       Whether to apply {@link ChassisSpeeds#discretize(ChassisSpeeds, double)} to the provided
+     *                               speed.
      */
     public void runChassisSpeeds(
             ChassisSpeeds chassisSpeeds,
@@ -369,9 +373,9 @@ public class SelfControlledSwerveDriveSimulation {
                 swerveSpeeds.vyMetersPerSecond,
                 useGyroForAngularVelocity
                         ? swerveDriveSimulation
-                                .gyroSimulation
-                                .getMeasuredAngularVelocity()
-                                .in(RadiansPerSecond)
+                        .gyroSimulation
+                        .getMeasuredAngularVelocity()
+                        .in(RadiansPerSecond)
                         : swerveSpeeds.omegaRadiansPerSecond);
     }
 
@@ -542,38 +546,52 @@ public class SelfControlledSwerveDriveSimulation {
         }
     }
 
-    /** @see SwerveDriveSimulation#maxLinearVelocity() */
+    /**
+     * @see SwerveDriveSimulation#maxLinearVelocity()
+     */
     public LinearVelocity maxLinearVelocity() {
         return swerveDriveSimulation.maxLinearVelocity();
     }
 
-    /** @see SwerveDriveSimulation#maxLinearAcceleration(Current) */
+    /**
+     * @see SwerveDriveSimulation#maxLinearAcceleration(Current)
+     */
     public LinearAcceleration maxLinearAcceleration() {
         return swerveDriveSimulation.maxLinearAcceleration(moduleSimulations[0].driveCurrentLimit);
     }
 
-    /** @see DriveTrainSimulationConfig#trackWidthY() */
+    /**
+     * @see DriveTrainSimulationConfig#trackWidthY()
+     */
     public Distance trackWidthY() {
         return swerveDriveSimulation.config.trackWidthY();
     }
 
-    /** @see DriveTrainSimulationConfig#trackLengthX() */
+    /**
+     * @see DriveTrainSimulationConfig#trackLengthX()
+     */
     public Distance trackLengthX() {
         return swerveDriveSimulation.config.trackLengthX();
     }
 
-    /** @see SwerveDriveSimulation#driveBaseRadius() */
+    /**
+     * @see SwerveDriveSimulation#driveBaseRadius()
+     */
     public Distance driveBaseRadius() {
         return swerveDriveSimulation.config.driveBaseRadius();
     }
 
-    /** @see SwerveDriveSimulation#maxAngularVelocity() */
+    /**
+     * @see SwerveDriveSimulation#maxAngularVelocity()
+     */
     public AngularVelocity maxAngularVelocity() {
         return RadiansPerSecond.of(
                 maxLinearVelocity().in(MetersPerSecond) / driveBaseRadius().in(Meters));
     }
 
-    /** @see SwerveDriveSimulation#maxAngularAcceleration(Current) */
+    /**
+     * @see SwerveDriveSimulation#maxAngularAcceleration(Current)
+     */
     public AngularAcceleration maxAngularAcceleration() {
         return swerveDriveSimulation.maxAngularAcceleration(moduleSimulations[0].driveCurrentLimit);
     }

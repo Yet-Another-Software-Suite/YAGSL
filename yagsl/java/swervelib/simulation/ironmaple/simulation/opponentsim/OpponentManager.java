@@ -1,21 +1,19 @@
 package swervelib.simulation.ironmaple.simulation.opponentsim;
 
-import static edu.wpi.first.units.Units.*;
-// TODO
-
 import com.pathplanner.lib.commands.PathfindingCommand;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.DriverStation;
 import swervelib.simulation.ironmaple.simulation.opponentsim.pathfinding.MapleADStar;
 
-import java.lang.reflect.Parameter;
 import java.util.*;
+
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Milliseconds;
 
 public class OpponentManager {
     // Map of possible scoring poses and types. For example, Map<"Hoops", Map<"CourtLeft", Pose2d>>
@@ -57,7 +55,9 @@ public class OpponentManager {
     /// List of all opponent robots.
     protected static final List<SmartOpponent> opponents = new ArrayList<>();
 
-    /** MapleSim Opponent currently relies on Pathplanner with a modified pathfinder. This is to be changed soon. ^TM */
+    /**
+     * MapleSim Opponent currently relies on Pathplanner with a modified pathfinder. This is to be changed soon. ^TM
+     */
     public OpponentManager() {
         boundingBoxBuffer = Meters.of(0.6);
         this.boundingBoxTranslation = new Translation2d(boundingBoxBuffer, boundingBoxBuffer);
@@ -193,8 +193,7 @@ public class OpponentManager {
      * @param pollRate how long to wait before refreshing
      * @return the list of registered opponent target poses.
      */
-    public List<Pair<String, Pose2d>> getOpponentTargetsDynamic(Time pollRate)
-    {
+    public List<Pair<String, Pose2d>> getOpponentTargetsDynamic(Time pollRate) {
         // If elapsed time is less than pollRate return our cached list.
         if (System.currentTimeMillis() - lastTargetPoll < pollRate.in(Milliseconds)) {
             return opponentTargets;
@@ -212,8 +211,8 @@ public class OpponentManager {
     /**
      * Checks if the given pose is near any opponent target pose.
      *
-     * @param pose the pose to check against.
-     * @param pollRate how long to wait before refreshing
+     * @param pose      the pose to check against.
+     * @param pollRate  how long to wait before refreshing
      * @param tolerance the translation tolerance in {@link Distance}.
      * @return
      */
@@ -265,8 +264,7 @@ public class OpponentManager {
      *
      * @return a list of all opponents poses on the given alliance.
      */
-    public List<Pose2d> getOpponentPosesDynamic(Time pollRate)
-    {
+    public List<Pose2d> getOpponentPosesDynamic(Time pollRate) {
         // If elapsed time is less than pollRate return our cached list.
         if (System.currentTimeMillis() - lastPosePoll < pollRate.in(Milliseconds)) {
             return opponentPoses;
@@ -387,7 +385,7 @@ public class OpponentManager {
      *
      * @param poseType The type of pose to add. For example, "Hoops".
      * @param poseName The name of the pose to add. For example, "CourtLeft".
-     * @param pose The pose to add.
+     * @param pose     The pose to add.
      * @return this, for chaining.
      */
     public OpponentManager addScoringPose(String poseType, String poseName, Pose2d pose) {
@@ -437,7 +435,7 @@ public class OpponentManager {
      *
      * @param poseType The type of pose to add. For example, "CollectStation".
      * @param poseName The name of the pose to add. For example, "StationCenter".
-     * @param pose The pose to add.
+     * @param pose     The pose to add.
      * @return this, for chaining.
      */
     public OpponentManager addCollectingPose(String poseType, String poseName, Pose2d pose) {

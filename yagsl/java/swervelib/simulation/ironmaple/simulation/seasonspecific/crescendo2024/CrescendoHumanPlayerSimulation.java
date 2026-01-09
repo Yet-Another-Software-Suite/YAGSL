@@ -1,12 +1,12 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024;
 
-import static swervelib.simulation.ironmaple.utils.LegacyFieldMirroringUtils2024.toCurrentAllianceTranslation;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation;
+
+import static swervelib.simulation.ironmaple.utils.LegacyFieldMirroringUtils2024.toCurrentAllianceTranslation;
 
 public class CrescendoHumanPlayerSimulation implements SimulatedArena.Simulatable {
     private static final Translation2d BLUE_SOURCE_POSITION = new Translation2d(15.6, 0.8);

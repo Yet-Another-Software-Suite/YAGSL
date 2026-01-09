@@ -1,7 +1,5 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024;
 
-import static swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024.CrescendoNoteOnField.*;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -11,6 +9,8 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceProjectile;
 import swervelib.simulation.ironmaple.utils.LegacyFieldMirroringUtils2024;
+
+import static swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024.CrescendoNoteOnField.CRESCENDO_NOTE_INFO;
 
 public class NoteOnFly extends GamePieceProjectile {
     public NoteOnFly(

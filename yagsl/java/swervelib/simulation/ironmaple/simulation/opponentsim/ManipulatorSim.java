@@ -2,20 +2,22 @@ package swervelib.simulation.ironmaple.simulation.opponentsim;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-// TODO
 import swervelib.simulation.ironmaple.simulation.IntakeSimulation;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceProjectile;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class ManipulatorSim extends SubsystemBase {
     /// Simulation Maps of saved manipulators
     private final Map<String, IntakeSimulation> intakeSimulations;
     private final Map<String, Supplier<GamePieceProjectile>> projectileSimulations;
 
-    /** Creates a new manipulator simulation. */
+    /**
+     * Creates a new manipulator simulation.
+     */
     public ManipulatorSim() {
         this.intakeSimulations = new HashMap<>();
         this.projectileSimulations = new HashMap<>();
@@ -42,7 +44,7 @@ public class ManipulatorSim extends SubsystemBase {
     /**
      * Adds an intake simulation to the manipulator simulation.
      *
-     * @param intakeName The name of the intake simulation.
+     * @param intakeName       The name of the intake simulation.
      * @param intakeSimulation The simulation to add.
      * @return this, for chaining.
      */
@@ -54,7 +56,7 @@ public class ManipulatorSim extends SubsystemBase {
     /**
      * Adds a projectile simulation to the manipulator simulation.
      *
-     * @param projectileName The name of the projectile simulation.
+     * @param projectileName       The name of the projectile simulation.
      * @param projectileSimulation The simulation to add.
      * @return this, for chaining.
      */
@@ -122,7 +124,7 @@ public class ManipulatorSim extends SubsystemBase {
      * A command that only calls score(String) when there is greater than zero(>0)
      * {@link swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece} in the intake.
      *
-     * @param intakeName the intake to check.
+     * @param intakeName     the intake to check.
      * @param projectileName the piece to score.
      * @return score(String) when valid.
      */

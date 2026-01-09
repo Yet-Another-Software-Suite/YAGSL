@@ -1,8 +1,5 @@
 package swervelib.simulation.ironmaple.simulation.motorsims;
 
-import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.Volts;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.units.measure.Current;
@@ -11,9 +8,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Volts;
 
 /**
  *
@@ -37,7 +38,9 @@ public class SimulatedBattery {
 
     private static boolean disableBatterySim = false;
 
-    /** Disables the battery simulation. This is a lazy quick fix to help the opponent simulation. */
+    /**
+     * Disables the battery simulation. This is a lazy quick fix to help the opponent simulation.
+     */
     public static void disableBatterySim() {
         disableBatterySim = true;
         electricalAppliances.clear();

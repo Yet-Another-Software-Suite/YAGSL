@@ -1,21 +1,17 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025;
 
-import static edu.wpi.first.units.Units.Centimeters;
-import static edu.wpi.first.units.Units.Degrees;
-
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import java.util.Arrays;
-import java.util.List;
 import swervelib.simulation.ironmaple.simulation.Goal;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece;
 import swervelib.simulation.ironmaple.utils.FieldMirroringUtils;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static edu.wpi.first.units.Units.Centimeters;
+import static edu.wpi.first.units.Units.Degrees;
 
 /**
  *
@@ -32,26 +28,26 @@ public class ReefscapeReefBranch extends Goal {
 
     public static final Translation2d origin =
             new Translation2d(FieldMirroringUtils.FIELD_WIDTH / 2, FieldMirroringUtils.FIELD_HEIGHT / 2);
-    public static final Translation2d[] branchesCenterPositionBlue = new Translation2d[] {
-        new Translation2d(-4.810, 0.164).plus(origin), // A
-        new Translation2d(-4.810, -0.164).plus(origin), // B
-        new Translation2d(-4.690, -0.373).plus(origin), // C
-        new Translation2d(-4.406, -0.538).plus(origin), // D
-        new Translation2d(-4.164, -0.537).plus(origin), // E
-        new Translation2d(-3.879, -0.374).plus(origin), // F
-        new Translation2d(-3.759, -0.164).plus(origin), // G
-        new Translation2d(-3.759, 0.164).plus(origin), // H
-        new Translation2d(-3.880, 0.373).plus(origin), // I
-        new Translation2d(-4.164, 0.538).plus(origin), // J
-        new Translation2d(-4.405, 0.538).plus(origin), // K
-        new Translation2d(-4.690, 0.374).plus(origin) // L
+    public static final Translation2d[] branchesCenterPositionBlue = new Translation2d[]{
+            new Translation2d(-4.810, 0.164).plus(origin), // A
+            new Translation2d(-4.810, -0.164).plus(origin), // B
+            new Translation2d(-4.690, -0.373).plus(origin), // C
+            new Translation2d(-4.406, -0.538).plus(origin), // D
+            new Translation2d(-4.164, -0.537).plus(origin), // E
+            new Translation2d(-3.879, -0.374).plus(origin), // F
+            new Translation2d(-3.759, -0.164).plus(origin), // G
+            new Translation2d(-3.759, 0.164).plus(origin), // H
+            new Translation2d(-3.880, 0.373).plus(origin), // I
+            new Translation2d(-4.164, 0.538).plus(origin), // J
+            new Translation2d(-4.405, 0.538).plus(origin), // K
+            new Translation2d(-4.690, 0.374).plus(origin) // L
     };
 
-    public static final Translation3d[] heights = new Translation3d[] {
-        new Translation3d(0, 0, 0.45),
-        new Translation3d(0, 0, 0.79),
-        new Translation3d(0, 0, 1.19),
-        new Translation3d(0, 0, 1.78)
+    public static final Translation3d[] heights = new Translation3d[]{
+            new Translation3d(0, 0, 0.45),
+            new Translation3d(0, 0, 0.79),
+            new Translation3d(0, 0, 1.19),
+            new Translation3d(0, 0, 1.78)
     };
 
     public static final Rotation3d flip90 = new Rotation3d(0, 0, Math.PI / 2);
@@ -60,13 +56,13 @@ public class ReefscapeReefBranch extends Goal {
             .map(FieldMirroringUtils::flip)
             .toArray(Translation2d[]::new);
 
-    public static final Rotation2d[] branchesFacingOutwardsBlue = new Rotation2d[] {
-        Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(180), // A and B
-        Rotation2d.fromDegrees(240), Rotation2d.fromDegrees(240), // C and D
-        Rotation2d.fromDegrees(300), Rotation2d.fromDegrees(300), // E and F
-        Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0), // G and H
-        Rotation2d.fromDegrees(60), Rotation2d.fromDegrees(60), // I and J
-        Rotation2d.fromDegrees(120), Rotation2d.fromDegrees(120), // K and L
+    public static final Rotation2d[] branchesFacingOutwardsBlue = new Rotation2d[]{
+            Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(180), // A and B
+            Rotation2d.fromDegrees(240), Rotation2d.fromDegrees(240), // C and D
+            Rotation2d.fromDegrees(300), Rotation2d.fromDegrees(300), // E and F
+            Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0), // G and H
+            Rotation2d.fromDegrees(60), Rotation2d.fromDegrees(60), // I and J
+            Rotation2d.fromDegrees(120), Rotation2d.fromDegrees(120), // K and L
     };
 
     /**
@@ -75,8 +71,8 @@ public class ReefscapeReefBranch extends Goal {
      * <h2>Returns the required pose of a reef branch at the designated position.</h2>
      *
      * @param isBlue Wether the position is on the blue reef or the red reef.
-     * @param level The level of the reef (0 indexed). Range of 0-3.
-     * @param col The pole or Colum of the reef (0 indexed). Range of 0-11.
+     * @param level  The level of the reef (0 indexed). Range of 0-3.
+     * @param col    The pole or Colum of the reef (0 indexed). Range of 0-11.
      * @return The pose of a reef branch with the specified stats.
      */
     public static Translation3d getPoseOfBranchAt(boolean isBlue, int level, int col) {
@@ -100,9 +96,9 @@ public class ReefscapeReefBranch extends Goal {
      *
      * <h2>Creates a singular reef branch at the specified location </h2>
      *
-     * @param arena The host arena of this reef.
+     * @param arena  The host arena of this reef.
      * @param isBlue Wether the position is on the blue reef or the red reef.
-     * @param level The level of the reef (0 indexed). Range of 0-3.
+     * @param level  The level of the reef (0 indexed). Range of 0-3.
      * @param column The pole or Colum of the reef (0 indexed). Range of 0-11.
      */
     public ReefscapeReefBranch(Arena2025Reefscape arena, boolean isBlue, int level, int column) {
@@ -164,7 +160,7 @@ public class ReefscapeReefBranch extends Goal {
     protected void addPoints() {
         System.out.println("Coral scored on level: " + (level + 1) + " on the " + (isBlue ? "Blue " : "Red") + "reef");
         arena.addValueToMatchBreakdown(isBlue, "Auto/CoralScoredInAuto", DriverStation.isAutonomous() ? 1 : 0);
-        arena.addValueToMatchBreakdown(isBlue, "CoralScoredOnLevel " + String.valueOf(level + 1), 1);
+        arena.addValueToMatchBreakdown(isBlue, "CoralScoredOnLevel " + (level + 1), 1);
 
         if (DriverStation.isAutonomous()) {
             switch (level) {

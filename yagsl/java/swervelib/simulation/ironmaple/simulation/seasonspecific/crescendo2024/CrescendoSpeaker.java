@@ -1,13 +1,16 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024;
 
-import static edu.wpi.first.units.Units.Centimeters;
-
-import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
-import java.util.*;
 import swervelib.simulation.ironmaple.simulation.Goal;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece;
+
+import java.util.List;
+
+import static edu.wpi.first.units.Units.Centimeters;
 
 /**
  *
@@ -29,7 +32,7 @@ public class CrescendoSpeaker extends Goal {
      *
      * <h2>Creates an Speaker of the specified color.</h2>
      *
-     * @param arena The host arena of this speaker.
+     * @param arena  The host arena of this speaker.
      * @param isBlue Wether this is the blue speaker or the red one.
      */
     public CrescendoSpeaker(Arena2024Crescendo arena, boolean isBlue) {
@@ -63,6 +66,5 @@ public class CrescendoSpeaker extends Goal {
 
     @Override
     public void draw(List<Pose3d> drawList) {
-        return;
     }
 }

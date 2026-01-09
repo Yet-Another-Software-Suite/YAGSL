@@ -1,7 +1,5 @@
 package swervelib.simulation.ironmaple.simulation.opponentsim;
 
-import static edu.wpi.first.units.Units.*;
-
 import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,13 +10,15 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import java.util.*;
-import java.util.function.Supplier;
-
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.drivesims.*;
 import swervelib.simulation.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import swervelib.simulation.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
+
+import java.util.*;
+import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.*;
 
 /**
  * The config is required to make a {@link SmartOpponent}.
@@ -80,7 +80,9 @@ public class SmartOpponentConfig {
     /// Sets of required basic options
     private final Set<BasicOptions> requiredBasicOptions;
 
-    /** Default Constructor for SmartOpponentConfig. */
+    /**
+     * Default Constructor for SmartOpponentConfig.
+     */
     public SmartOpponentConfig() {
         /// Sets the required basic options.
         this.requiredBasicOptions = EnumSet.allOf(BasicOptions.class);
@@ -127,10 +129,10 @@ public class SmartOpponentConfig {
     /**
      * Constructor for SmartOpponentConfig with all required options set.
      *
-     * @param name The robot's name.
-     * @param alliance The robot's alliance.
-     * @param initialPose The robot's initial pose.
-     * @param queeningPose The robot's queening pose.
+     * @param name          The robot's name.
+     * @param alliance      The robot's alliance.
+     * @param initialPose   The robot's initial pose.
+     * @param queeningPose  The robot's queening pose.
      * @param chassisConfig The robot's chassis config.
      */
     public SmartOpponentConfig(
@@ -316,7 +318,7 @@ public class SmartOpponentConfig {
      * Adds a scoring weight to a target pose.
      * The weight is 1 by default, raise it to go there more often.
      *
-     * @param name the pose to add it to.
+     * @param name   the pose to add it to.
      * @param weight the weight to add.
      * @return this, for chaining.
      */
@@ -350,7 +352,7 @@ public class SmartOpponentConfig {
      * Adds a scoring weight to a target pose.
      * The weight is 1 by default, raise it to go there more often.
      *
-     * @param name the pose to add it to.
+     * @param name   the pose to add it to.
      * @param weight the weight to add.
      * @return this, for chaining.
      */
@@ -414,7 +416,7 @@ public class SmartOpponentConfig {
     /**
      * Adds a state to the config.
      *
-     * @param stateName The name of the state.
+     * @param stateName    The name of the state.
      * @param stateCommand The command to run when the state is entered.
      * @return this, for chaining.
      */
@@ -446,7 +448,7 @@ public class SmartOpponentConfig {
     /**
      * Replaces a state's command.
      *
-     * @param stateName The name of the state to replace.
+     * @param stateName       The name of the state to replace.
      * @param newStateCommand The new command to run when the state is entered.
      * @return this, for chaining.
      */
@@ -496,9 +498,9 @@ public class SmartOpponentConfig {
     /**
      * Adds a behavior to the config.
      *
-     * @param behaviorName The name of the behavior.
+     * @param behaviorName    The name of the behavior.
      * @param behaviorCommand The command to run when the behavior is entered.
-     * @param isDefault whether this option should be the default. There can only be one.
+     * @param isDefault       whether this option should be the default. There can only be one.
      * @return this, for chaining.
      */
     public SmartOpponentConfig withBehavior(String behaviorName, Command behaviorCommand, boolean isDefault) {
@@ -509,7 +511,7 @@ public class SmartOpponentConfig {
     /**
      * Adds a non-default behavior to the config.
      *
-     * @param behaviorName The name of the behavior.
+     * @param behaviorName    The name of the behavior.
      * @param behaviorCommand The command to run when the behavior is entered.
      * @return this, for chaining.
      */
@@ -531,9 +533,9 @@ public class SmartOpponentConfig {
     /**
      * Replaces a behavior's command.
      *
-     * @param behaviorName The name of the behavior to replace.
+     * @param behaviorName       The name of the behavior to replace.
      * @param newBehaviorCommand The new command to run when the behavior is entered.
-     * @param isDefault whether this option should be the default. There can only be one.
+     * @param isDefault          whether this option should be the default. There can only be one.
      * @return this, for chaining.
      */
     public SmartOpponentConfig replaceBehaviourCommand(
@@ -608,7 +610,7 @@ public class SmartOpponentConfig {
      *
      * @param poseType The type of pose to add. For example, "Hoops".
      * @param poseName The name of the pose to add. For example, "CourtLeft".
-     * @param pose The pose to add.
+     * @param pose     The pose to add.
      * @return this, for chaining.
      */
     public SmartOpponentConfig withScoringPose(String poseType, String poseName, Pose2d pose) {
@@ -648,7 +650,7 @@ public class SmartOpponentConfig {
      *
      * @param poseType The type of pose to replace.
      * @param poseName The name of the pose to replace.
-     * @param pose The pose to replace with.
+     * @param pose     The pose to replace with.
      * @return this, for chaining.
      */
     public SmartOpponentConfig replaceScoringPose(String poseType, String poseName, Pose2d pose) {
@@ -673,7 +675,8 @@ public class SmartOpponentConfig {
     public Map<String, Pose2d> getScoringMap() {
         Map<String, Pose2d> scoringPoses = new HashMap<>();
         scoringMap.forEach((poseType, poseMap) -> poseMap.forEach((name, pose) -> {
-            scoringPoses.put(poseType + " " + name, pose);}));
+            scoringPoses.put(poseType + " " + name, pose);
+        }));
         return scoringPoses;
     }
 
@@ -704,7 +707,7 @@ public class SmartOpponentConfig {
      *
      * @param poseType The type of pose to add. For example, "CollectStation".
      * @param poseName The name of the pose to add. For example, "StationCenter".
-     * @param pose The pose to add.
+     * @param pose     The pose to add.
      * @return this, for chaining.
      */
     public SmartOpponentConfig withCollectingPose(String poseType, String poseName, Pose2d pose) {
@@ -744,7 +747,7 @@ public class SmartOpponentConfig {
      *
      * @param poseType The type of pose to replace.
      * @param poseName The name of the pose to replace.
-     * @param pose The pose to replace with.
+     * @param pose     The pose to replace with.
      * @return this, for chaining.
      */
     public SmartOpponentConfig replaceCollectingPose(String poseType, String poseName, Pose2d pose) {
@@ -805,7 +808,9 @@ public class SmartOpponentConfig {
         return validConfig;
     }
 
-    /** Basic Options that MUST be set for the {@link SmartOpponentConfig} to be valid. */
+    /**
+     * Basic Options that MUST be set for the {@link SmartOpponentConfig} to be valid.
+     */
     private enum BasicOptions {
         /// Required Basic Options
         /// Robot Name
@@ -844,7 +849,9 @@ public class SmartOpponentConfig {
         private SwerveModuleSimulationConfig moduleSimConfig;
         public RobotConfig pathplannerConfig;
 
-        /** Default constructor for ChassisConfig. Each Option must be set individually. */
+        /**
+         * Default constructor for ChassisConfig. Each Option must be set individually.
+         */
         ChassisConfig() {
             /// Adds the required options to the checklist.
             this.requiredChassisOptions = EnumSet.allOf(ChassisOptions.class);
@@ -857,17 +864,17 @@ public class SmartOpponentConfig {
         /**
          * Constructor for ChassisConfig.
          *
-         * @param trackWidth the distance from one center of a rear wheel to the other.
-         * @param trackHeight the distance from one center of a left or right wheel to the other.
-         * @param bumperWidth the distance from the left of the robot to the right with bumpers.
-         * @param bumperHeight the distance from the front of the robot to the rear with the bumpers.
-         * @param mass the mass of the robot.
-         * @param moi the moment of inertia of the robot.
-         * @param maxLinearVelocity the max linear velocity of the robot.
-         * @param maxLinearAcceleration the max linear acceleration of the robot.
-         * @param maxAngularVelocity the max angular velocity of the robot.
+         * @param trackWidth             the distance from one center of a rear wheel to the other.
+         * @param trackHeight            the distance from one center of a left or right wheel to the other.
+         * @param bumperWidth            the distance from the left of the robot to the right with bumpers.
+         * @param bumperHeight           the distance from the front of the robot to the rear with the bumpers.
+         * @param mass                   the mass of the robot.
+         * @param moi                    the moment of inertia of the robot.
+         * @param maxLinearVelocity      the max linear velocity of the robot.
+         * @param maxLinearAcceleration  the max linear acceleration of the robot.
+         * @param maxAngularVelocity     the max angular velocity of the robot.
          * @param maxAngularAcceleration the max angular acceleration of the robot.
-         * @param module the {@link ModuleConfig} for the robot's swerve modules.
+         * @param module                 the {@link ModuleConfig} for the robot's swerve modules.
          */
         ChassisConfig(
                 Distance trackWidth,
@@ -900,14 +907,14 @@ public class SmartOpponentConfig {
         /**
          * Constructor for ChassisConfig.
          *
-         * @param mass The mass of the robot.
-         * @param moi The moment of inertia of the robot.
-         * @param maxLinearVelocity The max linear velocity of the robot.
+         * @param mass               The mass of the robot.
+         * @param moi                The moment of inertia of the robot.
+         * @param maxLinearVelocity  The max linear velocity of the robot.
          * @param maxAngularVelocity The max angular velocity of the robot.
-         * @param wheelRadius the module's wheel radius.
-         * @param wheelCOF the module's drive Coefficient of Friction.
-         * @param driveMotor the module's drive motor.
-         * @param driveCurrentLimit the module's drive current limit.
+         * @param wheelRadius        the module's wheel radius.
+         * @param wheelCOF           the module's drive Coefficient of Friction.
+         * @param driveMotor         the module's drive motor.
+         * @param driveCurrentLimit  the module's drive current limit.
          */
         ChassisConfig(
                 Distance trackWidth,
@@ -981,7 +988,7 @@ public class SmartOpponentConfig {
                             gyroSimulation,
                             () -> new SwerveModuleSimulation(moduleSimConfig) // Force new sims from the config.
                             // Disable global battery draw quick fix.
-                            ),
+                    ),
                     initialPose));
         }
 
@@ -1064,7 +1071,7 @@ public class SmartOpponentConfig {
          * Simplified Chassis Configuration for a square robot. Sets the bumper width and height to the same value.
          *
          * @param bumperLength the length of the bumpers.
-         * @param trackLength the track width of the robot. This is from one center of the wheel to the other.
+         * @param trackLength  the track width of the robot. This is from one center of the wheel to the other.
          * @return this, for chaining.
          */
         public ChassisConfig withSquareChassis(Distance bumperLength, Distance trackLength) {
@@ -1186,7 +1193,9 @@ public class SmartOpponentConfig {
             return this;
         }
 
-        /** Chassis Options that MUST be set for the {@link SmartOpponentConfig} to be valid. */
+        /**
+         * Chassis Options that MUST be set for the {@link SmartOpponentConfig} to be valid.
+         */
         public enum ChassisOptions {
             /// Required Opponent Chassis Options
             /// Opponent Robot Track Width
@@ -1298,7 +1307,9 @@ public class SmartOpponentConfig {
         public SwerveModuleSimulation moduleSim;
         public com.pathplanner.lib.config.ModuleConfig pathplannerModuleConfig;
 
-        /** Empty constructor for ModuleConfig. Each Option must be set individually. */
+        /**
+         * Empty constructor for ModuleConfig. Each Option must be set individually.
+         */
         ModuleConfig() {
             /// Add required options to the checklist.
             this.requiredModuleOptions = EnumSet.allOf(ModuleOptions.class);
@@ -1307,9 +1318,9 @@ public class SmartOpponentConfig {
         /**
          * Constructor for ModuleConfig.
          *
-         * @param wheelRadius the wheel radius.
-         * @param wheelCOF the wheel Coefficient of Friction.
-         * @param driveMotor the drive {@link DCMotor}.
+         * @param wheelRadius       the wheel radius.
+         * @param wheelCOF          the wheel Coefficient of Friction.
+         * @param driveMotor        the drive {@link DCMotor}.
          * @param driveCurrentLimit the drive {@link Current} limit.
          */
         ModuleConfig(
@@ -1526,7 +1537,9 @@ public class SmartOpponentConfig {
             return this;
         }
 
-        /** Module Options that MUST be set for the {@link SmartOpponentConfig} to be valid. */
+        /**
+         * Module Options that MUST be set for the {@link SmartOpponentConfig} to be valid.
+         */
         public enum ModuleOptions {
             /// Required Opponent Drive Module Options
             /// Opponent Drive Module Wheel Radius

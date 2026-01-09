@@ -1,18 +1,19 @@
 package swervelib.simulation.ironmaple.simulation.drivesims.configs;
 
-import static edu.wpi.first.units.Units.Kilograms;
-import static edu.wpi.first.units.Units.Meters;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
-import java.util.Arrays;
-import java.util.OptionalDouble;
-import java.util.function.Supplier;
 import swervelib.simulation.ironmaple.simulation.drivesims.COTS;
 import swervelib.simulation.ironmaple.simulation.drivesims.GyroSimulation;
 import swervelib.simulation.ironmaple.simulation.drivesims.SwerveModuleSimulation;
+
+import java.util.Arrays;
+import java.util.OptionalDouble;
+import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.Kilograms;
+import static edu.wpi.first.units.Units.Meters;
 
 /**
  *
@@ -36,15 +37,15 @@ public class DriveTrainSimulationConfig {
      *
      * <p>Creates an instance of {@link DriveTrainSimulationConfig} with specified parameters.
      *
-     * @param robotMass the mass of the robot, including bumpers.
-     * @param bumperLengthX the length of the bumper (distance from front to back).
-     * @param bumperWidthY the width of the bumper (distance from left to right).
-     * @param trackLengthX the distance between the front and rear wheels.
-     * @param trackWidthY the distance between the left and right wheels.
+     * @param robotMass                     the mass of the robot, including bumpers.
+     * @param bumperLengthX                 the length of the bumper (distance from front to back).
+     * @param bumperWidthY                  the width of the bumper (distance from left to right).
+     * @param trackLengthX                  the distance between the front and rear wheels.
+     * @param trackWidthY                   the distance between the left and right wheels.
      * @param swerveModuleSimulationFactory the factory that creates appropriate swerve module simulation for the
-     *     drivetrain. You can specify one factory to apply the same configuration over all modules or specify four
-     *     factories in the order (FL, FR, BL, BR).
-     * @param gyroSimulationFactory the factory that creates appropriate gyro simulation for the drivetrain.
+     *                                      drivetrain. You can specify one factory to apply the same configuration over all modules or specify four
+     *                                      factories in the order (FL, FR, BL, BR).
+     * @param gyroSimulationFactory         the factory that creates appropriate gyro simulation for the drivetrain.
      */
     public DriveTrainSimulationConfig(
             Mass robotMass,
@@ -128,7 +129,7 @@ public class DriveTrainSimulationConfig {
      * <p>Updates the dimensions of the bumper.
      *
      * @param bumperLengthX the length of the bumper.
-     * @param bumperWidthY the width of the bumper.
+     * @param bumperWidthY  the width of the bumper.
      * @return the current instance of {@link DriveTrainSimulationConfig} for method chaining.
      */
     public DriveTrainSimulationConfig withBumperSize(Distance bumperLengthX, Distance bumperWidthY) {
@@ -149,18 +150,18 @@ public class DriveTrainSimulationConfig {
      * <p>For non-rectangular chassis configuration, use {@link #withCustomModuleTranslations(Translation2d[])} instead.
      *
      * @param trackLengthX the distance between the front and rear wheels.
-     * @param trackWidthY the distance between the left and right wheels.
+     * @param trackWidthY  the distance between the left and right wheels.
      * @return the current instance of {@link DriveTrainSimulationConfig} for method chaining.
      */
     public DriveTrainSimulationConfig withTrackLengthTrackWidth(Distance trackLengthX, Distance trackWidthY) {
         BoundingCheck.check(trackLengthX.in(Meters), 0.5, 1.5, "track length", "meters");
         BoundingCheck.check(trackWidthY.in(Meters), 0.5, 1.5, "track width", "meters");
 
-        this.moduleTranslations = new Translation2d[] {
-            new Translation2d(trackLengthX.in(Meters) / 2, trackWidthY.in(Meters) / 2),
-            new Translation2d(trackLengthX.in(Meters) / 2, -trackWidthY.in(Meters) / 2),
-            new Translation2d(-trackLengthX.in(Meters) / 2, trackWidthY.in(Meters) / 2),
-            new Translation2d(-trackLengthX.in(Meters) / 2, -trackWidthY.in(Meters) / 2)
+        this.moduleTranslations = new Translation2d[]{
+                new Translation2d(trackLengthX.in(Meters) / 2, trackWidthY.in(Meters) / 2),
+                new Translation2d(trackLengthX.in(Meters) / 2, -trackWidthY.in(Meters) / 2),
+                new Translation2d(-trackLengthX.in(Meters) / 2, trackWidthY.in(Meters) / 2),
+                new Translation2d(-trackLengthX.in(Meters) / 2, -trackWidthY.in(Meters) / 2)
         };
         return this;
     }
@@ -192,8 +193,8 @@ public class DriveTrainSimulationConfig {
      * <p>Updates the factory used to create swerve module simulations.
      *
      * @param swerveModuleSimulationFactory the new factory (or factories) for swerve module simulations. You can
-     *     specify one factory to apply the same configuration over all modules, or specify four factories in the order
-     *     (FL, FR, BL, BR)
+     *                                      specify one factory to apply the same configuration over all modules, or specify four factories in the order
+     *                                      (FL, FR, BL, BR)
      * @return the current instance of {@link DriveTrainSimulationConfig} for method chaining.
      */
     public DriveTrainSimulationConfig withSwerveModules(

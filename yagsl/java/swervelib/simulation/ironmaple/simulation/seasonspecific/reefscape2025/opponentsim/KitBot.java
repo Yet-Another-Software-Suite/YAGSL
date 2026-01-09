@@ -1,7 +1,5 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025.opponentsim;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,12 +14,14 @@ import swervelib.simulation.ironmaple.simulation.opponentsim.SmartOpponentConfig
 import swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025.Arena2025Reefscape;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
 
+import static edu.wpi.first.units.Units.*;
+
 public class KitBot extends SmartOpponent {
     /**
      * A SmartOpponent for FRC Reefscape.
      *
-     * @param name the opponent name. Typically just "SuperKitBot 1".
-     *             Names should not be the same.
+     * @param name     the opponent name. Typically just "SuperKitBot 1".
+     *                 Names should not be the same.
      * @param alliance the opponents {@link DriverStation.Alliance}.
      */
     public KitBot(String name, DriverStation.Alliance alliance) {

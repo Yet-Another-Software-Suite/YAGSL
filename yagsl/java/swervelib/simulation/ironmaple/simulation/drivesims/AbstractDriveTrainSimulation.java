@@ -1,7 +1,5 @@
 package swervelib.simulation.ironmaple.simulation.drivesims;
 
-import static edu.wpi.first.units.Units.Meters;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -10,6 +8,8 @@ import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import swervelib.simulation.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import swervelib.simulation.ironmaple.utils.mathutils.GeometryConvertor;
+
+import static edu.wpi.first.units.Units.Meters;
 
 /**
  *
@@ -43,7 +43,7 @@ public abstract class AbstractDriveTrainSimulation extends Body {
      * <p>Note that the chassis does not appear on the simulation field upon creation. Refer to
      * {@link swervelib.simulation.ironmaple.simulation.SimulatedArena} for instructions on how to add it to the simulation world.
      *
-     * @param config a {@link DriveTrainSimulationConfig} instance containing the configurations of this drivetrain
+     * @param config             a {@link DriveTrainSimulationConfig} instance containing the configurations of this drivetrain
      * @param initialPoseOnField the initial pose of the drivetrain in the simulation world
      */
     protected AbstractDriveTrainSimulation(DriveTrainSimulationConfig config, Pose2d initialPoseOnField) {

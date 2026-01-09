@@ -1,10 +1,11 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025;
 
-import static edu.wpi.first.units.Units.*;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import org.dyn4j.geometry.Rectangle;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation;
+
+import static edu.wpi.first.units.Units.Kilograms;
+import static edu.wpi.first.units.Units.Meters;
 
 /**
  *

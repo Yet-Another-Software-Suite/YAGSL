@@ -1,15 +1,19 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025;
 
-import static edu.wpi.first.units.Units.Centimeters;
-
-import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import java.util.*;
 import swervelib.simulation.ironmaple.simulation.Goal;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece;
+
+import java.util.List;
+
+import static edu.wpi.first.units.Units.Centimeters;
 
 /**
  *
@@ -29,7 +33,7 @@ public class ReefscapeBargeSimulation extends Goal {
      *
      * <h2>Creates an barge of the specified color.</h2>
      *
-     * @param arena The host arena of this barge.
+     * @param arena  The host arena of this barge.
      * @param isBlue Wether this is the blue barge or the red one.
      */
     public ReefscapeBargeSimulation(Arena2025Reefscape arena, boolean isBlue) {
@@ -52,10 +56,10 @@ public class ReefscapeBargeSimulation extends Goal {
     public void draw(List<Pose3d> algaePosesToDisplay) {
         for (int i = 0; i < gamePieceCount; i++) {
             algaePosesToDisplay.add(new Pose3d(
-                            xyBox.getCenter().x,
-                            xyBox.getCenter().y - xyBox.getHeight() / 2,
-                            elevation.in(Units.Meters) + height.in(Units.Meters) / 2,
-                            new Rotation3d())
+                    xyBox.getCenter().x,
+                    xyBox.getCenter().y - xyBox.getHeight() / 2,
+                    elevation.in(Units.Meters) + height.in(Units.Meters) / 2,
+                    new Rotation3d())
                     .plus(new Transform3d(0, i * 0.35, 0, new Rotation3d())));
         }
     }

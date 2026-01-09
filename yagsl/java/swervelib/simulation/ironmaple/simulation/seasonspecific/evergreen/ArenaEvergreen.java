@@ -44,7 +44,7 @@ public class ArenaEvergreen extends SimulatedArena {
      *
      * @param withWalls used to add wall obstacles when desired.
      */
-	public ArenaEvergreen(boolean withWalls) {
+    public ArenaEvergreen(boolean withWalls) {
         super(withWalls ? new EvergreenFieldObstacleMap().withWalls() : new EvergreenFieldObstacleMap());
     }
 

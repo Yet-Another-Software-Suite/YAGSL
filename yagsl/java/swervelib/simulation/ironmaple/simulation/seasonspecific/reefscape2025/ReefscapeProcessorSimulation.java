@@ -1,16 +1,14 @@
 package swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025;
 
-import static edu.wpi.first.units.Units.Centimeters;
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
-import java.util.*;
 import swervelib.simulation.ironmaple.simulation.Goal;
+
+import java.util.List;
+
+import static edu.wpi.first.units.Units.*;
 
 /**
  *
@@ -34,7 +32,7 @@ public class ReefscapeProcessorSimulation extends Goal {
      *
      * <h2>Creates an processor of the specified color.</h2>
      *
-     * @param arena The host arena of this processor.
+     * @param arena  The host arena of this processor.
      * @param isBlue Wether this is the blue processor or the red one.
      */
     public ReefscapeProcessorSimulation(Arena2025Reefscape arena, boolean isBlue) {
@@ -82,6 +80,5 @@ public class ReefscapeProcessorSimulation extends Goal {
 
     @Override
     public void draw(List<Pose3d> drawList) {
-        return;
     }
 }
