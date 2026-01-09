@@ -8,7 +8,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
-import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import swervelib.simulation.ironmaple.utils.mathutils.GeometryConvertor;
 
@@ -42,7 +41,7 @@ public abstract class AbstractDriveTrainSimulation extends Body {
      * <p>Since this is an abstract class, the constructor must be called from a subclass.
      *
      * <p>Note that the chassis does not appear on the simulation field upon creation. Refer to
-     * {@link SimulatedArena} for instructions on how to add it to the simulation world.
+     * {@link swervelib.simulation.ironmaple.simulation.SimulatedArena} for instructions on how to add it to the simulation world.
      *
      * @param config a {@link DriveTrainSimulationConfig} instance containing the configurations of this drivetrain
      * @param initialPoseOnField the initial pose of the drivetrain in the simulation world

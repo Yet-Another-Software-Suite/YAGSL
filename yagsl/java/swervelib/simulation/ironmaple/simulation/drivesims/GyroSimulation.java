@@ -115,9 +115,9 @@ public class GyroSimulation {
      *
      * <p>This method updates the gyro simulation and should be called during every sub-tick of the simulation.
      *
-     * <p>If you are using this class outside of {@link SimulatedArena}: make sure to call it 5
+     * <p>If you are using this class outside of {@link swervelib.simulation.ironmaple.simulation.SimulatedArena}: make sure to call it 5
      * times in each robot period (if using default timings), or refer to
-     * {@link SimulatedArena#overrideSimulationTimings(Time, int)}.
+     * {@link swervelib.simulation.ironmaple.simulation.SimulatedArena#overrideSimulationTimings(Time, int)}.
      *
      * @param actualAngularVelocityRadPerSec the actual angular velocity in radians per second, usually obtained from
      *     {@link AbstractDriveTrainSimulation#getAngularVelocity()}

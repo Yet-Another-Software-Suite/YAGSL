@@ -12,10 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.dyn4j.geometry.Vector2;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
-import swervelib.simulation.ironmaple.simulation.motorsims.MapleMotorSim;
-import swervelib.simulation.ironmaple.simulation.motorsims.SimMotorConfigs;
-import swervelib.simulation.ironmaple.simulation.motorsims.SimulatedBattery;
-import swervelib.simulation.ironmaple.simulation.motorsims.SimulatedMotorController;
+import swervelib.simulation.ironmaple.simulation.motorsims.*;
 
 /**
  *
@@ -195,27 +192,27 @@ public class SwerveModuleSimulation {
     private Vector2 getPropellingForce(
             double grippingForceNewtons, Rotation2d moduleWorldFacing, Vector2 moduleCurrentGroundVelocity) {
         final double driveWheelTorque = getDriveWheelTorque();
-        double propellingForceNewtons = driveWheelTorque / config.WHEEL_RADIUS.in(Meters);
+        final double wheelRadius = config.WHEEL_RADIUS.in(Meters); // Call it once
+        double propellingForceNewtons = driveWheelTorque / wheelRadius;
         final boolean skidding = Math.abs(propellingForceNewtons) > grippingForceNewtons;
         if (skidding) propellingForceNewtons = Math.copySign(grippingForceNewtons, propellingForceNewtons);
 
+        final double moduleAngleRadians = moduleWorldFacing.getRadians(); // Call it once
         final double floorVelocityProjectionOnWheelDirectionMPS = moduleCurrentGroundVelocity.getMagnitude()
-                * Math.cos(moduleCurrentGroundVelocity.getAngleBetween(new Vector2(moduleWorldFacing.getRadians())));
+                * Math.cos(moduleCurrentGroundVelocity.getAngleBetween(moduleAngleRadians));
 
         // if the chassis is tightly gripped on floor, the floor velocity is projected to the wheel
-        this.driveWheelFinalSpeed =
-                RadiansPerSecond.of(floorVelocityProjectionOnWheelDirectionMPS / config.WHEEL_RADIUS.in(Meters));
+        this.driveWheelFinalSpeed = RadiansPerSecond.of(floorVelocityProjectionOnWheelDirectionMPS / wheelRadius);
 
         // if the module is skidding
         if (skidding) {
             final AngularVelocity skiddingEquilibriumWheelSpeed = config.driveMotorConfigs.calculateMechanismVelocity(
-                    config.driveMotorConfigs.calculateCurrent(
-                            NewtonMeters.of(propellingForceNewtons * config.WHEEL_RADIUS.in(Meters))),
+                    config.driveMotorConfigs.calculateCurrent(NewtonMeters.of(propellingForceNewtons * wheelRadius)),
                     driveMotorAppliedVoltage);
             this.driveWheelFinalSpeed = driveWheelFinalSpeed.times(0.5).plus(skiddingEquilibriumWheelSpeed.times(0.5));
         }
 
-        return Vector2.create(propellingForceNewtons, moduleWorldFacing.getRadians());
+        return Vector2.create(propellingForceNewtons, moduleAngleRadians);
     }
 
     /**

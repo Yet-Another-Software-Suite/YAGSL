@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.*;
 import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.*;
 import edu.wpi.first.units.measure.*;
 
 /**

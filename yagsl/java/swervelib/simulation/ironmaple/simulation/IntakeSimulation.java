@@ -42,9 +42,9 @@ import swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025.Re
  * <p>A game piece is collected if the following conditions are met:
  *
  * <ul>
- *   <li>1. The type of the game piece ({@link GamePieceOnFieldSimulation#type})
+ *   <li>1. The type of the game piece ({@link swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation#type})
  *       matches {@link #targetedGamePieceType}.
- *   <li>2. The {@link GamePieceOnFieldSimulation} is in contact with the intake
+ *   <li>2. The {@link swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation} is in contact with the intake
  *       (and not other parts of the robot).
  *   <li>3. The intake is turned on via {@link #startIntake()}.
  *   <li>4. The number of game pieces in the intake ({@link #gamePiecesInIntakeCount}) is less than {@link #capacity}.

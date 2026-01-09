@@ -30,7 +30,7 @@ import swervelib.simulation.ironmaple.utils.mathutils.GeometryConvertor;
  * <p>Game pieces can be "grabbed" by an {@link IntakeSimulation}.
  *
  * <p>For the simulation to actually run, every instance must be added to a
- * {@link SimulatedArena} through
+ * {@link swervelib.simulation.ironmaple.simulation.SimulatedArena} through
  * {@link SimulatedArena#addGamePiece(GamePieceOnFieldSimulation)}.
  */
 public class GamePieceOnFieldSimulation extends Body implements GamePiece {

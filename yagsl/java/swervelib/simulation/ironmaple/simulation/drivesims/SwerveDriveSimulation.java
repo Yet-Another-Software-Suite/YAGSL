@@ -16,7 +16,6 @@ import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import swervelib.simulation.ironmaple.utils.mathutils.GeometryConvertor;
 import swervelib.simulation.ironmaple.utils.mathutils.MapleCommonMath;
-import swervelib.simulation.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 
 /**
  *
@@ -249,12 +248,12 @@ public class SwerveDriveSimulation extends AbstractDriveTrainSimulation {
      * <p>The total friction force should not exceed the tire's grip limit.
      */
     private void simulateModulePropellingForces() {
-        for (int i = 0; i < moduleSimulations.length; i++) {
+        final int arrayLength = moduleSimulations.length; // Call it once
+        final Rotation2d driveRotation = getSimulatedDriveTrainPose().getRotation(); // Call it once per 4 modules.
+        for (int i = 0; i < arrayLength; i++) {
             final Vector2 moduleWorldPosition = getWorldPoint(GeometryConvertor.toDyn4jVector2(moduleTranslations[i]));
             final Vector2 moduleForce = moduleSimulations[i].updateSimulationSubTickGetModuleForce(
-                    super.getLinearVelocity(moduleWorldPosition),
-                    getSimulatedDriveTrainPose().getRotation(),
-                    gravityForceOnEachModule);
+                    super.getLinearVelocity(moduleWorldPosition), driveRotation, gravityForceOnEachModule);
             super.applyForce(moduleForce, moduleWorldPosition);
         }
     }
@@ -298,7 +297,7 @@ public class SwerveDriveSimulation extends AbstractDriveTrainSimulation {
      * <h2>Obtains the maximum achievable linear velocity of the chassis.</h2>
      *
      * @return the maximum linear velocity
-     * @see SwerveModuleSimulationConfig#maximumGroundSpeed()
+     * @see swervelib.simulation.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig#maximumGroundSpeed()
      */
     public LinearVelocity maxLinearVelocity() {
         return moduleSimulations[0].config.maximumGroundSpeed();
@@ -310,7 +309,7 @@ public class SwerveDriveSimulation extends AbstractDriveTrainSimulation {
      * <h2>Obtains the maximum achievable linear acceleration of the chassis.</h2>
      *
      * @return the maximum linear acceleration
-     * @see SwerveModuleSimulationConfig#maxAcceleration(Mass, int, Current)
+     * @see swervelib.simulation.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig#maxAcceleration(Mass, int, Current)
      */
     public LinearAcceleration maxLinearAcceleration(Current statorCurrentLimit) {
         return moduleSimulations[0].config.maxAcceleration(
