@@ -209,7 +209,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6">
 <div class="block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">This rotation is <strong>NOT</strong> the actual facing of the robot; it is uncalibrated and is only
-     used for features like rotation lock.</div>
+ used for features like rotation lock.</div>
 </div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/kinematics/SwerveModuleState.html" title="class or interface in edu.wpi.first.math.kinematics" class="external-link">SwerveModuleState</a>[]</code></div>
@@ -381,7 +381,7 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Rotation2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Rotation2d</a></span>&nbsp;<span class="element-name">getRawGyroAngle</span>()</div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">This rotation is <strong>NOT</strong> the actual facing of the robot; it is uncalibrated and is only
-     used for features like rotation lock.</div>
+ used for features like rotation lock.</div>
 </div>
 <div class="block"><h2>Obtains the raw angle of the gyro.</h2>
 
@@ -464,7 +464,7 @@ loadScripts(document, 'script');</script>
 <dd><code>robotPoseMeters</code> - The pose of the robot as measured by the vision camera.</dd>
 <dd><code>timeStampSeconds</code> - The timestamp of the vision measurement, in seconds.</dd>
 <dd><code>measurementStdDevs</code> - Standard deviations of the vision pose measurement (x position in meters, y position in
-     meters, and heading in radians). Increase these values to reduce the trust in the vision pose measurement.</dd>
+                           meters, and heading in radians). Increase these values to reduce the trust in the vision pose measurement.</dd>
 </dl>
 </section>
 </li>
@@ -482,11 +482,11 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>chassisSpeeds</code> - The speeds to run, in either robot-centric or field-centric coordinates.</dd>
 <dd><code>centerOfRotationMeters</code> - The center of rotation. For example, if you set the center of rotation at one
-     corner of the robot and provide a chassis speed that has only a dtheta component, the robot will rotate
-     around that corner.</dd>
+                               corner of the robot and provide a chassis speed that has only a dtheta component, the robot will rotate
+                               around that corner.</dd>
 <dd><code>fieldCentricDrive</code> - Whether to execute field-centric drive with the provided speed.</dd>
 <dd><code>discretizeSpeeds</code> - Whether to apply <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/kinematics/ChassisSpeeds.html#discretize(edu.wpi.first.math.kinematics.ChassisSpeeds,double)" title="class or interface in edu.wpi.first.math.kinematics" class="external-link"><code>ChassisSpeeds.discretize(ChassisSpeeds, double)</code></a> to the provided
-     speed.</dd>
+                               speed.</dd>
 </dl>
 </section>
 </li>

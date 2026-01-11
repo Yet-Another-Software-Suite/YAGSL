@@ -158,7 +158,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-swervelib.simulation.ironmaple.simulation.Goal">Methods inherited from class&nbsp;swervelib.simulation.ironmaple.simulation.<a href="../../Goal.html" title="class in swervelib.simulation.ironmaple.simulation">Goal</a></h3>
-<code><a href="../../Goal.html#checkCollision(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)">checkCollision</a>, <a href="../../Goal.html#checkRotation(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)">checkRotation</a>, <a href="../../Goal.html#checkValidity(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)">checkValidity</a>, <a href="../../Goal.html#clear()">clear</a>, <a href="../../Goal.html#flipRotation(edu.wpi.first.math.geometry.Rotation3d)">flipRotation</a>, <a href="../../Goal.html#getGamePieceCount()">getGamePieceCount</a>, <a href="../../Goal.html#isFull()">isFull</a>, <a href="../../Goal.html#setNeededAngle(edu.wpi.first.math.geometry.Rotation3d)">setNeededAngle</a>, <a href="../../Goal.html#setNeededAngle(edu.wpi.first.math.geometry.Rotation3d,edu.wpi.first.units.measure.Angle)">setNeededAngle</a>, <a href="../../Goal.html#simulationSubTick(int)">simulationSubTick</a></code></div>
+<code><a href="../../Goal.html#checkCollision(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)">checkCollision</a>, <a href="../../Goal.html#checkGrounded(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)">checkGrounded</a>, <a href="../../Goal.html#checkRotation(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)">checkRotation</a>, <a href="../../Goal.html#checkValidity(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)">checkValidity</a>, <a href="../../Goal.html#clear()">clear</a>, <a href="../../Goal.html#flipRotation(edu.wpi.first.math.geometry.Rotation3d)">flipRotation</a>, <a href="../../Goal.html#getGamePieceCount()">getGamePieceCount</a>, <a href="../../Goal.html#isFull()">isFull</a>, <a href="../../Goal.html#setNeededAngle(edu.wpi.first.math.geometry.Rotation3d)">setNeededAngle</a>, <a href="../../Goal.html#setNeededAngle(edu.wpi.first.math.geometry.Rotation3d,edu.wpi.first.units.measure.Angle)">setNeededAngle</a>, <a href="../../Goal.html#simulationSubTick(int)">simulationSubTick</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -225,7 +225,7 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../Goal.html#draw(java.util.List)">draw</a></code>&nbsp;in class&nbsp;<code><a href="../../Goal.html" title="class in swervelib.simulation.ironmaple.simulation">Goal</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>algaePosesToDisplay</code> - a list of <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Pose3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link"><code>Pose3d</code></a> objects used to visualize the positions of the game pieces on
-     AdvantageScope</dd>
+                 AdvantageScope</dd>
 </dl>
 </section>
 </li>
@@ -235,7 +235,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">checkVel</span><wbr><span class="parameters">(<a href="../../gamepieces/GamePiece.html" title="interface in swervelib.simulation.ironmaple.simulation.gamepieces">GamePiece</a>&nbsp;gamePiece)</span></div>
 <div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../../Goal.html#checkVel(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)">Goal</a></code></span></div>
 <div class="block"><h2>Function to check wether the velocity of potential game pieces is acceptable.</h2>
-
+ <p>
  The default implementation of this function always returns true so any velocity checks will need to be
  implemented by children classes.</div>
 <dl class="notes">
@@ -254,7 +254,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addPoints</span>()</div>
 <div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../../Goal.html#addPoints()">Goal</a></code></span></div>
 <div class="block"><h2>Adds points when a piece has been successfully scored in this goal</h2>
-
+ <p>
  Since this function is the only trigger called when a piece is scored it may handle other small things outside of
  adding points.</div>
 <dl class="notes">
