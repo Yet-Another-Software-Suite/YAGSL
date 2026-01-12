@@ -43,7 +43,8 @@ public class CrescendoAmp extends Goal {
                 Centimeters.of(46),
                 "Note",
                 isBlue ? blueAmpPose : redAmpPose,
-                isBlue);
+                isBlue,
+                false);
 
         crescendoArena = arena;
 

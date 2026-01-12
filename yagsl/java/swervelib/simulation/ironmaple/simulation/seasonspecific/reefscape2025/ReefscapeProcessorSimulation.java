@@ -43,7 +43,8 @@ public class ReefscapeProcessorSimulation extends Goal {
                 Centimeters.of(100),
                 "Algae",
                 isBlue ? blueProcessorPose : redProcessorPose,
-                isBlue);
+                isBlue,
+                true);
 
         StructPublisher<Pose3d> heldAlgaePublisher = NetworkTableInstance.getDefault()
                 .getStructTopic(isBlue ? "BlueProcessor" : "RedProcessor", Pose3d.struct)
