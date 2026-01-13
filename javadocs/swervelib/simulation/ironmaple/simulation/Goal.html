@@ -81,7 +81,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="seasonspecific/crescendo2024/CrescendoAmp.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024">CrescendoAmp</a></code>, <code><a href="seasonspecific/crescendo2024/CrescendoSpeaker.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024">CrescendoSpeaker</a></code>, <code><a href="seasonspecific/reefscape2025/ReefscapeBargeSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025">ReefscapeBargeSimulation</a></code>, <code><a href="seasonspecific/reefscape2025/ReefscapeProcessorSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025">ReefscapeProcessorSimulation</a></code>, <code><a href="seasonspecific/reefscape2025/ReefscapeReefBranch.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025">ReefscapeReefBranch</a></code></dd>
+<dd><code><a href="seasonspecific/crescendo2024/CrescendoAmp.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024">CrescendoAmp</a></code>, <code><a href="seasonspecific/crescendo2024/CrescendoSpeaker.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024">CrescendoSpeaker</a></code>, <code><a href="seasonspecific/rebuilt2026/RebuiltHub.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026">RebuiltHub</a></code>, <code><a href="seasonspecific/rebuilt2026/RebuiltOutpost.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026">RebuiltOutpost</a></code>, <code><a href="seasonspecific/reefscape2025/ReefscapeBargeSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025">ReefscapeBargeSimulation</a></code>, <code><a href="seasonspecific/reefscape2025/ReefscapeProcessorSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025">ReefscapeProcessorSimulation</a></code>, <code><a href="seasonspecific/reefscape2025/ReefscapeReefBranch.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025">ReefscapeReefBranch</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">Goal</span>
@@ -100,39 +100,48 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected final <a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a></code></div>
-<div class="col-second even-row-color"><code><a href="#arena" class="member-name-link">arena</a></code></div>
+<div class="col-first even-row-color"><code>protected final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#allowGrounded" class="member-name-link">allowGrounded</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#elevation" class="member-name-link">elevation</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected int</code></div>
-<div class="col-second even-row-color"><code><a href="#gamePieceCount" class="member-name-link">gamePieceCount</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#gamePieceType" class="member-name-link">gamePieceType</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#arena" class="member-name-link">arena</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected final <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a></code></div>
-<div class="col-second even-row-color"><code><a href="#height" class="member-name-link">height</a></code></div>
+<div class="col-second even-row-color"><code><a href="#elevation" class="member-name-link">elevation</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#isBlue" class="member-name-link">isBlue</a></code></div>
+<div class="col-first odd-row-color"><code>protected int</code></div>
+<div class="col-second odd-row-color"><code><a href="#gamePieceCount" class="member-name-link">gamePieceCount</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final int</code></div>
-<div class="col-second even-row-color"><code><a href="#max" class="member-name-link">max</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#gamePieceType" class="member-name-link">gamePieceType</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Rotation3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Rotation3d</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#pieceAngle" class="member-name-link">pieceAngle</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#height" class="member-name-link">height</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Angle.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Angle</a></code></div>
-<div class="col-second even-row-color"><code><a href="#pieceAngleTolerance" class="member-name-link">pieceAngleTolerance</a></code></div>
+<div class="col-first even-row-color"><code>final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#isBlue" class="member-name-link">isBlue</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Translation3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Translation3d</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#position" class="member-name-link">position</a></code></div>
+<div class="col-first odd-row-color"><code>protected final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#max" class="member-name-link">max</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected org.dyn4j.geometry.Rectangle</code></div>
-<div class="col-second even-row-color"><code><a href="#xyBox" class="member-name-link">xyBox</a></code></div>
+<div class="col-first even-row-color"><code>protected final double</code></div>
+<div class="col-second even-row-color"><code><a href="#maxZ" class="member-name-link">maxZ</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#minZ" class="member-name-link">minZ</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Rotation3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Rotation3d</a></code></div>
+<div class="col-second even-row-color"><code><a href="#pieceAngle" class="member-name-link">pieceAngle</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Angle.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Angle</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#pieceAngleTolerance" class="member-name-link">pieceAngleTolerance</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Translation3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Translation3d</a></code></div>
+<div class="col-second even-row-color"><code><a href="#position" class="member-name-link">position</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected org.dyn4j.geometry.Rectangle</code></div>
+<div class="col-second odd-row-color"><code><a href="#xyBox" class="member-name-link">xyBox</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -144,24 +153,26 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(swervelib.simulation.ironmaple.simulation.SimulatedArena,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,java.lang.String,edu.wpi.first.math.geometry.Translation3d,boolean)" class="member-name-link">Goal</a><wbr>(<a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a>&nbsp;arena,
- <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;xDimension,
- <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;yDimension,
- <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;height,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;gamePieceType,
- <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Translation3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Translation3d</a>&nbsp;position,
- boolean&nbsp;isBlue)</code></div>
-<div class="col-last even-row-color">
-<div class="block">Creates a goal object with no scoring max.</div>
-</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(swervelib.simulation.ironmaple.simulation.SimulatedArena,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,java.lang.String,edu.wpi.first.math.geometry.Translation3d,boolean,int)" class="member-name-link">Goal</a><wbr>(<a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a>&nbsp;arena,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(swervelib.simulation.ironmaple.simulation.SimulatedArena,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,java.lang.String,edu.wpi.first.math.geometry.Translation3d,boolean,boolean)" class="member-name-link">Goal</a><wbr>(<a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a>&nbsp;arena,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;xDimension,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;yDimension,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;height,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;gamePieceType,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Translation3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Translation3d</a>&nbsp;position,
  boolean&nbsp;isBlue,
- int&nbsp;max)</code></div>
+ boolean&nbsp;allowsGrounded)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Creates a goal object with no scoring max.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(swervelib.simulation.ironmaple.simulation.SimulatedArena,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,java.lang.String,edu.wpi.first.math.geometry.Translation3d,boolean,int,boolean)" class="member-name-link">Goal</a><wbr>(<a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a>&nbsp;arena,
+ <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;xDimension,
+ <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;yDimension,
+ <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;height,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;gamePieceType,
+ <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Translation3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Translation3d</a>&nbsp;position,
+ boolean&nbsp;isBlue,
+ int&nbsp;max,
+ boolean&nbsp;allowGrounded)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Creates a goal object</div>
 </div>
@@ -192,7 +203,7 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkGrounded(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)" class="member-name-link">checkGrounded</a><wbr>(<a href="gamepieces/GamePiece.html" title="interface in swervelib.simulation.ironmaple.simulation.gamepieces">GamePiece</a>&nbsp;gamePiece)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Checks whether the submitted game piece is grounded</div>
+<div class="block">Checks whether the submitted game piece is grounded and if this is acceptable</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkRotation(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)" class="member-name-link">checkRotation</a><wbr>(<a href="gamepieces/GamePiece.html" title="interface in swervelib.simulation.ironmaple.simulation.gamepieces">GamePiece</a>&nbsp;gamePiece)</code></div>
@@ -334,6 +345,24 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Angle.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Angle</a></span>&nbsp;<span class="element-name">pieceAngleTolerance</span></div>
 </section>
 </li>
+<li>
+<section class="detail" id="minZ">
+<h3>minZ</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">minZ</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="maxZ">
+<h3>maxZ</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">maxZ</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="allowGrounded">
+<h3>allowGrounded</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">allowGrounded</span></div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -343,7 +372,7 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(swervelib.simulation.ironmaple.simulation.SimulatedArena,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,java.lang.String,edu.wpi.first.math.geometry.Translation3d,boolean,int)">
+<section class="detail" id="&lt;init&gt;(swervelib.simulation.ironmaple.simulation.SimulatedArena,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,java.lang.String,edu.wpi.first.math.geometry.Translation3d,boolean,int,boolean)">
 <h3>Goal</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Goal</span><wbr><span class="parameters">(<a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a>&nbsp;arena,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;xDimension,
@@ -352,7 +381,8 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;gamePieceType,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Translation3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Translation3d</a>&nbsp;position,
  boolean&nbsp;isBlue,
- int&nbsp;max)</span></div>
+ int&nbsp;max,
+ boolean&nbsp;allowGrounded)</span></div>
 <div class="block"><h2>Creates a goal object </h2></div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -364,11 +394,12 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <dd><code>position</code> - The position of this goal.</dd>
 <dd><code>isBlue</code> - Wether this is a blue goal or a red one.</dd>
 <dd><code>max</code> - How many pieces can be scored in this goal.</dd>
+<dd><code>allowsGrounded</code> - Wether or not grounded pieces can be scored in this goal</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(swervelib.simulation.ironmaple.simulation.SimulatedArena,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,java.lang.String,edu.wpi.first.math.geometry.Translation3d,boolean)">
+<section class="detail" id="&lt;init&gt;(swervelib.simulation.ironmaple.simulation.SimulatedArena,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,java.lang.String,edu.wpi.first.math.geometry.Translation3d,boolean,boolean)">
 <h3>Goal</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Goal</span><wbr><span class="parameters">(<a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a>&nbsp;arena,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;xDimension,
@@ -376,7 +407,8 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;height,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;gamePieceType,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Translation3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Translation3d</a>&nbsp;position,
- boolean&nbsp;isBlue)</span></div>
+ boolean&nbsp;isBlue,
+ boolean&nbsp;allowsGrounded)</span></div>
 <div class="block"><h2>Creates a goal object with no scoring max.</h2></div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -387,6 +419,7 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <dd><code>gamePieceType</code> - the string game piece type to be handled by this goal.</dd>
 <dd><code>position</code> - The position of this goal.</dd>
 <dd><code>isBlue</code> - Wether this is a blue goal or a red one.</dd>
+<dd><code>allowsGrounded</code> - Wether or not grounded pieces can be scored in this goal</dd>
 </dl>
 </section>
 </li>
@@ -475,12 +508,12 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <section class="detail" id="checkGrounded(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)">
 <h3>checkGrounded</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">checkGrounded</span><wbr><span class="parameters">(<a href="gamepieces/GamePiece.html" title="interface in swervelib.simulation.ironmaple.simulation.gamepieces">GamePiece</a>&nbsp;gamePiece)</span></div>
-<div class="block"><h2>Checks whether the submitted game piece is grounded </h2></div>
+<div class="block"><h2>Checks whether the submitted game piece is grounded and if this is acceptable </h2></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>gamePiece</code> - The game piece to have its groundedness checked.</dd>
 <dt>Returns:</dt>
-<dd>Whether the piece is grounded.</dd>
+<dd>Whether the piece is acceptable for this goal.</dd>
 </dl>
 </section>
 </li>
@@ -489,7 +522,7 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <h3>checkRotation</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">checkRotation</span><wbr><span class="parameters">(<a href="gamepieces/GamePiece.html" title="interface in swervelib.simulation.ironmaple.simulation.gamepieces">GamePiece</a>&nbsp;gamePiece)</span></div>
 <div class="block"><h2>Checks wether or not the submitted game piece has a rotation able to be scored in this goal </h2>
- <p>
+
  By default the rotation needed and tolerance may be set using the <a href="#setNeededAngle(edu.wpi.first.math.geometry.Rotation3d,edu.wpi.first.units.measure.Angle)"><code>setNeededAngle(Rotation3d, Angle)</code></a>
  function. However rotation checks may be handled differently by some children making this not apply. Additionally
  be aware that this function only supports pitch and yaw, not role. If support for roll is needed a custom
@@ -520,7 +553,7 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <h3>checkVel</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">checkVel</span><wbr><span class="parameters">(<a href="gamepieces/GamePiece.html" title="interface in swervelib.simulation.ironmaple.simulation.gamepieces">GamePiece</a>&nbsp;gamePiece)</span></div>
 <div class="block"><h2>Function to check wether the velocity of potential game pieces is acceptable.</h2>
- <p>
+
  The default implementation of this function always returns true so any velocity checks will need to be
  implemented by children classes.</div>
 <dl class="notes">
@@ -554,7 +587,7 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <h3>addPoints</h3>
 <div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addPoints</span>()</div>
 <div class="block"><h2>Adds points when a piece has been successfully scored in this goal</h2>
- <p>
+
  Since this function is the only trigger called when a piece is scored it may handle other small things outside of
  adding points.</div>
 </section>
@@ -567,7 +600,7 @@ implements <a href="SimulatedArena.Simulatable.html" title="interface in swervel
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>drawList</code> - a list of <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Pose3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link"><code>Pose3d</code></a> objects used to visualize the positions of the game pieces on
-                 AdvantageScope</dd>
+     AdvantageScope</dd>
 </dl>
 </section>
 </li>

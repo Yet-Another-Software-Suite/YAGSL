@@ -130,7 +130,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-swervelib.simulation.ironmaple.simulation.Goal">Fields inherited from class&nbsp;swervelib.simulation.ironmaple.simulation.<a href="../../Goal.html" title="class in swervelib.simulation.ironmaple.simulation">Goal</a></h3>
-<code><a href="../../Goal.html#arena">arena</a>, <a href="../../Goal.html#elevation">elevation</a>, <a href="../../Goal.html#gamePieceCount">gamePieceCount</a>, <a href="../../Goal.html#gamePieceType">gamePieceType</a>, <a href="../../Goal.html#height">height</a>, <a href="../../Goal.html#isBlue">isBlue</a>, <a href="../../Goal.html#max">max</a>, <a href="../../Goal.html#pieceAngle">pieceAngle</a>, <a href="../../Goal.html#pieceAngleTolerance">pieceAngleTolerance</a>, <a href="../../Goal.html#position">position</a>, <a href="../../Goal.html#xyBox">xyBox</a></code></div>
+<code><a href="../../Goal.html#allowGrounded">allowGrounded</a>, <a href="../../Goal.html#arena">arena</a>, <a href="../../Goal.html#elevation">elevation</a>, <a href="../../Goal.html#gamePieceCount">gamePieceCount</a>, <a href="../../Goal.html#gamePieceType">gamePieceType</a>, <a href="../../Goal.html#height">height</a>, <a href="../../Goal.html#isBlue">isBlue</a>, <a href="../../Goal.html#max">max</a>, <a href="../../Goal.html#maxZ">maxZ</a>, <a href="../../Goal.html#minZ">minZ</a>, <a href="../../Goal.html#pieceAngle">pieceAngle</a>, <a href="../../Goal.html#pieceAngleTolerance">pieceAngleTolerance</a>, <a href="../../Goal.html#position">position</a>, <a href="../../Goal.html#xyBox">xyBox</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -330,7 +330,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">checkRotation</span><wbr><span class="parameters">(<a href="../../gamepieces/GamePiece.html" title="interface in swervelib.simulation.ironmaple.simulation.gamepieces">GamePiece</a>&nbsp;gamePiece)</span></div>
 <div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../../Goal.html#checkRotation(swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece)">Goal</a></code></span></div>
 <div class="block"><h2>Checks wether or not the submitted game piece has a rotation able to be scored in this goal </h2>
- <p>
+
  By default the rotation needed and tolerance may be set using the <a href="../../Goal.html#setNeededAngle(edu.wpi.first.math.geometry.Rotation3d,edu.wpi.first.units.measure.Angle)"><code>Goal.setNeededAngle(Rotation3d, Angle)</code></a>
  function. However rotation checks may be handled differently by some children making this not apply. Additionally
  be aware that this function only supports pitch and yaw, not role. If support for roll is needed a custom
@@ -351,7 +351,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addPoints</span>()</div>
 <div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../../Goal.html#addPoints()">Goal</a></code></span></div>
 <div class="block"><h2>Adds points when a piece has been successfully scored in this goal</h2>
- <p>
+
  Since this function is the only trigger called when a piece is scored it may handle other small things outside of
  adding points.</div>
 <dl class="notes">
@@ -371,7 +371,7 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../Goal.html#draw(java.util.List)">draw</a></code>&nbsp;in class&nbsp;<code><a href="../../Goal.html" title="class in swervelib.simulation.ironmaple.simulation">Goal</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>drawList</code> - a list of <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Pose3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link"><code>Pose3d</code></a> objects used to visualize the positions of the game pieces on
-                 AdvantageScope</dd>
+     AdvantageScope</dd>
 </dl>
 </section>
 </li>

@@ -17,6 +17,7 @@ swervelib.simulation.ironmaple.simulation.opponentsim
 swervelib.simulation.ironmaple.simulation.opponentsim.pathfinding
 swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024
 swervelib.simulation.ironmaple.simulation.seasonspecific.evergreen
+swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026
 swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025
 swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025.opponentsim
 swervelib.simulation.ironmaple.utils

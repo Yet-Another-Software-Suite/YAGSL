@@ -102,9 +102,9 @@ loadScripts(document, 'script');</script>
  <p>A game piece is collected if the following conditions are met:
 
  <ul>
-   <li>1. The type of the game piece (<a href="gamepieces/GamePieceOnFieldSimulation.html#type"><code>GamePieceOnFieldSimulation.type</code></a>)
+   <li>1. The type of the game piece (<code>org.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation#type</code>)
        matches <code>targetedGamePieceType</code>.
-   <li>2. The <a href="gamepieces/GamePieceOnFieldSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.gamepieces"><code>GamePieceOnFieldSimulation</code></a> is in contact with the intake
+   <li>2. The <code>org.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation</code> is in contact with the intake
        (and not other parts of the robot).
    <li>3. The intake is turned on via <a href="#startIntake()"><code>startIntake()</code></a>.
    <li>4. The number of game pieces in the intake (<code>gamePiecesInIntakeCount</code>) is less than <code>capacity</code>.
@@ -177,78 +177,83 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addGamePieceToIntake()" class="member-name-link">addGamePieceToIntake</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addGamePiecesToIntake(int)" class="member-name-link">addGamePiecesToIntake</a><wbr>(int&nbsp;piecesToAdd)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Adds a number of game pieces to the intake.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addGamePieceToIntake()" class="member-name-link">addGamePieceToIntake</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Adds 1 game piece from the intake.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IntakeSimulation.GamePieceContactListener.html" title="class in swervelib.simulation.ironmaple.simulation">IntakeSimulation.GamePieceContactListener</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGamePieceContactListener()" class="member-name-link">getGamePieceContactListener</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IntakeSimulation.GamePieceContactListener.html" title="class in swervelib.simulation.ironmaple.simulation">IntakeSimulation.GamePieceContactListener</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGamePieceContactListener()" class="member-name-link">getGamePieceContactListener</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Obtains a New Instance of the <a href="IntakeSimulation.GamePieceContactListener.html" title="class in swervelib.simulation.ironmaple.simulation"><code>IntakeSimulation.GamePieceContactListener</code></a> for This Intake.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGamePiecesAmount()" class="member-name-link">getGamePiecesAmount</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGamePiecesAmount()" class="member-name-link">getGamePiecesAmount</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get the amount of game pieces in the intake.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="IntakeSimulation.html" title="class in swervelib.simulation.ironmaple.simulation">IntakeSimulation</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#InTheFrameIntake(java.lang.String,swervelib.simulation.ironmaple.simulation.drivesims.AbstractDriveTrainSimulation,edu.wpi.first.units.measure.Distance,swervelib.simulation.ironmaple.simulation.IntakeSimulation.IntakeSide,int)" class="member-name-link">InTheFrameIntake</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetedGamePieceType,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="IntakeSimulation.html" title="class in swervelib.simulation.ironmaple.simulation">IntakeSimulation</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#InTheFrameIntake(java.lang.String,swervelib.simulation.ironmaple.simulation.drivesims.AbstractDriveTrainSimulation,edu.wpi.first.units.measure.Distance,swervelib.simulation.ironmaple.simulation.IntakeSimulation.IntakeSide,int)" class="member-name-link">InTheFrameIntake</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetedGamePieceType,
  <a href="drivesims/AbstractDriveTrainSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.drivesims">AbstractDriveTrainSimulation</a>&nbsp;driveTrainSimulation,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;width,
  <a href="IntakeSimulation.IntakeSide.html" title="enum class in swervelib.simulation.ironmaple.simulation">IntakeSimulation.IntakeSide</a>&nbsp;side,
  int&nbsp;capacity)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Creates an Intake Simulation that Tightly Attaches to One Side of the Chassis.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isRunning()" class="member-name-link">isRunning</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isRunning()" class="member-name-link">isRunning</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns wether or not this intake is currently running</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#obtainGamePieceFromIntake()" class="member-name-link">obtainGamePieceFromIntake</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#obtainGamePieceFromIntake()" class="member-name-link">obtainGamePieceFromIntake</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Removes 1 game piece from the intake.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="IntakeSimulation.html" title="class in swervelib.simulation.ironmaple.simulation">IntakeSimulation</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#OverTheBumperIntake(java.lang.String,swervelib.simulation.ironmaple.simulation.drivesims.AbstractDriveTrainSimulation,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,swervelib.simulation.ironmaple.simulation.IntakeSimulation.IntakeSide,int)" class="member-name-link">OverTheBumperIntake</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetedGamePieceType,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="IntakeSimulation.html" title="class in swervelib.simulation.ironmaple.simulation">IntakeSimulation</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#OverTheBumperIntake(java.lang.String,swervelib.simulation.ironmaple.simulation.drivesims.AbstractDriveTrainSimulation,edu.wpi.first.units.measure.Distance,edu.wpi.first.units.measure.Distance,swervelib.simulation.ironmaple.simulation.IntakeSimulation.IntakeSide,int)" class="member-name-link">OverTheBumperIntake</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetedGamePieceType,
  <a href="drivesims/AbstractDriveTrainSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.drivesims">AbstractDriveTrainSimulation</a>&nbsp;driveTrainSimulation,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;width,
  <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Distance.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Distance</a>&nbsp;lengthExtended,
  <a href="IntakeSimulation.IntakeSide.html" title="enum class in swervelib.simulation.ironmaple.simulation">IntakeSimulation.IntakeSide</a>&nbsp;side,
  int&nbsp;capacity)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Creates an Intake Simulation that Extends Out of the Chassis Frame.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register()" class="member-name-link">register</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register(swervelib.simulation.ironmaple.simulation.SimulatedArena)" class="member-name-link">register</a><wbr>(<a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a>&nbsp;arena)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register()" class="member-name-link">register</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeObtainedGamePieces(swervelib.simulation.ironmaple.simulation.SimulatedArena)" class="member-name-link">removeObtainedGamePieces</a><wbr>(<a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a>&nbsp;arena)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#register(swervelib.simulation.ironmaple.simulation.SimulatedArena)" class="member-name-link">register</a><wbr>(<a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a>&nbsp;arena)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeObtainedGamePieces(swervelib.simulation.ironmaple.simulation.SimulatedArena)" class="member-name-link">removeObtainedGamePieces</a><wbr>(<a href="SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a>&nbsp;arena)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Clears the game pieces that have been obtained by the intake.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCustomIntakeCondition(java.util.function.Predicate)" class="member-name-link">setCustomIntakeCondition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="gamepieces/GamePieceOnFieldSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.gamepieces">GamePieceOnFieldSimulation</a>&gt;&nbsp;customIntakeCondition)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCustomIntakeCondition(java.util.function.Predicate)" class="member-name-link">setCustomIntakeCondition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="gamepieces/GamePieceOnFieldSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.gamepieces">GamePieceOnFieldSimulation</a>&gt;&nbsp;customIntakeCondition)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets a Custom Intake Condition.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGamePiecesCount(int)" class="member-name-link">setGamePiecesCount</a><wbr>(int&nbsp;gamePiecesInIntakeCount)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGamePiecesCount(int)" class="member-name-link">setGamePiecesCount</a><wbr>(int&nbsp;gamePiecesInIntakeCount)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets the amount of game pieces in the intake.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startIntake()" class="member-name-link">startIntake</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startIntake()" class="member-name-link">startIntake</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Turns the Intake On.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopIntake()" class="member-name-link">stopIntake</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopIntake()" class="member-name-link">stopIntake</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Turns the Intake Off.</div>
 </div>
 </div>
@@ -414,6 +419,22 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="addGamePiecesToIntake(int)">
+<h3>addGamePiecesToIntake</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">addGamePiecesToIntake</span><wbr><span class="parameters">(int&nbsp;piecesToAdd)</span></div>
+<div class="block"><h2>Adds a number of game pieces to the intake.</h2>
+
+ If the number of pieces added would drive the intake above capacity the intake will only add pieces up to max.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>piecesToAdd</code> - The number of pieces to add too the intake.</dd>
+<dt>Returns:</dt>
+<dd>Wether or not all game pieces could be added to the intake. Just because this returns false does not mean
+     that no pieces were added.</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="setGamePiecesCount(int)">
 <h3>setGamePiecesCount</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">setGamePiecesCount</span><wbr><span class="parameters">(int&nbsp;gamePiecesInIntakeCount)</span></div>
@@ -489,7 +510,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>customIntakeCondition</code> - a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link"><code>Predicate</code></a> representing the custom condition for intake eligibility of game
-                              pieces on the field</dd>
+     pieces on the field</dd>
 </dl>
 </section>
 </li>

@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="seasonspecific/crescendo2024/Arena2024Crescendo.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024">Arena2024Crescendo</a></code>, <code><a href="seasonspecific/reefscape2025/Arena2025Reefscape.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025">Arena2025Reefscape</a></code>, <code><a href="seasonspecific/evergreen/ArenaEvergreen.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.evergreen">ArenaEvergreen</a></code></dd>
+<dd><code><a href="seasonspecific/crescendo2024/Arena2024Crescendo.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024">Arena2024Crescendo</a></code>, <code><a href="seasonspecific/reefscape2025/Arena2025Reefscape.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.reefscape2025">Arena2025Reefscape</a></code>, <code><a href="seasonspecific/rebuilt2026/Arena2026Rebuilt.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026">Arena2026Rebuilt</a></code>, <code><a href="seasonspecific/evergreen/ArenaEvergreen.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.evergreen">ArenaEvergreen</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">SimulatedArena</span>
@@ -708,9 +708,9 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>robotPeriod</code> - the time between two calls of <a href="#simulationPeriodic()"><code>simulationPeriodic()</code></a>, usually obtained from
-                                    <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/IterativeRobotBase.html#getPeriod()" title="class or interface in edu.wpi.first.wpilibj" class="external-link"><code>IterativeRobotBase.getPeriod()</code></a></dd>
+     <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/IterativeRobotBase.html#getPeriod()" title="class or interface in edu.wpi.first.wpilibj" class="external-link"><code>IterativeRobotBase.getPeriod()</code></a></dd>
 <dd><code>simulationSubTicksPerPeriod</code> - the number of Iterations, or <a href="#simulationSubTick(int)"><code>simulationSubTick(int)</code></a> that the
-                                    simulation runs per each call to <a href="#simulationPeriodic()"><code>simulationPeriodic()</code></a></dd>
+     simulation runs per each call to <a href="#simulationPeriodic()"><code>simulationPeriodic()</code></a></dd>
 </dl>
 </section>
 </li>
@@ -737,7 +737,7 @@ loadScripts(document, 'script');</script>
  <p>The intake simulation should be bound to an <a href="drivesims/AbstractDriveTrainSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.drivesims"><code>AbstractDriveTrainSimulation</code></a> and becomes part of its
  collision space.
 
- <p>This method immediately starts the <a href="IntakeSimulation.GamePieceContactListener.html" title="class in swervelib.simulation.ironmaple.simulation"><code>IntakeSimulation.GamePieceContactListener</code></a>,
+ <p>This method immediately starts the <code>org.ironmaple.simulation.IntakeSimulation.GamePieceContactListener</code>,
  which listens for contact between the intake and any game piece.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1011,7 +1011,7 @@ loadScripts(document, 'script');</script>
 
  <ul>
    <li>The type is determined in the constructor of <a href="gamepieces/GamePieceOnFieldSimulation.html" title="class in swervelib.simulation.ironmaple.simulation.gamepieces"><code>GamePieceOnFieldSimulation</code></a>.
-   <li>For example, <a href="seasonspecific/crescendo2024/CrescendoNoteOnField.html" title="class in swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024"><code>CrescendoNoteOnField</code></a> has the
+   <li>For example, <code>org.ironmaple.simulation.seasonspecific.crescendo2024.CrescendoNoteOnField</code> has the
        type "Note".
  </ul></div>
 <dl class="notes">
