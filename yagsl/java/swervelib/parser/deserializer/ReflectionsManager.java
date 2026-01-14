@@ -27,7 +27,8 @@ public class ReflectionsManager
     /**
      * StudicaLib
      */
-    STUDICA
+    STUDICA,
+    STUDICA2
   }
 
   /**
@@ -66,6 +67,11 @@ public class ReflectionsManager
         case STUDICA ->
         {
           library = Class.forName("com.studica.frc.AHRS");
+          break;
+        }
+        case STUDICA2 ->
+        {
+          library = Class.forName("com.studica.frc.Navx");
           break;
         }
         default ->

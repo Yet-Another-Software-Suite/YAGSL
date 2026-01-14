@@ -48,18 +48,6 @@
       "onlineUrl": "https://maven.ctr-electronics.com/release/com/ctre/phoenix/Phoenix5-replay-frc2026-latest.json"
     },
     {
-      "uuid": "963ef341-8abd-4981-a969-c8ae3f592e82",
-      "errorMessage": "Studica Lib is required!",
-      "offlineFileName": "StudicaLib.json",
-      "onlineUrl": "https://dev.studica.com/maven/release/2026/json/StudicaLib-2026.0.0.json"
-    },
-    {
-      "uuid": "cb311d09-36e9-4143-a032-55bb2b94443b",
-      "errorMessage": "Studica is required!",
-      "offlineFileName": "Studica.json",
-      "onlineUrl": "https://dev.studica.com/maven/release/2026/json/Studica-2026.0.0.json"
-    },
-    {
       "uuid": "60b2694b-9e6e-4026-81ee-6f167946f4b0",
       "errorMessage": "ThriftyLib is required!",
       "offlineFileName": "ThriftyLib.json",

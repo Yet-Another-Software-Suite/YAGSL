@@ -5,7 +5,6 @@ import static swervelib.telemetry.SwerveDriveTelemetry.i2cLockupWarning;
 import static swervelib.telemetry.SwerveDriveTelemetry.serialCommsIssueWarning;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -23,8 +22,6 @@ import swervelib.imu.ADIS16470Swerve;
 import swervelib.imu.ADXRS450Swerve;
 import swervelib.imu.AnalogGyroSwerve;
 import swervelib.imu.CanandgyroSwerve;
-import swervelib.imu.NavX3Swerve;
-import swervelib.imu.NavXSwerve;
 import swervelib.imu.Pigeon2Swerve;
 import swervelib.imu.PigeonSwerve;
 import swervelib.imu.PigeonViaTalonSRXSwerve;
@@ -158,9 +155,15 @@ public class DeviceJson
         return new CanandgyroSwerve(id);
       case "navx":
       case "navx_spi":
-        return new NavXSwerve(NavXComType.kMXP_SPI);
+        return ReflectionsManager.<SwerveIMU>create(VENDOR.STUDICA,
+                                                                "swervelib.imu.NavXSwerve",
+                                                                new Class[]{String.class},
+                                                                new Object[]{"kMXP_SPI"});
       case "navx3":
-        return new NavX3Swerve(id);
+        return ReflectionsManager.<SwerveIMU>create(VENDOR.STUDICA2,
+                                                    "swervelib.imu.NavX3Swerve",
+                                                    new Class[]{Integer.class},
+                                                    new Object[]{id});
       case "navx_i2c":
         DriverStation.reportWarning(
             "WARNING: There exists an I2C lockup issue on the roboRIO that could occur, more information here: " +
@@ -168,15 +171,24 @@ public class DeviceJson
             ".html#onboard-i2c-causing-system-lockups",
             false);
         i2cLockupWarning.set(true);
-        return new NavXSwerve(NavXComType.kI2C);
+        return ReflectionsManager.<SwerveIMU>create(VENDOR.STUDICA,
+                                                    "swervelib.imu.NavXSwerve",
+                                                    new Class[]{String.class},
+                                                    new Object[]{"kI2C"});
       case "navx_usb":
         DriverStation.reportWarning("WARNING: There is issues when using USB camera's and the NavX like this!\n" +
                                     "https://pdocs.kauailabs.com/navx-mxp/guidance/selecting-an-interface/", false);
         serialCommsIssueWarning.set(true);
-        return new NavXSwerve(NavXComType.kUSB1);
+        return ReflectionsManager.<SwerveIMU>create(VENDOR.STUDICA,
+                                                    "swervelib.imu.NavXSwerve",
+                                                    new Class[]{String.class},
+                                                    new Object[]{"kUSB1"});
       case "navx_mxp_serial":
         serialCommsIssueWarning.set(true);
-        return new NavXSwerve(NavXComType.kMXP_UART);
+        return ReflectionsManager.<SwerveIMU>create(VENDOR.STUDICA,
+                                                    "swervelib.imu.NavXSwerve",
+                                                    new Class[]{String.class},
+                                                    new Object[]{"kMXP_UART"});
       case "pigeon":
         return new PigeonSwerve(id);
       case "pigeon_via_talonsrx":
