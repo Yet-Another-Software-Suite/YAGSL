@@ -49,7 +49,7 @@
     },
     {
       "uuid": "963ef341-8abd-4981-a969-c8ae3f592e82",
-      "errorMessage": "Studica is required!",
+      "errorMessage": "Studica Lib is required!",
       "offlineFileName": "StudicaLib.json",
       "onlineUrl": "https://dev.studica.com/maven/release/2026/json/StudicaLib-2026.0.0.json"
     },
