@@ -28,7 +28,7 @@ public class Arena2026Rebuilt extends SimulatedArena {
 
     protected boolean shouldClock = true;
 
-    protected double clock = 0;
+    protected double nextClockSwapTime=0;
     protected boolean blueIsOnClock = Math.random() < 0.5;
 
     protected DoublePublisher phaseClockPublisher =
@@ -290,17 +290,17 @@ public class Arena2026Rebuilt extends SimulatedArena {
     public void simulationSubTick(int tickNum) {
 
         if (shouldClock && !DriverStation.isAutonomous() && DriverStation.isEnabled()) {
-            clock -= getSimulationDt().in(Units.Seconds);
 
-            if (clock <= 0) {
-                clock = 25;
+            if (matchClock >= nextClockSwapTime) {
+                nextClockSwapTime = matchClock + 25;
                 blueIsOnClock = !blueIsOnClock;
             }
-        } else {
-            clock = 25;
-        }
+            phaseClockPublisher.set((nextClockSwapTime-matchClock));
 
-        phaseClockPublisher.set((clock));
+
+        } else {
+            phaseClockPublisher.set((25));
+        }
 
         super.simulationSubTick(tickNum);
 
