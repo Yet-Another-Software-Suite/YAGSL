@@ -130,11 +130,11 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>protected static <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Translation2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Translation2d</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#centerPieceBottomRightCorner" class="member-name-link">centerPieceBottomRightCorner</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected double</code></div>
-<div class="col-second even-row-color"><code><a href="#clock" class="member-name-link">clock</a></code></div>
+<div class="col-first even-row-color"><code>protected boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#isInEfficiencyMode" class="member-name-link">isInEfficiencyMode</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#isInEfficiencyMode" class="member-name-link">isInEfficiencyMode</a></code></div>
+<div class="col-first odd-row-color"><code>protected double</code></div>
+<div class="col-second odd-row-color"><code><a href="#nextClockSwapTime" class="member-name-link">nextClockSwapTime</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/networktables/DoublePublisher.html" title="class or interface in edu.wpi.first.networktables" class="external-link">DoublePublisher</a></code></div>
 <div class="col-second even-row-color"><code><a href="#phaseClockPublisher" class="member-name-link">phaseClockPublisher</a></code></div>
@@ -157,7 +157,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-swervelib.simulation.ironmaple.simulation.SimulatedArena">Fields inherited from class&nbsp;swervelib.simulation.ironmaple.simulation.<a href="../../SimulatedArena.html" title="class in swervelib.simulation.ironmaple.simulation">SimulatedArena</a></h3>
-<code><a href="../../SimulatedArena.html#ALLOW_CREATION_ON_REAL_ROBOT">ALLOW_CREATION_ON_REAL_ROBOT</a>, <a href="../../SimulatedArena.html#bluePublishers">bluePublishers</a>, <a href="../../SimulatedArena.html#blueScore">blueScore</a>, <a href="../../SimulatedArena.html#blueScoringBreakdown">blueScoringBreakdown</a>, <a href="../../SimulatedArena.html#blueTable">blueTable</a>, <a href="../../SimulatedArena.html#customSimulations">customSimulations</a>, <a href="../../SimulatedArena.html#driveTrainSimulations">driveTrainSimulations</a>, <a href="../../SimulatedArena.html#gamePieces">gamePieces</a>, <a href="../../SimulatedArena.html#genericInfoTable">genericInfoTable</a>, <a href="../../SimulatedArena.html#matchClock">matchClock</a>, <a href="../../SimulatedArena.html#matchClockPublisher">matchClockPublisher</a>, <a href="../../SimulatedArena.html#opponentManager">opponentManager</a>, <a href="../../SimulatedArena.html#physicsWorld">physicsWorld</a>, <a href="../../SimulatedArena.html#redPublishers">redPublishers</a>, <a href="../../SimulatedArena.html#redScore">redScore</a>, <a href="../../SimulatedArena.html#redScoringBreakdown">redScoringBreakdown</a>, <a href="../../SimulatedArena.html#redTable">redTable</a>, <a href="../../SimulatedArena.html#resetFieldPublisher">resetFieldPublisher</a>, <a href="../../SimulatedArena.html#resetFieldSubscriber">resetFieldSubscriber</a></code></div>
+<code><a href="../../SimulatedArena.html#ALLOW_CREATION_ON_REAL_ROBOT">ALLOW_CREATION_ON_REAL_ROBOT</a>, <a href="../../SimulatedArena.html#bluePublishers">bluePublishers</a>, <a href="../../SimulatedArena.html#blueScore">blueScore</a>, <a href="../../SimulatedArena.html#blueScoringBreakdown">blueScoringBreakdown</a>, <a href="../../SimulatedArena.html#blueTable">blueTable</a>, <a href="../../SimulatedArena.html#customSimulations">customSimulations</a>, <a href="../../SimulatedArena.html#driveTrainSimulations">driveTrainSimulations</a>, <a href="../../SimulatedArena.html#gamePieces">gamePieces</a>, <a href="../../SimulatedArena.html#genericInfoTable">genericInfoTable</a>, <a href="../../SimulatedArena.html#lastMeasuredTimestamp">lastMeasuredTimestamp</a>, <a href="../../SimulatedArena.html#matchClock">matchClock</a>, <a href="../../SimulatedArena.html#matchClockPublisher">matchClockPublisher</a>, <a href="../../SimulatedArena.html#opponentManager">opponentManager</a>, <a href="../../SimulatedArena.html#physicsWorld">physicsWorld</a>, <a href="../../SimulatedArena.html#redPublishers">redPublishers</a>, <a href="../../SimulatedArena.html#redScore">redScore</a>, <a href="../../SimulatedArena.html#redScoringBreakdown">redScoringBreakdown</a>, <a href="../../SimulatedArena.html#redTable">redTable</a>, <a href="../../SimulatedArena.html#resetFieldPublisher">resetFieldPublisher</a>, <a href="../../SimulatedArena.html#resetFieldSubscriber">resetFieldSubscriber</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -289,9 +289,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="clock">
-<h3>clock</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">clock</span></div>
+<section class="detail" id="nextClockSwapTime">
+<h3>nextClockSwapTime</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">nextClockSwapTime</span></div>
 </section>
 </li>
 <li>
