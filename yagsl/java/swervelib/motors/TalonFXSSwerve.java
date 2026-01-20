@@ -1,6 +1,7 @@
 package swervelib.motors;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -404,7 +405,7 @@ public class TalonFXSSwerve extends SwerveMotor
   @Override
   public double getPosition()
   {
-    return motor.getPosition().getValue().in(Degrees);
+    return motor.getPosition().getValue().magnitude();
   }
 
   /**
