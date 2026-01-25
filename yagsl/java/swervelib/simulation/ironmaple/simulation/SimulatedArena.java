@@ -112,7 +112,7 @@ public abstract class SimulatedArena {
             throw new IllegalStateException(
                     "MapleSim is running on a real robot! (If you would actually want that, set SimulatedArena.ALLOW_CREATION_ON_REAL_ROBOT to true).");
 
-        if (instance == null) instance = new Arena2026Rebuilt();
+        if (instance == null) instance = new Arena2026Rebuilt(false);
 
         return instance;
     }
