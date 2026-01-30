@@ -84,7 +84,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">NavX3Swerve</span>
 <span class="extends-implements">extends <a href="SwerveIMU.html" title="class in swervelib.imu">SwerveIMU</a></span></div>
-<div class="block">Communicates with the NavX(<code>AHRS</code>) as the IMU.</div>
+<div class="block">Communicates with the NavX(<code>Navx</code>) as the IMU.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -96,7 +96,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int)" class="member-name-link">NavX3Swerve</a><wbr>(int&nbsp;canid)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.Integer)" class="member-name-link">NavX3Swerve</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;canid)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor for the NavX(<code>Navx</code>) swerve.</div>
 </div>
@@ -135,7 +135,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIMU()" class="member-name-link">getIMU</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Get the instantiated NavX(<code>AHRS</code>) IMU object.</div>
+<div class="block">Get the instantiated NavX(<code>Navx</code>) IMU object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Rotation3d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Rotation3d</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRawRotation3d()" class="member-name-link">getRawRotation3d</a>()</code></div>
@@ -180,9 +180,9 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(int)">
+<section class="detail" id="&lt;init&gt;(java.lang.Integer)">
 <h3>NavX3Swerve</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">NavX3Swerve</span><wbr><span class="parameters">(int&nbsp;canid)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">NavX3Swerve</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;canid)</span></div>
 <div class="block">Constructor for the NavX(<code>Navx</code>) swerve.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -214,8 +214,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="factoryDefault()">
 <h3>factoryDefault</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">factoryDefault</span>()</div>
-<div class="block">Reset offset to current gyro reading. Does not call NavX(<code>AHRS.reset()</code>) because it has been reported to be
- too slow.</div>
+<div class="block">Reset offset to current gyro reading.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="SwerveIMU.html#factoryDefault()">factoryDefault</a></code>&nbsp;in class&nbsp;<code><a href="SwerveIMU.html" title="class in swervelib.imu">SwerveIMU</a></code></dd>
@@ -317,7 +316,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getIMU()">
 <h3>getIMU</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getIMU</span>()</div>
-<div class="block">Get the instantiated NavX(<code>AHRS</code>) IMU object.</div>
+<div class="block">Get the instantiated NavX(<code>Navx</code>) IMU object.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="SwerveIMU.html#getIMU()">getIMU</a></code>&nbsp;in class&nbsp;<code><a href="SwerveIMU.html" title="class in swervelib.imu">SwerveIMU</a></code></dd>
