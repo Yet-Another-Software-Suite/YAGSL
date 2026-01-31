@@ -35,18 +35,6 @@
       "onlineUrl": "https://software-metadata.revrobotics.com/REVLib-2026.json"
     },
     {
-      "uuid": "e7900d8d-826f-4dca-a1ff-182f658e98af",
-      "errorMessage": "Phoenix6 Replay is required!",
-      "offlineFileName": "Phoenix6-replay-26.1.0.json",
-      "onlineUrl": "https://maven.ctr-electronics.com/release/com/ctre/phoenix6/latest/Phoenix6-replay-frc2026-latest.json"
-    },
-    {
-      "uuid": "fbc886a4-2cec-40c0-9835-71086a8cc3df",
-      "errorMessage": "Phoenix5 Replay Compatibility is required!",
-      "offlineFileName": "Phoenix5-replay-5.36.0.json",
-      "onlineUrl": "https://maven.ctr-electronics.com/release/com/ctre/phoenix/Phoenix5-replay-frc2026-latest.json"
-    },
-    {
       "uuid": "60b2694b-9e6e-4026-81ee-6f167946f4b0",
       "errorMessage": "ThriftyLib is required!",
       "offlineFileName": "ThriftyLib.json",
