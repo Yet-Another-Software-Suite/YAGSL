@@ -4,37 +4,26 @@ import static swervelib.telemetry.SwerveDriveTelemetry.canIdWarning;
 import static swervelib.telemetry.SwerveDriveTelemetry.i2cLockupWarning;
 import static swervelib.telemetry.SwerveDriveTelemetry.serialCommsIssueWarning;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DriverStation;
 import swervelib.encoders.AnalogAbsoluteEncoderSwerve;
-import swervelib.encoders.CANCoderSwerve;
 import swervelib.encoders.CanAndMagSwerve;
 import swervelib.encoders.DIODutyCycleEncoderSwerve;
 import swervelib.encoders.SparkFlexEncoderSwerve;
 import swervelib.encoders.SparkMaxAnalogEncoderSwerve;
 import swervelib.encoders.SparkMaxEncoderSwerve;
 import swervelib.encoders.SwerveAbsoluteEncoder;
-import swervelib.encoders.TalonFXSEncoderAnalogSwerve;
-import swervelib.encoders.TalonSRXEncoderSwerve;
 import swervelib.imu.ADIS16448Swerve;
 import swervelib.imu.ADIS16470Swerve;
 import swervelib.imu.ADXRS450Swerve;
 import swervelib.imu.AnalogGyroSwerve;
 import swervelib.imu.CanandgyroSwerve;
-import swervelib.imu.Pigeon2Swerve;
-import swervelib.imu.PigeonSwerve;
-import swervelib.imu.PigeonViaTalonSRXSwerve;
 import swervelib.imu.SwerveIMU;
 import swervelib.motors.SparkFlexSwerve;
 import swervelib.motors.SparkMaxBrushedMotorSwerve;
 import swervelib.motors.SparkMaxBrushedMotorSwerve.Type;
 import swervelib.motors.SparkMaxSwerve;
 import swervelib.motors.SwerveMotor;
-import swervelib.motors.TalonFXSSwerve;
-import swervelib.motors.TalonFXSwerve;
-import swervelib.motors.TalonSRXSwerve;
 import swervelib.motors.ThriftyNovaSwerve;
 import swervelib.parser.deserializer.ReflectionsManager;
 import swervelib.parser.deserializer.ReflectionsManager.VENDOR;
@@ -90,7 +79,11 @@ public class DeviceJson
       case "sparkflex_canandcoder":
         return new SparkFlexEncoderSwerve(motor, 360);
       case "talonfxs_analog":
-        return new TalonFXSEncoderAnalogSwerve(motor);
+        return ReflectionsManager.<SwerveAbsoluteEncoder>create(VENDOR.PHOENIX6,
+                                                                "swervelib.encoders.TalonFXSEncoderAnalogSwerve",
+                                                                new Class[]{SwerveMotor.class},
+                                                                new Object[]{motor});
+//        return new TalonFXSEncoderAnalogSwerve(motor);
       case "canandcoder_can":
       case "canandmag_can":
         return new CanAndMagSwerve(id);
@@ -105,14 +98,42 @@ public class DeviceJson
       case "analog":
         return new AnalogAbsoluteEncoderSwerve(id);
       case "cancoder":
-        return new CANCoderSwerve(id, canbus != null ? canbus : "");
+        return ReflectionsManager.<SwerveAbsoluteEncoder>create(VENDOR.PHOENIX6,
+                                                                "swervelib.encoders.CANCoderSwerve",
+                                                                new Class[]{int.class, String.class},
+                                                                new Object[]{id, canbus != null ? canbus : ""});
+//        return new CANCoderSwerve(id, canbus != null ? canbus : "");
       case "srxmag_standalone":
-        return new TalonSRXEncoderSwerve(new TalonSRXSwerve(id, false, DCMotor.getCIM(1)),
-                                         FeedbackDevice.PulseWidthEncodedPosition);
+        return ReflectionsManager.<SwerveAbsoluteEncoder>create(VENDOR.PHOENIX6,
+                                                                "swervelib.encoders.TalonSRXEncoderSwerve",
+                                                                new Class[]{SwerveMotor.class, String.class},
+                                                                new Object[]{
+                                                                    ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX5,
+                                                                                                           "swervelib.motors.TalonSRXSwerve",
+                                                                                                           new Class[]{
+                                                                                                               int.class,
+                                                                                                               boolean.class,
+                                                                                                               DCMotor.class},
+                                                                                                           new Object[]{
+                                                                                                               id,
+                                                                                                               false,
+                                                                                                               DCMotor.getCIM(
+                                                                                                                   1)}),
+                                                                    "PulseWidthEncodedPosition"});
+//        return new TalonSRXEncoderSwerve(new TalonSRXSwerve(id, false, DCMotor.getCIM(1)),
+//                                         FeedbackDevice.PulseWidthEncodedPosition);
       case "talonsrx_pwm":
-        return new TalonSRXEncoderSwerve(motor, FeedbackDevice.PulseWidthEncodedPosition);
+        return ReflectionsManager.<SwerveAbsoluteEncoder>create(VENDOR.PHOENIX5,
+                                                                "swervelib.encoders.TalonSRXEncoderSwerve",
+                                                                new Class[]{SwerveMotor.class, String.class},
+                                                                new Object[]{motor, "PulseWidthEncodedPosition"});
+//        return new TalonSRXEncoderSwerve(motor, FeedbackDevice.PulseWidthEncodedPosition);
       case "talonsrx_analog":
-        return new TalonSRXEncoderSwerve(motor, FeedbackDevice.Analog);
+        return ReflectionsManager.<SwerveAbsoluteEncoder>create(VENDOR.PHOENIX5,
+                                                                "swervelib.encoders.TalonSRXEncoderSwerve",
+                                                                new Class[]{SwerveMotor.class, String.class},
+                                                                new Object[]{motor, "Analog"});
+//        return new TalonSRXEncoderSwerve(motor, FeedbackDevice.Analog);
       case "thrifty_nova_rev":
         return ReflectionsManager.<SwerveAbsoluteEncoder>create(VENDOR.THRIFTYBOT,
                                                                 "swervelib.encoders.ThriftyNovaEncoderSwerve",
@@ -124,10 +145,10 @@ public class DeviceJson
                                                                 new Class[]{SwerveMotor.class, String.class},
                                                                 new Object[]{motor, "REDUX_ENCODER"});
       case "thrifty_nova_srx_mag":
-      return ReflectionsManager.<SwerveAbsoluteEncoder>create(VENDOR.THRIFTYBOT,
-                                                              "swervelib.encoders.ThriftyNovaEncoderSwerve",
-                                                              new Class[]{SwerveMotor.class, String.class},
-                                                              new Object[]{motor, "SRX_MAG_ENCODER"});
+        return ReflectionsManager.<SwerveAbsoluteEncoder>create(VENDOR.THRIFTYBOT,
+                                                                "swervelib.encoders.ThriftyNovaEncoderSwerve",
+                                                                new Class[]{SwerveMotor.class, String.class},
+                                                                new Object[]{motor, "SRX_MAG_ENCODER"});
       default:
         throw new RuntimeException(type + " is not a recognized absolute encoder type.");
     }
@@ -159,13 +180,13 @@ public class DeviceJson
       case "navx":
       case "navx_spi":
         return ReflectionsManager.<SwerveIMU>create(VENDOR.STUDICA,
-                                                                "swervelib.imu.NavXSwerve",
-                                                                new Class[]{String.class},
-                                                                new Object[]{"kMXP_SPI"});
+                                                    "swervelib.imu.NavXSwerve",
+                                                    new Class[]{String.class},
+                                                    new Object[]{"kMXP_SPI"});
       case "navx3":
         return ReflectionsManager.<SwerveIMU>create(VENDOR.STUDICA2,
                                                     "swervelib.imu.NavX3Swerve",
-                                                    new Class[]{Integer.class},
+                                                    new Class[]{int.class},
                                                     new Object[]{id});
       case "navx_i2c":
         DriverStation.reportWarning(
@@ -193,11 +214,20 @@ public class DeviceJson
                                                     new Class[]{String.class},
                                                     new Object[]{"kMXP_UART"});
       case "pigeon":
-        return new PigeonSwerve(id);
+        ReflectionsManager.<SwerveIMU>create(VENDOR.PHOENIX5,
+                                             "swervelib.imu.PigeonSwerve",
+                                             new Class[]{int.class},
+                                             new Object[]{id});
       case "pigeon_via_talonsrx":
-        return new PigeonViaTalonSRXSwerve(id);
+        return ReflectionsManager.<SwerveIMU>create(VENDOR.PHOENIX5,
+                                                    "swervelib.imu.PigeonViaTalonSRXSwerve",
+                                                    new Class[]{int.class},
+                                                    new Object[]{id});
       case "pigeon2":
-        return new Pigeon2Swerve(id, canbus != null ? canbus : "");
+        return ReflectionsManager.<SwerveIMU>create(VENDOR.PHOENIX6,
+                                                    "swervelib.imu.Pigeon2Swerve",
+                                                    new Class[]{int.class, String.class},
+                                                    new Object[]{id, canbus != null ? canbus : ""});
       default:
         throw new RuntimeException(type + " is not a recognized imu/gyroscope type.");
     }
@@ -218,13 +248,33 @@ public class DeviceJson
     switch (type)
     {
       case "talonfxs_neo":
-        return new TalonFXSSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getNEO(1));
+        return ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX6,
+                                                      "swervelib.motors.TalonFXSSwerve",
+                                                      new Class[]{int.class, String.class, boolean.class,
+                                                                  DCMotor.class},
+                                                      new Object[]{id, canbus != null ? canbus : "", isDriveMotor,
+                                                                   DCMotor.getNEO(1)});
       case "talonfxs_neo550":
-        return new TalonFXSSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getNeo550(1));
+        return ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX6,
+                                                      "swervelib.motors.TalonFXSSwerve",
+                                                      new Class[]{int.class, String.class, boolean.class,
+                                                                  DCMotor.class},
+                                                      new Object[]{id, canbus != null ? canbus : "", isDriveMotor,
+                                                                   DCMotor.getNeo550(1)});
       case "talonfxs_vortex":
-        return new TalonFXSSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getNeoVortex(1));
+        return ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX6,
+                                                      "swervelib.motors.TalonFXSSwerve",
+                                                      new Class[]{int.class, String.class, boolean.class,
+                                                                  DCMotor.class},
+                                                      new Object[]{id, canbus != null ? canbus : "", isDriveMotor,
+                                                                   DCMotor.getNeoVortex(1)});
       case "talonfxs_minion":
-        return new TalonFXSSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getMinion(1));
+        return ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX6,
+                                                      "swervelib.motors.TalonFXSSwerve",
+                                                      new Class[]{int.class, String.class, boolean.class,
+                                                                  DCMotor.class},
+                                                      new Object[]{id, canbus != null ? canbus : "", isDriveMotor,
+                                                                   DCMotor.getMinion(1)});
       case "talonfxs_pulsar":
         throw new UnsupportedOperationException("Cannot create pulsar combination");
       case "sparkmax_neo":
@@ -253,18 +303,52 @@ public class DeviceJson
         throw new UnsupportedOperationException("Cannot create pulsar combination");
       case "falcon500":
       case "falcon":
-        return new TalonFXSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getFalcon500(1));
+        return ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX6,
+                                                      "swervelib.motors.TalonFXSwerve",
+                                                      new Class[]{int.class, String.class, boolean.class,
+                                                                  DCMotor.class},
+                                                      new Object[]{id, canbus != null ? canbus : "", isDriveMotor,
+                                                                   DCMotor.getFalcon500(1)});
+//        return new TalonFXSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getFalcon500(1));
       case "falcon500foc":
-        return new TalonFXSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getFalcon500Foc(1));
+        return ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX6,
+                                                      "swervelib.motors.TalonFXSwerve",
+                                                      new Class[]{int.class, String.class, boolean.class,
+                                                                  DCMotor.class},
+                                                      new Object[]{id, canbus != null ? canbus : "", isDriveMotor,
+                                                                   DCMotor.getFalcon500Foc(1)});
+//        return new TalonFXSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getFalcon500Foc(1));
       case "krakenx44":
-        return new TalonFXSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getKrakenX44(1));
+        return ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX6,
+                                                      "swervelib.motors.TalonFXSwerve",
+                                                      new Class[]{int.class, String.class, boolean.class,
+                                                                  DCMotor.class},
+                                                      new Object[]{id, canbus != null ? canbus : "", isDriveMotor,
+                                                                   DCMotor.getKrakenX44(1)});
+//        return new TalonFXSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getKrakenX44(1));
       case "krakenx60":
       case "talonfx":
-        return new TalonFXSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getKrakenX60(1));
+        return ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX6,
+                                                      "swervelib.motors.TalonFXSwerve",
+                                                      new Class[]{int.class, String.class, boolean.class,
+                                                                  DCMotor.class},
+                                                      new Object[]{id, canbus != null ? canbus : "", isDriveMotor,
+                                                                   DCMotor.getKrakenX60(1)});
+//        return new TalonFXSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getKrakenX60(1));
       case "krakenx60foc":
-        return new TalonFXSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getKrakenX60Foc(1));
+        return ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX6,
+                                                      "swervelib.motors.TalonFXSwerve",
+                                                      new Class[]{int.class, String.class, boolean.class,
+                                                                  DCMotor.class},
+                                                      new Object[]{id, canbus != null ? canbus : "", isDriveMotor,
+                                                                   DCMotor.getKrakenX60Foc(1)});
+//        return new TalonFXSwerve(id, canbus != null ? canbus : "", isDriveMotor, DCMotor.getKrakenX60Foc(1));
       case "talonsrx":
-        return new TalonSRXSwerve(id, isDriveMotor, DCMotor.getCIM(1));
+        return ReflectionsManager.<SwerveMotor>create(VENDOR.PHOENIX5,
+                                                      "swervelib.motors.TalonSRXSwerve",
+                                                      new Class[]{int.class, boolean.class, DCMotor.class},
+                                                      new Object[]{id, isDriveMotor, DCMotor.getCIM(1)});
+//        return new TalonSRXSwerve(id, isDriveMotor, DCMotor.getCIM(1));
       case "sparkmax_brushed":
         if (canbus == null)
         {

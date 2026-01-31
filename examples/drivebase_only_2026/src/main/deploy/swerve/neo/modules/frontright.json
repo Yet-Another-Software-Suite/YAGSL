@@ -10,7 +10,7 @@
     "canbus": null
   },
   "encoder": {
-    "type": "cancoder",
+    "type": "canandmag",
     "id": 10,
     "canbus": null
   },

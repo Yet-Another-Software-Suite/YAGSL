@@ -51,16 +51,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import swervelib.parser.deserializer.ReflectionsManager;
+import swervelib.parser.deserializer.ReflectionsManager.VENDOR;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.drivesims.AbstractDriveTrainSimulation;
 import swervelib.simulation.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import swervelib.simulation.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 import swervelib.simulation.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
-import swervelib.encoders.CANCoderSwerve;
-import swervelib.imu.Pigeon2Swerve;
 import swervelib.imu.SwerveIMU;
 import swervelib.math.SwerveMath;
-import swervelib.motors.TalonFXSwerve;
 import swervelib.parser.Cache;
 import swervelib.parser.SwerveControllerConfiguration;
 import swervelib.parser.SwerveDriveConfiguration;
@@ -371,21 +370,21 @@ public class SwerveDrive implements AutoCloseable
    */
   private void checkIfTunerXCompatible()
   {
-    boolean compatible = imu instanceof Pigeon2Swerve;
-    for (SwerveModule module : swerveModules)
-    {
-      compatible = compatible && module.getDriveMotor() instanceof TalonFXSwerve &&
-                   module.getAngleMotor() instanceof TalonFXSwerve &&
-                   module.getAbsoluteEncoder() instanceof CANCoderSwerve;
-      if (!compatible)
-      {
-        break;
-      }
-    }
-    if (compatible)
-    {
-      tunerXRecommendation.set(true);
-    }
+//    boolean compatible = imu instanceof Pigeon2Swerve;
+//    for (SwerveModule module : swerveModules)
+//    {
+//      compatible = compatible && module.getDriveMotor() instanceof TalonFXSwerve &&
+//                   module.getAngleMotor() instanceof TalonFXSwerve &&
+//                   module.getAbsoluteEncoder() instanceof CANCoderSwerve;
+//      if (!compatible)
+//      {
+//        break;
+//      }
+//    }
+//    if (compatible)
+//    {
+//      tunerXRecommendation.set(true);
+//    }
 
   }
 
