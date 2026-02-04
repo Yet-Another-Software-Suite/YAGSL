@@ -186,7 +186,7 @@ public class DeviceJson
       case "navx3":
         return ReflectionsManager.<SwerveIMU>create(VENDOR.STUDICA2,
                                                     "swervelib.imu.NavX3Swerve",
-                                                    new Class[]{int.class},
+                                                    new Class[]{Integer.class},
                                                     new Object[]{id});
       case "navx_i2c":
         DriverStation.reportWarning(
