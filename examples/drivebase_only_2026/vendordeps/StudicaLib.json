@@ -1,25 +1,32 @@
 {
     "fileName": "StudicaLib.json",
     "name": "StudicaLib",
-    "version": "2026.0.1-beta",
-    "frcYear": "2026beta",
+  "version": "2026.0.1",
+  "frcYear": "2026",
     "uuid": "963ef341-8abd-4981-a969-c8ae3f592e82",
     "mavenUrls": [
         "https://dev.studica.com/maven/release/2026/"
     ],
-    "jsonUrl": "https://dev.studica.com/maven/release/2026/json/StudicaLib-2026.0.1-beta.json",
+  "jsonUrl": "https://dev.studica.com/maven/release/2026/json/StudicaLib-2026.0.1.json",
+  "conflictsWith": [
+    {
+      "uuid": "cb311d09-36e9-4143-a032-55bb2b94443b",
+      "errorMessage": "StudicaLib (newer devices) is not compatible with Studica (NavX, NavX2)",
+      "offlineFileName": "Studica.json"
+    }
+  ],
     "javaDependencies": [
         {
             "groupId": "com.studica.frc",
             "artifactId": "StudicaLib-java",
-            "version": "2026.0.1-beta"
+          "version": "2026.0.1"
         }
     ],
     "jniDependencies": [
         {
             "groupId": "com.studica.frc",
             "artifactId": "StudicaLib-driver",
-            "version": "2026.0.1-beta",
+          "version": "2026.0.1",
             "skipInvalidPlatforms": true,
             "isJar": false,
             "validPlatforms": [
@@ -36,7 +43,7 @@
         {
             "groupId": "com.studica.frc",
             "artifactId": "StudicaLib-cpp",
-            "version": "2026.0.1-beta",
+          "version": "2026.0.1",
             "libName": "StudicaLib",
             "headerClassifier": "headers",
             "sharedLibrary": false,
@@ -53,7 +60,7 @@
         {
             "groupId": "com.studica.frc",
             "artifactId": "StudicaLib-driver",
-            "version": "2026.0.1-beta",
+          "version": "2026.0.1",
             "libName": "StudicaLibDriver",
             "headerClassifier": "headers",
             "sharedLibrary": false,

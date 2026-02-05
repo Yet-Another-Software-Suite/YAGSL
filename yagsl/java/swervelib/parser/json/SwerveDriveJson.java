@@ -1,13 +1,29 @@
 package swervelib.parser.json;
 
 /**
- * {@link swervelib.SwerveDrive} JSON parsed class. Used to access parsed data from the swervedrive.json file.
+ * {@link yams.mechanisms.swerve.SwerveDrive} JSON parsed class. Used to access parsed data from the swervedrive.json file.
  */
 public class SwerveDriveJson
 {
 
+  /**
+   * Gyro Axis
+   */
   public enum GyroAxis
-  {YAW, PITCH, ROLL}
+  {
+    /**
+     * Yaw axis (Z)
+     */
+    YAW,
+    /**
+     * Pitch axis (X)
+     */
+    PITCH,
+    /**
+     * Roll axis (Y)
+     */
+    ROLL
+  }
 
   /**
    * Robot Gyroscope used to determine the heading of the robot.
