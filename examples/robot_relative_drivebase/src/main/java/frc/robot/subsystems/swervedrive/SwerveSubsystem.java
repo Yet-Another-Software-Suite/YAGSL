@@ -52,7 +52,16 @@ public class SwerveSubsystem extends SubsystemBase
    */
    public SwerveSubsystem(File directory)
   { 
-    boolean blueAlliance = false;
+    boolean blueAlliance;
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent())
+    {
+      blueAlliance = alliance.get() == DriverStation.Alliance.Blue;
+    }
+    else
+    {
+      blueAlliance = false;
+    }
     Pose2d startingPose = blueAlliance ? blueAllianceStartingPose : redAllianceStartingPose;
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
