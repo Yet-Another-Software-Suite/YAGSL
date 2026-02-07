@@ -4,16 +4,16 @@ import static edu.wpi.first.units.Units.Milliseconds;
 import static edu.wpi.first.units.Units.Seconds;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.PersistMode;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -335,7 +335,7 @@ public class SparkFlexSwerve extends SwerveMotor
   @Override
   public void configurePIDF(PIDFConfig config)
   {
-    cfg.closedLoop.pidf(config.p, config.i, config.d, config.f)
+    cfg.closedLoop.pid(config.p, config.i, config.d)
                   .iZone(config.iz)
                   .outputRange(config.output.min, config.output.max);
   }
@@ -421,7 +421,7 @@ public class SparkFlexSwerve extends SwerveMotor
     if (isDriveMotor)
     {
       configureSparkFlex(() ->
-                             pid.setReference(
+                             pid.setSetpoint(
                                  setpoint,
                                  ControlType.kVelocity,
                                  ClosedLoopSlot.kSlot0,
@@ -429,7 +429,7 @@ public class SparkFlexSwerve extends SwerveMotor
     } else
     {
       configureSparkFlex(() ->
-                             pid.setReference(
+                             pid.setSetpoint(
                                  setpoint,
                                  ControlType.kPosition,
                                  ClosedLoopSlot.kSlot0,

@@ -116,7 +116,8 @@ public class ModuleJson
         (absEncoder instanceof SparkMaxEncoderSwerve && angleMotor.getMotor() instanceof SparkMax))
     {
       angleMotor.setAbsoluteEncoder(absEncoder);
-    } else if ((absEncoder instanceof ThriftyNovaEncoderSwerve && angleMotor instanceof ThriftyNovaSwerve))
+    }
+    else if ((absEncoder instanceof ThriftyNovaEncoderSwerve && angleMotor instanceof ThriftyNovaSwerve))
     {
       angleMotor.setAbsoluteEncoder(absEncoder);
     }
@@ -127,8 +128,8 @@ public class ModuleJson
         conversionFactors,
         absEncoder,
         absoluteEncoderOffset,
-        Units.inchesToMeters(Math.round(location.front)),
-        Units.inchesToMeters(Math.round(location.left)),
+        Units.inchesToMeters(location.front),
+        Units.inchesToMeters(location.left),
         anglePIDF,
         velocityPIDF,
         physicalCharacteristics,

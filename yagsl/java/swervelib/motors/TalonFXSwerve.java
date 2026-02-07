@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.Volts;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -94,7 +95,7 @@ public class TalonFXSwerve extends SwerveMotor
    */
   public TalonFXSwerve(int id, String canbus, boolean isDriveMotor, DCMotor motorType)
   {
-    this(new TalonFX(id, canbus), isDriveMotor, motorType);
+    this(new TalonFX(id, new CANBus(canbus)), isDriveMotor, motorType);
   }
 
   /**

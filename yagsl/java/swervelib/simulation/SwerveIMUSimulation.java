@@ -8,7 +8,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import java.util.Optional;
-import org.ironmaple.simulation.drivesims.GyroSimulation;
+import swervelib.simulation.ironmaple.simulation.drivesims.GyroSimulation;
 
 /**
  * Simulation for {@link swervelib.SwerveDrive} IMU.

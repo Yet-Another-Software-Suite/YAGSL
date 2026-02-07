@@ -5,12 +5,12 @@ import static edu.wpi.first.units.Units.Amps;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import org.ironmaple.simulation.drivesims.SelfControlledSwerveDriveSimulation;
+import swervelib.simulation.ironmaple.simulation.drivesims.SelfControlledSwerveDriveSimulation;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveModulePhysicalCharacteristics;
 
 /**
- * Class that wraps around {@link org.ironmaple.simulation.drivesims.SwerveModuleSimulation}
+ * Class that wraps around {@link swervelib.simulation.ironmaple.simulation.drivesims.SwerveModuleSimulation}
  */
 public class SwerveModuleSimulation
 {
@@ -23,11 +23,11 @@ public class SwerveModuleSimulation
   /**
    * Configure the maple sim module
    *
-   * @param simModule               the {@link org.ironmaple.simulation.drivesims.SwerveModuleSimulation} object for
+   * @param simModule               the {@link swervelib.simulation.ironmaple.simulation.drivesims.SwerveModuleSimulation} object for
    *                                simulation
    * @param physicalCharacteristics Physical characteristics of the swerve drive from the JSON or built.
    */
-  public void configureSimModule(org.ironmaple.simulation.drivesims.SwerveModuleSimulation simModule,
+  public void configureSimModule(swervelib.simulation.ironmaple.simulation.drivesims.SwerveModuleSimulation simModule,
                                  SwerveModulePhysicalCharacteristics physicalCharacteristics)
   {
     this.mapleSimModule = new SelfControlledSwerveDriveSimulation.SelfControlledModuleSimulation(simModule);

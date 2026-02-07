@@ -27,7 +27,8 @@ public class ReflectionsManager
     /**
      * StudicaLib
      */
-    STUDICA
+    STUDICA,
+    STUDICA2
   }
 
   /**
@@ -60,12 +61,17 @@ public class ReflectionsManager
         }
         case THRIFTYBOT ->
         {
-          library = Class.forName("com.thethriftybot.ThriftyNova");
+          library = Class.forName("com.thethriftybot.devices.ThriftyNova");
           break;
         }
         case STUDICA ->
         {
           library = Class.forName("com.studica.frc.AHRS");
+          break;
+        }
+        case STUDICA2 ->
+        {
+          library = Class.forName("com.studica.frc.Navx");
           break;
         }
         default ->
@@ -99,7 +105,8 @@ public class ReflectionsManager
     try
     {
       Class<?> wrapper   = Class.forName(className);
-      Object   vendorObj = wrapper.getDeclaredConstructor(parameterTypes).newInstance(parameters);
+      var      vendorCtr = wrapper.getDeclaredConstructor(parameterTypes);
+      var      vendorObj = vendorCtr.newInstance(parameters);
       return (T) vendorObj;
     } catch (Exception e)
     {

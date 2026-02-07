@@ -1,12 +1,12 @@
 package swervelib.encoders;
 
-import com.thethriftybot.Conversion;
-import com.thethriftybot.Conversion.PositionUnit;
-import com.thethriftybot.Conversion.VelocityUnit;
-import com.thethriftybot.ThriftyNova;
-import com.thethriftybot.ThriftyNova.EncoderType;
-import com.thethriftybot.ThriftyNova.ExternalEncoder;
 
+import com.thethriftybot.devices.ThriftyNova;
+import com.thethriftybot.devices.ThriftyNova.EncoderType;
+import com.thethriftybot.devices.ThriftyNova.ExternalEncoder;
+import com.thethriftybot.util.Conversion;
+import com.thethriftybot.util.Conversion.PositionUnit;
+import com.thethriftybot.util.Conversion.VelocityUnit;
 import swervelib.motors.SwerveMotor;
 import swervelib.motors.ThriftyNovaSwerve;
 
@@ -23,20 +23,20 @@ public class ThriftyNovaEncoderSwerve extends SwerveAbsoluteEncoder
   /**
    * Inversion state of the attached encoder.
    */
-  protected boolean           inverted = false;
+  protected boolean     inverted = false;
   /**
    * Offset of the absolute encoder.
    */
-  protected double            offset   = 0.0;
+  protected double     offset   = 0.0;
   /**
    * Position conversion object for the motor encoder
    */
-  private       Conversion    positionConversion;
+  private   Conversion positionConversion;
   /**
    * Velocity conversion object for the motor encoder
    */
-  private       Conversion    velocityConversion;
-    
+  private   Conversion velocityConversion;
+
   /**
    * Create the {@link ThriftyNovaEncoderSwerve} object as an absolute encoder from the {@link ThriftyNovaSwerve}
    * motor.
@@ -61,7 +61,7 @@ public class ThriftyNovaEncoderSwerve extends SwerveAbsoluteEncoder
   public void close()
   {
     // ThriftyNova encoder gets closed with the motor
-    // I don't think an encoder getting closed should 
+    // I don't think an encoder getting closed should
     // close the entire motor so i will keep this empty
   }
 

@@ -1,9 +1,9 @@
 package swervelib.encoders;
 
 import com.revrobotics.REVLibError;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;

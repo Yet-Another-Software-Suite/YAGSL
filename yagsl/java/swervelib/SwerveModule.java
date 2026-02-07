@@ -1001,14 +1001,14 @@ public class SwerveModule implements AutoCloseable
 
   /**
    * Configure the {@link SwerveModule#simModule} with the MapleSim
-   * {@link org.ironmaple.simulation.drivesims.SwerveModuleSimulation}
+   * {@link swervelib.simulation.ironmaple.simulation.drivesims.SwerveModuleSimulation}
    *
-   * @param swerveModuleSimulation  MapleSim {@link org.ironmaple.simulation.drivesims.SwerveModuleSimulation} to
+   * @param swerveModuleSimulation  MapleSim {@link swervelib.simulation.ironmaple.simulation.drivesims.SwerveModuleSimulation} to
    *                                configure with.
    * @param physicalCharacteristics {@link SwerveModulePhysicalCharacteristics} that represent the swerve drive.
    */
   public void configureModuleSimulation(
-      org.ironmaple.simulation.drivesims.SwerveModuleSimulation swerveModuleSimulation,
+      swervelib.simulation.ironmaple.simulation.drivesims.SwerveModuleSimulation swerveModuleSimulation,
       SwerveModulePhysicalCharacteristics physicalCharacteristics)
   {
     this.simModule.configureSimModule(swerveModuleSimulation, physicalCharacteristics);

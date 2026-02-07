@@ -3,14 +3,14 @@ plugins {
     id 'java'
     id 'google-test'
     id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin' version '2025.0'
-    id 'edu.wpi.first.NativeUtils' version '2025.9.0'
+    id 'edu.wpi.first.NativeUtils' version '2026.0.1'
+    id "edu.wpi.first.GradleRIO" version "2026.2.1" // Version supplied here
     id 'edu.wpi.first.GradleJni' version '1.1.0'
     id 'edu.wpi.first.GradleVsCode' version '2.1.0'
-    id "edu.wpi.first.GradleRIO" version "2025.3.1" // Version should be defined here.
     id "com.diffplug.spotless" version "6.11.0"
 }
 
-ext.wpilibVersion = "2025.3.1" // and again here, thanks gradle....
+ext.wpilibVersion = "2026.2.1" // and again here, thanks gradle....
 ext.releasePath = "$buildDir/maven"
 ext.pubVersion = System.getenv("releaseVersion") ?: System.getenv("releaseName") ?: "test"
 
@@ -34,11 +34,11 @@ sourceSets {
             srcDir "$rootDir/../yagsl/java/"
         }
     }
-//    test {
-//        java {
-//            srcDir "src/test/java"
-//        }
-//    }
+    //    test {
+    //        java {
+    //            srcDir "src/test/java"
+    //        }
+    //    }
 }
 
 var javaVersion = "17"
@@ -51,6 +51,7 @@ dependencies {
     //    implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
 
+    implementation 'org.dyn4j:dyn4j:5.0.2'
     implementation "edu.wpi.first.cscore:cscore-java:$wpilibVersion"
     implementation "edu.wpi.first.cameraserver:cameraserver-java:$wpilibVersion"
     implementation "edu.wpi.first.ntcore:ntcore-java:$wpilibVersion"
@@ -59,10 +60,10 @@ dependencies {
     implementation "edu.wpi.first.wpimath:wpimath-java:$wpilibVersion"
     implementation "edu.wpi.first.wpiunits:wpiunits-java:$wpilibVersion"
     implementation "edu.wpi.first.hal:hal-java:$wpilibVersion"
-    implementation "org.ejml:ejml-simple:0.43.1"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:2.15.2"
-    implementation "com.fasterxml.jackson.core:jackson-core:2.15.2"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.15.2"
+    implementation "org.ejml:ejml-simple:0.44.0"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.19.2"
+    implementation "com.fasterxml.jackson.core:jackson-core:2.19.2"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.19.2"
     implementation 'edu.wpi.first.thirdparty.frc2025.opencv:opencv-java:4.10.0-2'
 }
 
@@ -76,6 +77,7 @@ nativeUtils {
 }
 
 javadoc {
+    failOnError false
     title = "Yet Another Generic Swerve Library API"
     destinationDir = file("$releasePath/javadocs")
     options {
@@ -84,8 +86,11 @@ javadoc {
                 'https://codedocs.revrobotics.com/java/',
                 'https://api.ctr-electronics.com/phoenix6/release/java/',
                 'https://api.ctr-electronics.com/phoenix/release/java/',
-                "https://shenzhen-robotics-alliance.github.io/maple-sim/javadocs/",
                 "https://www.kauailabs.com/public_files/navx-mxp/apidocs/java/"
+        tags 'todo:X"',
+                'apiNote:a:"API Note:"',
+                'implSpec:a:"Implementation Requirements:"',
+                'implNote:a:"Implementation Note:"'
     }
 }
 
@@ -144,5 +149,5 @@ build.dependsOn spotlessApply
 apply from: 'publish.gradle'
 
 wrapper {
-    gradleVersion '8.11'
+    gradleVersion = '8.14.3'
 }
