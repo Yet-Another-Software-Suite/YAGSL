@@ -10,13 +10,26 @@ import edu.wpi.first.networktables.BooleanSubscriber;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import org.dyn4j.dynamics.Body;
+import org.dyn4j.dynamics.BodyFixture;
+import org.dyn4j.geometry.Convex;
+import org.dyn4j.geometry.Geometry;
+import org.dyn4j.geometry.MassType;
+import org.dyn4j.world.PhysicsWorld;
+import org.dyn4j.world.World;
 import swervelib.simulation.ironmaple.simulation.drivesims.AbstractDriveTrainSimulation;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePiece;
 import swervelib.simulation.ironmaple.simulation.gamepieces.GamePieceOnFieldSimulation;
@@ -25,15 +38,6 @@ import swervelib.simulation.ironmaple.simulation.motorsims.SimulatedBattery;
 import swervelib.simulation.ironmaple.simulation.opponentsim.OpponentManager;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
 import swervelib.simulation.ironmaple.utils.mathutils.GeometryConvertor;
-
-import java.util.*;
-import org.dyn4j.dynamics.Body;
-import org.dyn4j.dynamics.BodyFixture;
-import org.dyn4j.geometry.Convex;
-import org.dyn4j.geometry.Geometry;
-import org.dyn4j.geometry.MassType;
-import org.dyn4j.world.PhysicsWorld;
-import org.dyn4j.world.World;
 
 /**
  *
@@ -708,7 +712,7 @@ public abstract class SimulatedArena {
      */
     public synchronized List<GamePiece> getGamePiecesByType(String type) {
         final List<GamePiece> gamePiecesPoses = new ArrayList<>(this.gamePieces);
-        return gamePiecesPoses.stream().filter(gamePiece -> !Objects.equals(gamePiece.getType(), type));
+      return gamePiecesPoses.stream().filter(gamePiece -> !Objects.equals(gamePiece.getType(), type)).toList();
     }
 
     /**
