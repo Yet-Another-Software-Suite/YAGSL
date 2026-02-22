@@ -1,9 +1,12 @@
 package swervelib;
 
+import static edu.wpi.first.units.Units.Seconds;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -11,9 +14,12 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -50,107 +56,119 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   /**
    * Translation suppliers.
    */
-  private final DoubleSupplier                  controllerTranslationX;
+  private final DoubleSupplier                   controllerTranslationX;
   /**
    * Translational supplier.
    */
-  private final DoubleSupplier                  controllerTranslationY;
+  private final DoubleSupplier                   controllerTranslationY;
   /**
    * {@link SwerveDrive} object for transformations.
    */
-  private final SwerveDrive                     swerveDrive;
+  private final SwerveDrive                      swerveDrive;
   /**
    * Rotation supplier as angular velocity.
    */
-  private Optional<DoubleSupplier>        controllerOmega                     = Optional.empty();
+  private       Optional<DoubleSupplier>         controllerOmega                     = Optional.empty();
   /**
    * Controller supplier as heading.
    */
-  private Optional<DoubleSupplier>        controllerHeadingX                  = Optional.empty();
+  private       Optional<DoubleSupplier>         controllerHeadingX                  = Optional.empty();
   /**
    * Controller supplier as heading.
    */
-  private Optional<DoubleSupplier>        controllerHeadingY                  = Optional.empty();
+  private       Optional<DoubleSupplier>         controllerHeadingY                  = Optional.empty();
   /**
    * Axis deadband for the controller.
    */
-  private Optional<Double>                axisDeadband                        = Optional.empty();
+  private       Optional<Double>                 axisDeadband                        = Optional.empty();
   /**
    * Translational axis scalar value, should be between (0, 1].
    */
-  private Optional<Double>                translationAxisScale                = Optional.empty();
+  private       Optional<Double>                 translationAxisScale                = Optional.empty();
   /**
    * Angular velocity axis scalar value, should be between (0, 1]
    */
-  private Optional<Double>                omegaAxisScale                      = Optional.empty();
+  private       Optional<Double>                 omegaAxisScale                      = Optional.empty();
   /**
    * Target to aim at.
    */
-  private Optional<Pose2d>                aimTarget                           = Optional.empty();
+  private       Optional<Pose2d>                 aimTarget                           = Optional.empty();
   /**
    * Target {@link Supplier<Pose2d>} to drive towards when driveToPose is enabled.
    */
-  private Optional<Supplier<Pose2d>>      driveToPose                         = Optional.empty();
+  private       Optional<Supplier<Pose2d>>       driveToPose                         = Optional.empty();
   /**
    * {@link ProfiledPIDController} for the translation while driving to a pose. Units are m/s
    */
-  private Optional<ProfiledPIDController> driveToPoseTranslationPIDController = Optional.empty();
+  private       Optional<ProfiledPIDController>  driveToPoseTranslationPIDController = Optional.empty();
   /**
    * {@link ProfiledPIDController} for the Rotational axis while driving to a pose. Units are m/s
    */
-  private Optional<ProfiledPIDController> driveToPoseOmegaPIDController       = Optional.empty();
+  private       Optional<ProfiledPIDController>  driveToPoseOmegaPIDController       = Optional.empty();
   /**
    * Output {@link ChassisSpeeds} based on heading while this is True.
    */
-  private Optional<BooleanSupplier>       headingEnabled                      = Optional.empty();
+  private       Optional<BooleanSupplier>        headingEnabled                      = Optional.empty();
   /**
    * Locked heading for {@link SwerveInputMode#TRANSLATION_ONLY}
    */
-  private Optional<Rotation2d>            lockedHeading                       = Optional.empty();
+  private       Optional<Rotation2d>             lockedHeading                       = Optional.empty();
   /**
    * Output {@link ChassisSpeeds} based on aim while this is True.
    */
-  private Optional<BooleanSupplier>       aimEnabled                          = Optional.empty();
+  private       Optional<BooleanSupplier>        aimEnabled                          = Optional.empty();
   /**
    * Output {@link ChassisSpeeds} to move to a specific {@link Pose2d}.
    */
-  private Optional<BooleanSupplier>       driveToPoseEnabled                  = Optional.empty();
+  private       Optional<BooleanSupplier>        driveToPoseEnabled                  = Optional.empty();
   /**
    * Maintain current heading and drive without rotating, ideally.
    */
-  private Optional<BooleanSupplier>       translationOnlyEnabled              = Optional.empty();
+  private       Optional<BooleanSupplier>        translationOnlyEnabled              = Optional.empty();
   /**
    * Cube the translation magnitude from the controller.
    */
-  private Optional<BooleanSupplier>       translationCube                     = Optional.empty();
+  private       Optional<BooleanSupplier>        translationCube                     = Optional.empty();
   /**
    * Cube the angular velocity axis from the controller.
    */
-  private Optional<BooleanSupplier>       omegaCube                           = Optional.empty();
+  private       Optional<BooleanSupplier>        omegaCube                           = Optional.empty();
   /**
    * Robot relative oriented output expected.
    */
-  private Optional<BooleanSupplier>       robotRelative                       = Optional.empty();
+  private       Optional<BooleanSupplier>        robotRelative                       = Optional.empty();
   /**
    * Field oriented chassis output is relative to your current alliance.
    */
-  private Optional<BooleanSupplier>       allianceRelative                    = Optional.empty();
+  private       Optional<BooleanSupplier>        allianceRelative                    = Optional.empty();
   /**
    * Heading offset enable state.
    */
-  private Optional<BooleanSupplier>       translationHeadingOffsetEnabled     = Optional.empty();
+  private       Optional<BooleanSupplier>        translationHeadingOffsetEnabled     = Optional.empty();
   /**
    * Heading offset to apply during heading based control.
    */
-  private Optional<Rotation2d>            translationHeadingOffset            = Optional.empty();
+  private       Optional<Rotation2d>             translationHeadingOffset            = Optional.empty();
+  /**
+   * Aim current pose lookahead time.
+   */
+  private       Optional<Time>                   aimLookaheadTime                    = Optional.empty();
+  /**
+   * Azimuth feedforward for aim.
+   */
+  private       Optional<SimpleMotorFeedforward> azimuthFeedforward                  = Optional.empty();
+  /**
+   * Azimuth heading goal for aim.
+   */
+  private       Optional<Angle>                  aimGoalAngle                        = Optional.empty();
   /**
    * {@link SwerveController} for simple control over heading.
    */
-  private SwerveController                swerveController                    = null;
+  private       SwerveController                 swerveController                    = null;
   /**
    * Current {@link SwerveInputMode} to use.
    */
-  private SwerveInputMode                 currentMode                         = SwerveInputMode.ANGULAR_VELOCITY;
+  private       SwerveInputMode                  currentMode                         = SwerveInputMode.ANGULAR_VELOCITY;
 
 
   /**
@@ -211,6 +229,39 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
     return new SwerveInputStream(drive, x, y);
   }
 
+  private SwerveInputStream(SwerveInputStream s)
+  {
+    this.swerveDrive = s.swerveDrive;
+    this.controllerTranslationX = s.controllerTranslationX;
+    this.controllerTranslationY = s.controllerTranslationY;
+    this.controllerOmega = s.controllerOmega;
+    this.controllerHeadingX = s.controllerHeadingX;
+    this.controllerHeadingY = s.controllerHeadingY;
+    this.axisDeadband = s.axisDeadband;
+    this.translationAxisScale = s.translationAxisScale;
+    this.omegaAxisScale = s.omegaAxisScale;
+    this.driveToPose = s.driveToPose;
+    this.driveToPoseTranslationPIDController = s.driveToPoseTranslationPIDController;
+    this.driveToPoseOmegaPIDController = s.driveToPoseOmegaPIDController;
+    this.aimTarget = s.aimTarget;
+    this.headingEnabled = s.headingEnabled;
+    this.aimEnabled = s.aimEnabled;
+    this.driveToPoseEnabled = s.driveToPoseEnabled;
+    this.currentMode = s.currentMode;
+    this.translationOnlyEnabled = s.translationOnlyEnabled;
+    this.lockedHeading = s.lockedHeading;
+    this.swerveController = s.swerveController;
+    this.omegaCube = s.omegaCube;
+    this.translationCube = s.translationCube;
+    this.robotRelative = s.robotRelative;
+    this.allianceRelative = s.allianceRelative;
+    this.translationHeadingOffsetEnabled = s.translationHeadingOffsetEnabled;
+    this.translationHeadingOffset = s.translationHeadingOffset;
+    this.aimLookaheadTime = s.aimLookaheadTime;
+    this.azimuthFeedforward = s.azimuthFeedforward;
+    this.aimGoalAngle = s.aimGoalAngle;
+  }
+
   /**
    * Copy the {@link SwerveInputStream} object.
    *
@@ -218,31 +269,7 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
    */
   public SwerveInputStream copy()
   {
-    SwerveInputStream newStream = new SwerveInputStream(swerveDrive, controllerTranslationX, controllerTranslationY);
-    newStream.controllerOmega = controllerOmega;
-    newStream.controllerHeadingX = controllerHeadingX;
-    newStream.controllerHeadingY = controllerHeadingY;
-    newStream.axisDeadband = axisDeadband;
-    newStream.translationAxisScale = translationAxisScale;
-    newStream.omegaAxisScale = omegaAxisScale;
-    newStream.driveToPose = driveToPose;
-    newStream.driveToPoseTranslationPIDController = driveToPoseTranslationPIDController;
-    newStream.driveToPoseOmegaPIDController = driveToPoseOmegaPIDController;
-    newStream.aimTarget = aimTarget;
-    newStream.headingEnabled = headingEnabled;
-    newStream.aimEnabled = aimEnabled;
-    newStream.driveToPoseEnabled = driveToPoseEnabled;
-    newStream.currentMode = currentMode;
-    newStream.translationOnlyEnabled = translationOnlyEnabled;
-    newStream.lockedHeading = lockedHeading;
-    newStream.swerveController = swerveController;
-    newStream.omegaCube = omegaCube;
-    newStream.translationCube = translationCube;
-    newStream.robotRelative = robotRelative;
-    newStream.allianceRelative = allianceRelative;
-    newStream.translationHeadingOffsetEnabled = translationHeadingOffsetEnabled;
-    newStream.translationHeadingOffset = translationHeadingOffset;
-    return newStream;
+    return new SwerveInputStream(this);
   }
 
   /**
@@ -534,6 +561,32 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   }
 
   /**
+   * Aim lookahead time for the {@link SwerveDrive} to estimate its current position while driving.
+   *
+   * @param lookaheadTime Lookahead time for the {@link SwerveDrive} to estimate its current position.
+   * @return {@link SwerveInputStream} for chaining.
+   */
+  public SwerveInputStream aimLookahead(Time lookaheadTime)
+  {
+    this.aimLookaheadTime = Optional.of(lookaheadTime);
+    return this;
+  }
+
+  /**
+   * Aim feedforward for better tracking of the target.
+   *
+   * @param kS kS gain (voltage)
+   * @param kV kV gain (radians/s/voltage)
+   * @param kA kA gain (radians/s^2/voltage)
+   * @return {@link SwerveInputStream} for chaining.
+   */
+  public SwerveInputStream aimFeedforward(double kS, double kV, double kA)
+  {
+    this.azimuthFeedforward = Optional.of(new SimpleMotorFeedforward(kS, kV, kA));
+    return this;
+  }
+
+  /**
    * Enable aiming while the trigger is true.
    *
    * @param trigger When True will enable aiming at the current target.
@@ -543,6 +596,18 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   {
     aimEnabled = Optional.of(trigger);
     return this;
+  }
+
+  /**
+   * Aim is locked onto the target.
+   *
+   * @param tolerance Tolerance of the lock.
+   * @return {@link Trigger} for aim lock.
+   */
+  public Trigger aimLock(Angle tolerance)
+  {
+    return new Trigger(() -> aimEnabled.isPresent() && aimEnabled.get().getAsBoolean() && aimGoalAngle.isPresent() &&
+                             swerveDrive.getOdometryHeading().getMeasure().isNear(aimGoalAngle.get(), tolerance));
   }
 
   /**
@@ -937,10 +1002,28 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
       }
       case AIM ->
       {
-        Rotation2d    currentHeading = swerveDrive.getOdometryHeading();
-        Translation2d relativeTrl    = aimTarget.get().relativeTo(swerveDrive.getPose()).getTranslation();
-        Rotation2d    target         = new Rotation2d(relativeTrl.getX(), relativeTrl.getY()).plus(currentHeading);
-        omegaRadiansPerSecond = swerveController.headingCalculate(currentHeading.getRadians(), target.getRadians());
+        var currentPose   = swerveDrive.getPose();
+        var currentSpeeds = swerveDrive.getFieldVelocity();
+        if (aimLookaheadTime.isPresent())
+        {
+          currentPose = currentPose.exp(currentSpeeds.toTwist2d(aimLookaheadTime.get().in(Seconds)));
+        }
+        var targetVector   = aimTarget.orElseThrow().getTranslation().minus(currentPose.getTranslation());
+        var targetDistance = targetVector.getNorm();
+        // TODO: Shoot on the move, using
+        //  targetVector = targetVector.div(targetDistance).times(sotmDistanceToRPSMap.get(targetDistance)*flyWheelCircumference)
+        //  var shotVector = targetVector.minus(new Translation2d(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
+        var        shotVector = targetVector;
+        Rotation2d target     = shotVector.getAngle();
+        aimGoalAngle = Optional.of(target.getMeasure());
+        omegaRadiansPerSecond = swerveController.headingCalculate(swerveDrive.getOdometryHeading().getRadians(),
+                                                                  target.getRadians());
+        if (azimuthFeedforward.isPresent())
+        {
+          omegaRadiansPerSecond += azimuthFeedforward.get()
+                                                     .calculateWithVelocities(swerveDrive.getFieldVelocity().omegaRadiansPerSecond,
+                                                                              omegaRadiansPerSecond);
+        }
         speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
         break;
       }
