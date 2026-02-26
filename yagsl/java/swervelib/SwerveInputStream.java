@@ -1,5 +1,6 @@
 package swervelib;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
@@ -991,12 +992,13 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
    * PID, and feedforward (if defined).
    *
    * @param target Target angle to calculate for.
+   * @param offset Offset to apply to the target angle. 
    * @return {@link AngularVelocity} to reach the target {@link Angle}.
    */
-  public AngularVelocity calculateAngularVelocity(Angle target)
+  public AngularVelocity calculateAngularVelocity(Angle target, Angle offset)
   {
     var omegaRadiansPerSecond = swerveController.headingCalculate(swerveDrive.getOdometryHeading().getRadians(),
-                                                                  target.in(Radians));
+                                                                  target.plus(offset).in(Radians));
     if (azimuthFeedforward.isPresent())
     {
       omegaRadiansPerSecond += azimuthFeedforward.get()
@@ -1004,6 +1006,18 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
                                                                           omegaRadiansPerSecond);
     }
     return RadiansPerSecond.of(omegaRadiansPerSecond);
+  }
+
+/**
+   * Calculate the angular velocity required for the given target with the current heading, `controllerproperties.json`
+   * PID, and feedforward (if defined), no offset to the target.
+   *
+   * @param target Target angle to calculate for.
+   * @return {@link AngularVelocity} to reach the target {@link Angle}.
+   */
+  public AngularVelocity calculateAngularVelocity(Angle target)
+  {
+    return calculateAngularVelocity(target, Degrees.of(0));
   }
 
 
