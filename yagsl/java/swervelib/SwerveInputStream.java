@@ -152,6 +152,14 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   /**
    * Heading offset to apply during heading based control.
    */
+  private       Optional<Rotation2d>             aimOffset                           = Optional.empty();
+  /**
+   * Heading offset enable state.
+   */
+  private       Optional<BooleanSupplier>        aimOffsetEnabled                    = Optional.empty();
+  /**
+   * Heading offset to apply during heading based control.
+   */
   private       Optional<Rotation2d>             translationHeadingOffset            = Optional.empty();
   /**
    * Aim current pose lookahead time.
@@ -643,6 +651,42 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   }
 
   /**
+   * Aim offset enabled boolean supplier.
+   *
+   * @param enabled Boolean supplier to enable aim offset.
+   * @return this.
+   */
+  public SwerveInputStream aimOffset(BooleanSupplier enabled)
+  {
+    this.aimOffsetEnabled = Optional.of(enabled);
+    return this;
+  }
+
+  /**
+   * Aim offset enabled
+   *
+   * @param enabled Boolean to enable aim offset.
+   * @return this.
+   */
+  public SwerveInputStream aimOffset(boolean enabled)
+  {
+    this.aimOffsetEnabled = enabled ? Optional.of(() -> enabled) : Optional.empty();
+    return this;
+  }
+
+  /**
+   * Set the aim offset.
+   *
+   * @param offset The offset applied to the aim heading target.
+   * @return this.
+   */
+  public SwerveInputStream aimOffset(Rotation2d offset)
+  {
+    this.aimOffset = Optional.of(offset);
+    return this;
+  }
+
+  /**
    * Enable locking of rotation and only translating, overrides everything.
    *
    * @param trigger Translation only while returns true.
@@ -1086,8 +1130,13 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
         // TODO: Shoot on the move, using
         //  targetVector = targetVector.div(targetDistance).times(sotmDistanceToRPSMap.get(targetDistance)*flyWheelCircumference)
         //  var shotVector = targetVector.minus(new Translation2d(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
-        var        shotVector = targetVector;
-        Rotation2d target     = shotVector.getAngle();
+        var shotVector = targetVector;
+        Rotation2d target = shotVector.getAngle();
+        if (aimOffsetEnabled.isPresent() && aimOffsetEnabled.get().getAsBoolean() && aimOffset.isPresent())
+        {
+          target = target.plus(aimOffset.get());
+        } 
+
         aimGoalAngle = Optional.of(target.getMeasure());
         omegaRadiansPerSecond = calculateAngularVelocity(target.getMeasure()).in(RadiansPerSecond);
         speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
