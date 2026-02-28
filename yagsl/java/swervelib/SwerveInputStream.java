@@ -174,6 +174,12 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
    */
   private       SwerveInputMode                  currentMode                         = SwerveInputMode.ANGULAR_VELOCITY;
 
+  private       Optional<Rotation2d>             aimHeadingOffset                    = Optional.empty();
+  /**
+ * Aim heading offset enable state.
+ */
+  private Optional<BooleanSupplier> aimHeadingOffsetEnabled = Optional.empty();
+
 
   /**
    * Create a {@link SwerveInputStream} for an easy way to generate {@link ChassisSpeeds} from a driver controller.
@@ -264,6 +270,8 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
     this.aimLookaheadTime = s.aimLookaheadTime;
     this.azimuthFeedforward = s.azimuthFeedforward;
     this.aimGoalAngle = s.aimGoalAngle;
+    this.aimHeadingOffset = s.aimHeadingOffset;
+    this.aimHeadingOffsetEnabled = s.aimHeadingOffsetEnabled;
   }
 
   /**
@@ -683,6 +691,46 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
     }
     return this;
   }
+  /**
+   * Aim Heading offset enabled boolean supplier.
+   *
+   * @param enabled Enable state
+   * @return self
+   */
+  public SwerveInputStream aimHeadingOffset(BooleanSupplier enabled)
+  {
+  aimHeadingOffsetEnabled = Optional.of(enabled);
+  return this;
+  }
+  /**
+   * Aim heading offset enable
+   *
+   * @param enabled Enable state
+   * @return self
+   */
+  public SwerveInputStream aimHeadingOffset(boolean enabled)
+  {
+  if (enabled)
+  {
+  aimHeadingOffsetEnabled = Optional.of(() -> true);
+  }
+  else
+  {
+  aimHeadingOffsetEnabled = Optional.empty();
+  }
+  return this;
+  }
+  /**
+   * Set the aim heading offset angle.
+   *
+   * @param angle {@link Rotation2d} offset to apply
+   * @return self
+   */
+  public SwerveInputStream aimHeadingOffset(Rotation2d angle)
+  {
+  aimHeadingOffset = Optional.of(angle);
+  return this;
+  }
 
   /**
    * Find {@link SwerveInputMode} based off existing parameters of the {@link SwerveInputStream}
@@ -995,15 +1043,9 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
    */
   public AngularVelocity calculateAngularVelocity(Angle target)
   {
-    double offsetRadians = 0;
 
-    if (translationHeadingOffsetEnabled.isPresent() && translationHeadingOffsetEnabled.get().getAsBoolean()&&translationHeadingOffset.isPresent())
-    {
-      offsetRadians = translationHeadingOffset.get().getRadians();
-    }
-    
     var omegaRadiansPerSecond = swerveController.headingCalculate(swerveDrive.getOdometryHeading().getRadians(),
-                                                                  target.in(Radians) + offsetRadians);
+                                                                  target.in(Radians));
     if (azimuthFeedforward.isPresent())
     {
       omegaRadiansPerSecond += azimuthFeedforward.get()
@@ -1088,6 +1130,10 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
         //  var shotVector = targetVector.minus(new Translation2d(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
         var        shotVector = targetVector;
         Rotation2d target     = shotVector.getAngle();
+        if (aimHeadingOffsetEnabled.isPresent() && aimHeadingOffsetEnabled.get().getAsBoolean() && aimHeadingOffset.isPresent())
+        {
+        target = target.plus(aimHeadingOffset.get());
+        }
         aimGoalAngle = Optional.of(target.getMeasure());
         omegaRadiansPerSecond = calculateAngularVelocity(target.getMeasure()).in(RadiansPerSecond);
         speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
