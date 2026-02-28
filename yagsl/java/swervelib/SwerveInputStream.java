@@ -272,6 +272,8 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
     this.aimLookaheadTime = s.aimLookaheadTime;
     this.azimuthFeedforward = s.azimuthFeedforward;
     this.aimGoalAngle = s.aimGoalAngle;
+    this.aimHeadingOffset = s.aimHeadingOffset;
+    this.aimHeadingOffsetEnabled = s.aimHeadingOffsetEnabled;
   }
 
   /**
@@ -1039,15 +1041,8 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
    */
   public AngularVelocity calculateAngularVelocity(Angle target)
   {
-    double offsetRadians = 0;
-
-    if (translationHeadingOffsetEnabled.isPresent() && translationHeadingOffsetEnabled.get().getAsBoolean()&&translationHeadingOffset.isPresent())
-    {
-      offsetRadians = translationHeadingOffset.get().getRadians();
-    }
-    
     var omegaRadiansPerSecond = swerveController.headingCalculate(swerveDrive.getOdometryHeading().getRadians(),
-                                                                  target.in(Radians) + offsetRadians);
+                                                                  target.in(Radians));
     if (azimuthFeedforward.isPresent())
     {
       omegaRadiansPerSecond += azimuthFeedforward.get()
