@@ -152,15 +152,15 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   /**
    * Heading offset to apply during heading based control.
    */
-  private       Optional<Rotation2d>             aimOffset                           = Optional.empty();
-  /**
-   * Heading offset enable state.
-   */
-  private       Optional<BooleanSupplier>        aimOffsetEnabled                    = Optional.empty();
-  /**
-   * Heading offset to apply during heading based control.
-   */
   private       Optional<Rotation2d>             translationHeadingOffset            = Optional.empty();
+  /**
+   * Heading offset to apply during aim based control.
+   */
+  private       Optional<Rotation2d>             aimHeadingOffset                    = Optional.empty();
+  /**
+   * Aim offset enable state.
+   */
+  private       Optional<BooleanSupplier>        aimHeadingOffsetEnabled             = Optional.empty();
   /**
    * Aim current pose lookahead time.
    */
@@ -651,38 +651,38 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   }
 
   /**
-   * Aim offset enabled boolean supplier.
+   * Aim heading offset enabled boolean supplier.
    *
-   * @param enabled Boolean supplier to enable aim offset.
+   * @param enabled Boolean supplier to enable aim heading offset.
    * @return this.
    */
-  public SwerveInputStream aimOffset(BooleanSupplier enabled)
+  public SwerveInputStream aimHeadingOffset(BooleanSupplier enabled)
   {
-    this.aimOffsetEnabled = Optional.of(enabled);
+    this.aimHeadingOffsetEnabled = Optional.of(enabled);
     return this;
   }
 
   /**
-   * Aim offset enabled
+   * Aim heading offset enabled
    *
-   * @param enabled Boolean to enable aim offset.
+   * @param enabled Boolean to enable aim heading offset.
    * @return this.
    */
-  public SwerveInputStream aimOffset(boolean enabled)
+  public SwerveInputStream aimHeadingOffset(boolean enabled)
   {
-    this.aimOffsetEnabled = enabled ? Optional.of(() -> enabled) : Optional.empty();
+    this.aimHeadingOffsetEnabled = enabled ? Optional.of(() -> enabled) : Optional.empty();
     return this;
   }
 
   /**
-   * Set the aim offset.
+   * Set the aim heading offset.
    *
    * @param offset The offset applied to the aim heading target.
    * @return this.
    */
-  public SwerveInputStream aimOffset(Rotation2d offset)
+  public SwerveInputStream aimHeadingOffset(Rotation2d offset)
   {
-    this.aimOffset = Optional.of(offset);
+    this.aimHeadingOffset = Optional.of(offset);
     return this;
   }
 
@@ -1132,9 +1132,9 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
         //  var shotVector = targetVector.minus(new Translation2d(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
         var shotVector = targetVector;
         Rotation2d target = shotVector.getAngle();
-        if (aimOffsetEnabled.isPresent() && aimOffsetEnabled.get().getAsBoolean() && aimOffset.isPresent())
+        if (aimHeadingOffsetEnabled.isPresent() && aimHeadingOffsetEnabled.get().getAsBoolean() && aimHeadingOffset.isPresent())
         {
-          target = target.plus(aimOffset.get());
+          target = target.plus(aimHeadingOffset.get());
         } 
 
         aimGoalAngle = Optional.of(target.getMeasure());
