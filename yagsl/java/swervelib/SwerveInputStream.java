@@ -173,12 +173,14 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
    * Current {@link SwerveInputMode} to use.
    */
   private       SwerveInputMode                  currentMode                         = SwerveInputMode.ANGULAR_VELOCITY;
-
+  /**
+   * Heading offset to apply during aim mode.
+   */
   private       Optional<Rotation2d>             aimHeadingOffset                    = Optional.empty();
   /**
- * Aim heading offset enable state.
- */
-  private Optional<BooleanSupplier> aimHeadingOffsetEnabled = Optional.empty();
+  * Aim heading offset enable state.
+  */
+  private Optional<BooleanSupplier>               aimHeadingOffsetEnabled             = Optional.empty();
 
 
   /**
