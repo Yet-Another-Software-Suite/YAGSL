@@ -28,6 +28,11 @@ public class Arena2026Rebuilt extends SimulatedArena {
 
     protected boolean shouldClock = true;
 
+
+    protected boolean redActiveOverride = true;
+    protected boolean blueActiveOverride = true;
+
+
     protected double nextClockSwapTime=0;
     protected boolean blueIsOnClock = Math.random() < 0.5;
 
@@ -321,9 +326,9 @@ public class Arena2026Rebuilt extends SimulatedArena {
      */
     public boolean isActive(boolean isBlue) {
         if (isBlue) {
-            return blueIsOnClock || DriverStation.isAutonomous() || !shouldClock;
+            return blueIsOnClock || DriverStation.isAutonomous() || (!shouldClock&&blueActiveOverride);
         } else {
-            return !blueIsOnClock || DriverStation.isAutonomous() || !shouldClock;
+            return !blueIsOnClock || DriverStation.isAutonomous() || (!shouldClock&&redActiveOverride);
         }
     }
 
@@ -339,6 +344,16 @@ public class Arena2026Rebuilt extends SimulatedArena {
      */
     public void setShouldRunClock(boolean shouldRunClock) {
         shouldClock = shouldRunClock;
+    }
+
+    /**
+     * <h2> Sets the active value to be used when {@link #setShouldRunClock(boolean)} is set to true </h2>
+     * @param isBlue Which alliance to set the active value of
+     * @param override The value to set with true being active and false being inactive. 
+     */
+    protected void setActiveOverride(boolean isBlue, boolean override){
+        if (isBlue){blueActiveOverride = override;}
+        else {redActiveOverride=override;}
     }
 
     /**
