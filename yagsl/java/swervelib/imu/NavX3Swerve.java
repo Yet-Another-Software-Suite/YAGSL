@@ -4,8 +4,6 @@ import static edu.wpi.first.units.Units.Degree;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.Milliseconds;
 
-import com.studica.frc.AHRS;
-import com.studica.frc.AHRS.NavXComType;
 import com.studica.frc.Navx;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -17,7 +15,7 @@ import edu.wpi.first.wpilibj.Timer;
 import java.util.Optional;
 
 /**
- * Communicates with the NavX({@link AHRS}) as the IMU.
+ * Communicates with the NavX({@link Navx}) as the IMU.
  */
 public class NavX3Swerve extends SwerveIMU
 {
@@ -39,7 +37,7 @@ public class NavX3Swerve extends SwerveIMU
    */
   private       Alert              navXError;
   /**
-   * Inversion state of the {@link AHRS}.
+   * Inversion state of the {@link Navx}.
    */
   private       boolean            inverted = false;
 
@@ -48,7 +46,7 @@ public class NavX3Swerve extends SwerveIMU
    *
    * @param canid CAN ID of the NavX3.
    */
-  public NavX3Swerve(int canid)
+  public NavX3Swerve(Integer canid)
   {
     navXError = new Alert("IMU", "Error instantiating NavX.", AlertType.kError);
     try
@@ -69,8 +67,7 @@ public class NavX3Swerve extends SwerveIMU
   }
 
   /**
-   * Reset offset to current gyro reading. Does not call NavX({@link AHRS#reset()}) because it has been reported to be
-   * too slow.
+   * Reset offset to current gyro reading.
    */
   @Override
   public void factoryDefault()
@@ -156,7 +153,7 @@ public class NavX3Swerve extends SwerveIMU
   }
 
   /**
-   * Get the instantiated NavX({@link AHRS}) IMU object.
+   * Get the instantiated NavX({@link Navx}) IMU object.
    *
    * @return IMU object.
    */

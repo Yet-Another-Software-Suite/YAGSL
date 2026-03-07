@@ -35,7 +35,7 @@ Development happens here!
 # Support our developers!
 Visit our organization [here](https://yetanothersoftwaresuite.com)
 
-### TL;DR Generate and download your configuration [here](https://broncbotz3481.github.io/YAGSL-Example/) and unzip it so that it follows structure below:
+### TL;DR Generate and download your configuration [here](https://yet-another-software-suite.github.io/YAGSL/config_generator/) and unzip it so that it follows structure below:
 
 ```text
 deploy

@@ -28,8 +28,10 @@ public class Arena2026Rebuilt extends SimulatedArena {
 
     protected boolean shouldClock = true;
 
+
     protected boolean redActiveOverride = true;
     protected boolean blueActiveOverride = true;
+
 
     protected double nextClockSwapTime=0;
     protected boolean blueIsOnClock = Math.random() < 0.5;

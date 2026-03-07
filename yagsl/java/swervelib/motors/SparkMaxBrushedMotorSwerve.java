@@ -3,13 +3,13 @@ package swervelib.motors;
 import static edu.wpi.first.units.Units.Milliseconds;
 import static edu.wpi.first.units.Units.Seconds;
 
+import com.revrobotics.PersistMode;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -18,6 +18,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -214,7 +215,10 @@ public class SparkMaxBrushedMotorSwerve extends SwerveMotor
   public void updateConfig(SparkMaxConfig cfgGiven)
   {
     cfg.apply(cfgGiven);
-    configureSparkMax(() -> motor.configure(cfg, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters));
+    configureSparkMax(() -> motor.configure(cfg,
+                                            ResetMode.kNoResetSafeParameters,
+                                            DriverStation.isEnabled() ? PersistMode.kNoPersistParameters
+                                                                      : PersistMode.kPersistParameters));
   }
 
   /**
@@ -462,7 +466,10 @@ public class SparkMaxBrushedMotorSwerve extends SwerveMotor
   public void burnFlash()
   {
     configureSparkMax(() -> {
-      return motor.configure(cfg, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+      return motor.configure(cfg,
+                             ResetMode.kNoResetSafeParameters,
+                             DriverStation.isEnabled() ? PersistMode.kNoPersistParameters
+                                                       : PersistMode.kPersistParameters);
     });
   }
 

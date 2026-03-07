@@ -80,6 +80,7 @@ public class SparkFlexSwerve extends SwerveMotor
    */
   public SparkFlexSwerve(SparkFlex motor, boolean isDriveMotor, DCMotor motorType)
   {
+    this.simMotor = motorType;
     this.motor = motor;
     this.isDriveMotor = isDriveMotor;
     failureConfiguring = new Alert("Motors",
@@ -158,7 +159,10 @@ public class SparkFlexSwerve extends SwerveMotor
       DriverStation.reportWarning("Configuration changes cannot be applied while the robot is enabled.", false);
     }
     cfg.apply(cfgGiven);
-    configureSparkFlex(() -> motor.configure(cfg, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters));
+    configureSparkFlex(() -> motor.configure(cfg,
+                                             ResetMode.kNoResetSafeParameters,
+                                             DriverStation.isEnabled() ? PersistMode.kNoPersistParameters
+                                                                       : PersistMode.kPersistParameters));
   }
 
   /**
@@ -393,7 +397,10 @@ public class SparkFlexSwerve extends SwerveMotor
   public void burnFlash()
   {
     configureSparkFlex(() -> {
-      return motor.configure(cfg, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+      return motor.configure(cfg,
+                             ResetMode.kNoResetSafeParameters,
+                             DriverStation.isEnabled() ? PersistMode.kNoPersistParameters
+                                                       : PersistMode.kPersistParameters);
     });
   }
 
