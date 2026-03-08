@@ -20,6 +20,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Robot;
 import java.awt.Desktop;
@@ -121,38 +122,36 @@ public class Vision
 
   }
 
-  /**
-   * Update the pose estimation inside of {@link SwerveDrive} with all of the given poses.
-   *
-   * @param swerveDrive {@link SwerveDrive} instance.
-   */
-  public void updatePoseEstimation(SwerveDrive swerveDrive)
-  {
-    if (SwerveDriveTelemetry.isSimulation && swerveDrive.getSimulationDriveTrainPose().isPresent())
+    /**
+     * Update the pose estimation inside of {@link SwerveDrive} with all of the given poses.
+     *
+     * @param swerveDrive {@link SwerveDrive} instance.
+     */
+    public void updatePoseEstimation(SwerveDrive swerveDrive)
     {
-      /*
-       * In the maple-sim, odometry is simulated using encoder values, accounting for factors like skidding and drifting.
-       * As a result, the odometry may not always be 100% accurate.
-       * However, the vision system should be able to provide a reasonably accurate pose estimation, even when odometry is incorrect.
-       * (This is why teams implement vision system to correct odometry.)
-       * Therefore, we must ensure that the actual robot pose is provided in the simulator when updating the vision simulation during the simulation.
-       */
-      visionSim.update(swerveDrive.getSimulationDriveTrainPose().get());
-    }
-    for (Cameras camera : Cameras.values())
-    {
-      Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
-      if (poseEst.isPresent())
-      {
-        var pose = poseEst.get();
-        swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
-                                         pose.timestampSeconds,
-                                         camera.curStdDevs);
-      }
-    }
-
-  }
-
+        if (SwerveDriveTelemetry.isSimulation && swerveDrive.getSimulationDriveTrainPose().isPresent())
+        {
+            /*
+            * In the maple-sim, odometry is simulated using encoder values, accounting for factors like skidding and drifting.
+            * As a result, the odometry may not always be 100% accurate.
+            * However, the vision system should be able to provide a reasonably accurate pose estimation, even when odometry is incorrect.
+            * (This is why teams implement vision system to correct odometry.)
+            * Therefore, we must ensure that the actual robot pose is provided in the simulator when updating the vision simulation during the simulation.
+            */
+            visionSim.update(swerveDrive.getSimulationDriveTrainPose().get());
+        }
+        for (Cameras camera : Cameras.values())
+        {
+            camera.poseEstimator.addHeadingData(Timer.getFPGATimestamp(), swerveDrive.getPose().getRotation());
+            Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
+            if (poseEst.isPresent()) {
+                var pose = poseEst.get();
+                swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
+                        pose.timestampSeconds,
+                        camera.curStdDevs);
+            }
+            }
+        }
   /**
    * Generates the estimated robot pose. Returns empty if:
    * <ul>
