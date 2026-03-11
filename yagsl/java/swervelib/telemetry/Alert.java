@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 
 /**
- * Thread-safe psuedo Alert class
+ * Thread-safe psuedo-Alert class
  */
 public class Alert
 {
@@ -16,7 +16,7 @@ public class Alert
   /**
    * Text of the alert
    */
-  public final String    text;
+  private String text;
   /**
    * Type of the alert
    */
@@ -36,6 +36,18 @@ public class Alert
     this.text = text;
     this.type = type;
   }
+
+  /**
+   * Create a new Alert
+   *
+   * @param text Text of the alert
+   * @param type Type of the alert
+   */
+  public Alert(String text, AlertType type)
+  {
+    this("", text, type);
+  }
+
 
   /**
    * Toggle the alert
@@ -59,5 +71,20 @@ public class Alert
           break;
       }
     }
+  }
+
+  /***
+   * Set the text of the alert
+   * @param text Text of the alert
+   */
+  public void setText(String text)
+  {
+    this.text = text;
+  }
+
+  /// Does nothing
+  public void close()
+  {
+    set(false);
   }
 }
