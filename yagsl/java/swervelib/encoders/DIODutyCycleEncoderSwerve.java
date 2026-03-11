@@ -1,9 +1,9 @@
 package swervelib.encoders;
 
-import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
+import swervelib.telemetry.Alert;
 
 /**
  * DutyCycle encoders such as "US Digital MA3 with DIO Output, the CTRE Mag Encoder, the Rev Hex Encoder, and the AM Mag

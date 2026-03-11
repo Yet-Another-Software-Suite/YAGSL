@@ -16,7 +16,6 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -26,6 +25,7 @@ import swervelib.encoders.SparkMaxAnalogEncoderSwerve;
 import swervelib.encoders.SparkMaxEncoderSwerve;
 import swervelib.encoders.SwerveAbsoluteEncoder;
 import swervelib.parser.PIDFConfig;
+import swervelib.telemetry.Alert;
 import swervelib.telemetry.SwerveDriveTelemetry;
 
 /**

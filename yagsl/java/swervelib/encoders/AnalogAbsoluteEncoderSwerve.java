@@ -1,9 +1,9 @@
 package swervelib.encoders;
 
-import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
+import swervelib.telemetry.Alert;
 
 /**
  * Swerve Absolute Encoder for Thrifty Encoders and other analog encoders.

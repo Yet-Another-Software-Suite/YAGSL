@@ -1,4 +1,15 @@
 {
+  "conversionFactors": {
+    "angle": {
+      "gearRatio": 1.4285714286,
+      "factor": 0
+    },
+    "drive": {
+      "gearRatio": 8.14,
+      "diameter": 4,
+      "factor": 0
+    }
+  },
   "drive": {
     "type": "talonfx",
     "id": 4,

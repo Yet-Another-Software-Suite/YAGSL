@@ -7,9 +7,9 @@ import com.studica.frc.AHRS.NavXComType;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.MutAngularVelocity;
-import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import java.util.Optional;
+import swervelib.telemetry.Alert;
 
 /**
  * Communicates with the NavX({@link AHRS}) as the IMU.

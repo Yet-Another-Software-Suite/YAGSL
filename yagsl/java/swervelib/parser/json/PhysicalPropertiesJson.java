@@ -3,8 +3,6 @@ package swervelib.parser.json;
 import static edu.wpi.first.units.Units.Kilogram;
 import static edu.wpi.first.units.Units.Pounds;
 
-import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.Alert.AlertType;
 import swervelib.parser.SwerveModulePhysicalCharacteristics;
 import swervelib.parser.json.modules.ConversionFactorsJson;
 

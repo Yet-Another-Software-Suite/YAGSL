@@ -1,18 +1,15 @@
 package swervelib.imu;
 
-import static edu.wpi.first.units.Units.Degree;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.Milliseconds;
 
 import com.studica.frc.Navx;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.MutAngularVelocity;
-import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.Timer;
 import java.util.Optional;
+import swervelib.telemetry.Alert;
 
 /**
  * Communicates with the NavX({@link Navx}) as the IMU.

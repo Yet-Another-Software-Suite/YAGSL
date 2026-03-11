@@ -14,7 +14,6 @@ import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import swervelib.encoders.SparkMaxEncoderSwerve;
@@ -28,6 +27,7 @@ import swervelib.parser.PIDFConfig;
 import swervelib.parser.SwerveModuleConfiguration;
 import swervelib.parser.SwerveModulePhysicalCharacteristics;
 import swervelib.simulation.SwerveModuleSimulation;
+import swervelib.telemetry.Alert;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 

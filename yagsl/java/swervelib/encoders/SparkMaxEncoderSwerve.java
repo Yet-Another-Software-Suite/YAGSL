@@ -5,12 +5,12 @@ import com.revrobotics.REVLibError;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import java.util.function.Supplier;
 import swervelib.motors.SparkMaxBrushedMotorSwerve;
 import swervelib.motors.SparkMaxSwerve;
 import swervelib.motors.SwerveMotor;
+import swervelib.telemetry.Alert;
 
 /**
  * SparkMax absolute encoder, attached through the data port.
