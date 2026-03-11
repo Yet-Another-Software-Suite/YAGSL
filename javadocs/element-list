@@ -13,6 +13,7 @@ swervelib.simulation.ironmaple.simulation.drivesims
 swervelib.simulation.ironmaple.simulation.drivesims.configs
 swervelib.simulation.ironmaple.simulation.gamepieces
 swervelib.simulation.ironmaple.simulation.motorsims
+swervelib.simulation.ironmaple.simulation.opponents
 swervelib.simulation.ironmaple.simulation.opponentsim
 swervelib.simulation.ironmaple.simulation.opponentsim.pathfinding
 swervelib.simulation.ironmaple.simulation.seasonspecific.crescendo2024
