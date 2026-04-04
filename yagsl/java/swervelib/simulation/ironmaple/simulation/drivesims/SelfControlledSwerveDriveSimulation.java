@@ -232,7 +232,7 @@ public class SelfControlledSwerveDriveSimulation {
      * <p>Adds a vision measurement to the Kalman Filter, correcting the odometry pose estimate while accounting for
      * measurement noise.
      *
-     * @param robotPoseMeters  The pose of the robot as measured by the vision camera.
+     * @param robotPoseMeters  The pose of the robot as measured by the vision camera. Must be alliance-oriented (the red alliance uses the red center, and the blue alliance uses the blue center). 
      * @param timeStampSeconds The timestamp of the vision measurement, in seconds.
      */
     public void addVisionEstimation(Pose2d robotPoseMeters, double timeStampSeconds) {
