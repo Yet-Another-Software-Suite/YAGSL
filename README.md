@@ -51,7 +51,7 @@ deploy
     └── swervedrive.json
 ```
 
-### Then create your SwerveDrive object like this.
+### Then create your SwerveDrive object like this:
 
 ```java
 import java.io.File;
@@ -63,9 +63,6 @@ import edu.wpi.first.math.util.Units;
 
 SwerveDrive swerveDrive=new SwerveParser(new File(Filesystem.getDeployDirectory(),"swerve")).createSwerveDrive(Units.feetToMeters(14.5));
 ```
-
-
-# Configuration Tips
 
 # Maintainers
 - @thenetworkgrinch
