@@ -11,6 +11,8 @@ import static edu.wpi.first.units.Units.Rotations;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.wpi.first.math.Pair;
+
 import edu.wpi.first.units.measure.LinearVelocity;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +23,8 @@ import swervelib.parser.json.PIDFPropertiesJson;
 import swervelib.parser.json.PhysicalPropertiesJson;
 import swervelib.parser.json.SwerveDriveJson;
 import swervelib.parser.json.SwerveDriveJson.GyroAxis;
+import swervelib.parser.json.modules.AngleGearingJson;
+import swervelib.parser.json.modules.DriveGearingJson;
 import yams.gearing.GearBox;
 import yams.mechanisms.config.SwerveDriveConfig;
 import yams.mechanisms.config.SwerveModuleConfig;
@@ -166,7 +170,7 @@ public class SwerveParser {
   private SmartMotorControllerConfig createDriveMotorConfig(
       SwerveDriveConfig swerveDriveConfig,
       ModuleJson moduleJson,
-      GearboxJson driveGearing,
+      DriveGearingJson driveGearing,
       int moduleIndex) {
     return new SmartMotorControllerConfig(swerveDriveConfig.getSubsystem())
         .withMotorInverted(moduleJson.inverted.drive)
@@ -188,7 +192,7 @@ public class SwerveParser {
   private SmartMotorControllerConfig createAzimuthMotorConfig(
       SwerveDriveConfig swerveDriveConfig,
       ModuleJson moduleJson,
-      GearboxJson azimuthGearing,
+      AngleGearingJson azimuthGearing,
       int moduleIndex) {
     return new SmartMotorControllerConfig(swerveDriveConfig.getSubsystem())
         .withMotorInverted(moduleJson.inverted.angle)
@@ -301,8 +305,8 @@ public class SwerveParser {
   }
 
   private record ModuleGearings(
-      GearboxJson drive,
-      GearboxJson azimuth) {
+      DriveGearingJson drive,
+      AngleGearingJson azimuth) {
   }
 
   private record ModuleHardware(
