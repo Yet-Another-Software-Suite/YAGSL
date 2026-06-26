@@ -16,6 +16,7 @@ ext.pubVersion = System.getenv("releaseVersion") ?: System.getenv("releaseName")
 
 repositories {
     mavenCentral()
+    maven { url "https://yet-another-software-suite.github.io/YAMS/releases/" }
 }
 //if (project.hasProperty('releaseMode')) {
 wpilibRepositories.addAllReleaseRepositories(project)
@@ -34,11 +35,14 @@ sourceSets {
             srcDir "$rootDir/../yagsl/java/"
         }
     }
-    //    test {
-    //        java {
-    //            srcDir "src/test/java"
-    //        }
-    //    }
+    test {
+        java {
+            srcDir "src/test/java"
+        }
+        resources {
+            srcDir "src/test/resources"
+        }
+    }
 }
 
 var javaVersion = "17"
@@ -65,6 +69,14 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:2.19.2"
     implementation "com.fasterxml.jackson.core:jackson-databind:2.19.2"
     implementation 'edu.wpi.first.thirdparty.frc2025.opencv:opencv-java:4.10.0-2'
+    implementation "yams:YAMS-java:2026.6.21"
+
+    testImplementation platform("org.junit:junit-bom:5.11.4")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-params"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testRuntimeOnly "us.hebi.quickbuf:quickbuf-runtime:1.4"
+    testImplementation wpi.java.vendor.java()
 }
 
 // Set up exports properly
@@ -92,6 +104,18 @@ javadoc {
                 'implSpec:a:"Implementation Requirements:"',
                 'implNote:a:"Implementation Note:"'
     }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "failed"
+        exceptionFormat = "full"
+    }
+}
+
+processTestResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 model {

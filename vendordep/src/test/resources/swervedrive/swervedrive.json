@@ -1,0 +1,10 @@
+{
+  "gyro": {
+    "type": "pigeon2_can",
+    "id": 0,
+    "canbus": ""
+  },
+  "gyroAxis": "yaw",
+  "gyroInvert": false,
+  "modules": ["fl.json", "fr.json", "bl.json", "br.json"]
+}

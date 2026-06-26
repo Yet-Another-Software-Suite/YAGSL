@@ -30,6 +30,7 @@ import yams.mechanisms.config.SwerveDriveConfig;
 import yams.mechanisms.config.SwerveModuleConfig;
 import yams.mechanisms.swerve.SwerveDrive;
 import yams.mechanisms.swerve.SwerveModule;
+import yams.motorcontrollers.SmartMotorController;
 import yams.motorcontrollers.SmartMotorControllerConfig;
 import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
@@ -133,7 +134,7 @@ public class SwerveParser {
       SmartMotorControllerConfig azimuthConfig = createAzimuthMotorConfig(swerveDriveConfig, moduleJson,
           gearings.azimuth, i);
 
-      ModuleHardware hardware = createModuleHardware(moduleJson, azimuthConfig);
+      ModuleHardware hardware = createModuleHardware(moduleJson, azimuthConfig, swerveDriveConfig);
 
       totalMaxModuleSpeed = totalMaxModuleSpeed.plus(
           calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController));
@@ -215,7 +216,8 @@ public class SwerveParser {
 
   private ModuleHardware createModuleHardware(
       ModuleJson moduleJson,
-      SmartMotorControllerConfig azimuthConfig) {
+      SmartMotorControllerConfig azimuthConfig,
+      SwerveDriveConfig swerveDriveConfig) {
     var azimuthMotorVendor = moduleJson.angle.getVendor(VENDOR.UNKNOWN);
 
     var absoluteEncoderVendor = moduleJson.absoluteEncoder.getVendor(azimuthMotorVendor);
