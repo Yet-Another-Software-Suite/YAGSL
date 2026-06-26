@@ -23,9 +23,9 @@ jobs:
       - name: Build vendordep
         run: ./gradlew build
         working-directory: ${{ env.workingDirectory }}
-#      - name: Unit tests
-#        run: ./gradlew test
-#        working-directory: ${{ env.workingDirectory }}
+      - name: Unit tests
+        run: ./gradlew test
+        working-directory: ${{ env.workingDirectory }}
       - name: Publish vendordep
         run: ./gradlew publish
         working-directory: ${{ env.workingDirectory }}
