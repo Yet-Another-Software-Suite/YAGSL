@@ -144,7 +144,7 @@ public class SwerveParser {
       if((pidfPropertiesJson.drive.s+pidfPropertiesJson.drive.v+pidfPropertiesJson.drive.a) == 0) {
           var sff = new SimpleMotorFeedforward(
                   pidfPropertiesJson.drive.s,
-                  12.0 / driveConfig.convertToMechanism(swerveDriveConfig.getMaximumModuleLinearVelocity().orElseThrow())
+                  12.0 / driveConfig.convertToMechanism(calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController))
                           .in(RotationsPerSecond),
                   pidfPropertiesJson.drive.a);
           driveConfig.withFeedforward(sff);
