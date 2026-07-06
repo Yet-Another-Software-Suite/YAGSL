@@ -32,13 +32,11 @@ sourceSets {
     main {
         java {
             srcDir "$rootDir/../yagsl/java/"
-            srcDir "$rootDir/../../YAMS/yams/java"
         }
     }
     test {
         java {
             srcDir "src/test/java"
-            srcDir "$rootDir/../../YAMS/yams/java"
         }
         resources {
             srcDir "src/test/resources"
