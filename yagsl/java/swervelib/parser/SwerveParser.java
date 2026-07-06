@@ -283,6 +283,7 @@ public class SwerveParser {
     SwerveModuleConfig config = new SwerveModuleConfig(
         hardware.driveMotorController,
         hardware.azimuthMotorController)
+        .withCosineCompensation(true)
         .withOptimization(true)
         .withAbsoluteEncoderOffset(
             Degrees.of(moduleJson.absoluteEncoderOffset))
