@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 class BoolMotorJsonTest {
 
   private final ObjectMapper mapper =
-      new ObjectMapper()
-          .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   @Test
   void testDefaultValues() {
@@ -37,8 +36,7 @@ class BoolMotorJsonTest {
 
   @Test
   void testBothTrue() throws Exception {
-    BoolMotorJson obj =
-        mapper.readValue("{\"drive\": true, \"angle\": true}", BoolMotorJson.class);
+    BoolMotorJson obj = mapper.readValue("{\"drive\": true, \"angle\": true}", BoolMotorJson.class);
     assertTrue(obj.drive);
     assertTrue(obj.angle);
   }

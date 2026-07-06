@@ -29,11 +29,11 @@ public class StudicaLibDevices
     switch (axis)
     {
       case YAW:
-        return Pair.of(() -> Degrees.of(gyro.getYaw() * (inverted ? -1 : 1)), gyro);
+        return Pair.of(() -> (gyro.getYaw().times(inverted ? -1 : 1)), gyro);
       case PITCH:
-        return Pair.of(() -> Degrees.of(gyro.getPitch() * (inverted ? -1 : 1)), gyro);
+        return Pair.of(() -> (gyro.getPitch().times(inverted ? -1 : 1)), gyro);
       case ROLL:
-        return Pair.of(() -> Degrees.of(gyro.getRoll() * (inverted ? -1 : 1)), gyro);
+        return Pair.of(() -> (gyro.getRoll().times(inverted ? -1 : 1)), gyro);
       default: throw new IllegalArgumentException("Invalid gyro axis: " + axis);
     }
   }

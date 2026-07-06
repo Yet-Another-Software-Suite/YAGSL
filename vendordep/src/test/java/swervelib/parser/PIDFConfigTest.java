@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 class PIDFConfigTest {
 
   private final ObjectMapper mapper =
-      new ObjectMapper()
-          .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   // -- Default construction -------------------------------------------------
 

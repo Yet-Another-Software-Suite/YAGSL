@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 class AngleGearingJsonTest {
 
   private final ObjectMapper mapper =
-      new ObjectMapper()
-          .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   @Test
   void testDefaultConstruction() {
@@ -20,8 +19,7 @@ class AngleGearingJsonTest {
 
   @Test
   void testJsonParseStandard() throws Exception {
-    AngleGearingJson obj =
-        mapper.readValue("{\"gearRatio\": 12.8}", AngleGearingJson.class);
+    AngleGearingJson obj = mapper.readValue("{\"gearRatio\": 12.8}", AngleGearingJson.class);
     assertEquals(12.8, obj.gearRatio);
   }
 

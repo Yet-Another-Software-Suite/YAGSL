@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wpi.first.math.system.plant.DCMotor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import swervelib.parser.deserializer.ReflectionsManager.VendorMotorController;
 import swervelib.parser.json.DeviceJson.VENDOR;
@@ -109,7 +108,8 @@ class DeviceJsonTest {
 
   @Test
   void getMotorController_sparkmaxNeo_returnsSparkMax() {
-    assertEquals(VendorMotorController.SPARKMAX, deviceWithType("sparkmax_neo").getMotorController());
+    assertEquals(
+        VendorMotorController.SPARKMAX, deviceWithType("sparkmax_neo").getMotorController());
   }
 
   @Test
@@ -215,8 +215,7 @@ class DeviceJsonTest {
   // ---------------------------------------------------------------------------
 
   private static ObjectMapper mapper() {
-    return new ObjectMapper()
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
   }
 
   @Test

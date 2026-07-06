@@ -13,8 +13,8 @@ class SwerveParserTest {
   // -- Helper: resolve bundled test-resources directory --------------------
 
   /**
-   * Returns the {@code swervedrive} directory bundled under
-   * {@code src/test/resources/swervedrive} via the classpath.
+   * Returns the {@code swervedrive} directory bundled under {@code src/test/resources/swervedrive}
+   * via the classpath.
    */
   private File testResourceDir() {
     URL url = getClass().getClassLoader().getResource("swervedrive");
@@ -53,8 +53,7 @@ class SwerveParserTest {
             + "\"inverted\":{\"drive\":false,\"angle\":false},"
             + "\"absoluteEncoderOffset\":0.0,"
             + "\"location\":{\"front\":%s,\"left\":%s}}";
-    writeFile(
-        new File(modulesDir, "fl.json"), String.format(moduleTemplate, 1, 2, "12.0", "12.0"));
+    writeFile(new File(modulesDir, "fl.json"), String.format(moduleTemplate, 1, 2, "12.0", "12.0"));
     writeFile(
         new File(modulesDir, "fr.json"), String.format(moduleTemplate, 3, 4, "12.0", "-12.0"));
     writeFile(

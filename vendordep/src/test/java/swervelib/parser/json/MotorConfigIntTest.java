@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 class MotorConfigIntTest {
 
   private static ObjectMapper mapper() {
-    return new ObjectMapper()
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
   }
 
   @Test

@@ -2,7 +2,7 @@
     "fileName": "REVLib.json",
     "name": "REVLib",
     "version": "2026.0.5",
-    "frcYear": "2026beta",
+    "frcYear": "2026",
     "uuid": "3f48eb8c-50fe-43a6-9cb7-44c86353c4cb",
     "mavenUrls": [
         "https://maven.revrobotics.com/"
