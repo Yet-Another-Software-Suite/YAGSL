@@ -50,8 +50,9 @@ public class ThriftyBotDevices
   /**
    * Get the {@link com.thethriftybot.devices.ThriftyEncoder} angle.
    *
-   * @param canid  CAN ID of the encoder.
-   * @param canbus CAN bus name of the encoder.
+   * @param canid    CAN ID of the encoder.
+   * @param canbus   CAN bus name of the encoder.
+   * @param inverted Inversion of the encoder.
    * @return {@link Supplier} of {@link Angle} and {@link com.thethriftybot.devices.ThriftyEncoder}
    */
   public static Pair<Supplier<Angle>, Object> getAbsoluteEncoder(int canid, String canbus, boolean inverted)

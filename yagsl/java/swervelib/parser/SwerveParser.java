@@ -120,6 +120,12 @@ public class SwerveParser {
     assert new File(directory, "modules/physicalproperties.json").exists();
   }
 
+  /**
+   * Create a {@link SwerveDrive} from the parsed JSON configuration.
+   *
+   * @param swerveDriveConfig {@link SwerveDriveConfig} to apply to the created {@link SwerveDrive}.
+   * @return Configured {@link SwerveDrive}.
+   */
   public SwerveDrive createSwerveDrive(SwerveDriveConfig swerveDriveConfig) {
     SwerveModule[] modules = new SwerveModule[swerveDriveJson.modules.length];
     LinearVelocity totalMaxModuleSpeed = MetersPerSecond.zero();

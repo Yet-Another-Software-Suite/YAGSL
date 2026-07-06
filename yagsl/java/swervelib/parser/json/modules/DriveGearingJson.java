@@ -15,6 +15,12 @@ public class DriveGearingJson
    */
   public double diameter;
 
+  /**
+   * Compare the gear ratio and wheel diameter of this object to another.
+   *
+   * @param o Other {@link DriveGearingJson} to compare against.
+   * @return True if the gear ratios and diameters are equal.
+   */
   public boolean equals(DriveGearingJson o)
   {
     return o.gearRatio == gearRatio && o.diameter == diameter;

@@ -282,8 +282,10 @@ public class ReflectionsManager
     /**
      * Get the angle.
      *
-     * @param canid  CAN ID of the encoder.
-     * @param canbus CAN bus name of the encoder.
+     * @param canid    CAN ID of the encoder.
+     * @param canbus   CAN bus name of the encoder.
+     * @param axis     Gyro axis to use for the heading.
+     * @param inverted Inversion of the gyro readings.
      * @return {@link Supplier} of {@link Angle}
      */
     public Pair<Supplier<Angle>, Object> getGyro(int canid, String canbus, GyroAxis axis, boolean inverted)

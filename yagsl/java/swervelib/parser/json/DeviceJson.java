@@ -101,12 +101,54 @@ public class DeviceJson
     throw new IllegalArgumentException("Invalid gyro type: " + type);
   }
 
+  /**
+   * Vendor of a device (motor controller, encoder, or gyroscope).
+   */
   public enum VENDOR
-  {CTRE, REV, THRIFTYBOT, ANDYMARK, REDUX, STUDICA, SMARTIO, LIMELIGHT, UNKNOWN}
+  {
+    /**
+     * Cross The Road Electronics.
+     */
+    CTRE,
+    /**
+     * REV Robotics.
+     */
+    REV,
+    /**
+     * ThriftyBot.
+     */
+    THRIFTYBOT,
+    /**
+     * AndyMark.
+     */
+    ANDYMARK,
+    /**
+     * Redux Robotics.
+     */
+    REDUX,
+    /**
+     * Studica.
+     */
+    STUDICA,
+    /**
+     * Device attached to the roboRIO SmartIO port (DIO/Analog).
+     */
+    SMARTIO,
+    /**
+     * Limelight.
+     */
+    LIMELIGHT,
+    /**
+     * Vendor could not be determined.
+     */
+    UNKNOWN
+  }
 
   /**
    * Get the vendor of the device.
    *
+   * @param attachedType Vendor to return when the device is directly attached (not on CAN/DIO/Analog),
+   *                      since the attached vendor cannot be determined from the device type string alone.
    * @return Vendor of the device.
    */
   public VENDOR getVendor(VENDOR attachedType)
@@ -203,6 +245,11 @@ public class DeviceJson
   /**
    * Get the Absolute Encoder Supplier and Vendor Absolute Encoder Object.
    *
+   * @param angleMotorVendor     Vendor of the angle/steering/azimuth motor controller, used when the
+   *                             absolute encoder is attached to the angle motor controller.
+   * @param angleMotorController Angle/steering/azimuth {@link SmartMotorController}, used when the
+   *                             absolute encoder is attached to the angle motor controller.
+   * @param inverted             Inversion of the absolute encoder.
    * @return Pair of {@link Supplier} and Vendor Absolute Encoder {@link Object}
    */
   public Pair<Supplier<Angle>, Object> getAbsoluteEncoder(VendorMotorController angleMotorVendor,

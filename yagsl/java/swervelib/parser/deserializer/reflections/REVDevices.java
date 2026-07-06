@@ -45,6 +45,9 @@ public class REVDevices
     SPARKMAX
   }
 
+  /**
+   * Absolute encoder types.
+   */
   public enum AbsoluteEncoder
   {
     /**
@@ -113,8 +116,9 @@ public class REVDevices
   /**
    * Get the {@link Angle} {@link Supplier} and the encoder object.
    *
-   * @param canid  CAN ID of the encoder.
-   * @param canbus CAN bus name for the encoder.
+   * @param canid    CAN ID of the encoder.
+   * @param canbus   CAN bus name for the encoder.
+   * @param inverted Inversion of the encoder.
    * @return {@link Pair} of {@link Supplier} and {@link Object}
    * @implNote {@link Angle} is in the range of [0, 1) by default.
    */
