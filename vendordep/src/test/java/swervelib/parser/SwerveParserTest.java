@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class SwerveParserTest {
 
-  // ── Helper: resolve bundled test-resources directory ────────────────────
+  // -- Helper: resolve bundled test-resources directory --------------------
 
   /**
    * Returns the {@code swervedrive} directory bundled under
@@ -22,7 +22,7 @@ class SwerveParserTest {
     return new File(url.getFile());
   }
 
-  // ── Helper: build a minimal config directory on the fly ─────────────────
+  // -- Helper: build a minimal config directory on the fly -----------------
 
   private File createTestConfigDir() throws IOException {
     File dir = Files.createTempDirectory("yagsl-test").toFile();
@@ -107,7 +107,7 @@ class SwerveParserTest {
     }
   }
 
-  // ── testParsesSwervedrive ────────────────────────────────────────────────
+  // -- testParsesSwervedrive ------------------------------------------------
 
   @Test
   void testParsesSwervedriveNotNull() throws IOException {
@@ -151,7 +151,7 @@ class SwerveParserTest {
     assertEquals(4, SwerveParser.swerveDriveJson.modules.length);
   }
 
-  // ── testParsesPidfProperties ─────────────────────────────────────────────
+  // -- testParsesPidfProperties ---------------------------------------------
 
   @Test
   void testParsesPidfPropertiesNotNull() throws IOException {
@@ -195,7 +195,7 @@ class SwerveParserTest {
     assertEquals(0.1, SwerveParser.pidfPropertiesJson.angle.d, 0.001);
   }
 
-  // ── testParsesPhysicalProperties ────────────────────────────────────────
+  // -- testParsesPhysicalProperties ----------------------------------------
 
   @Test
   void testParsesPhysicalPropertiesNotNull() throws IOException {
@@ -239,7 +239,7 @@ class SwerveParserTest {
     assertEquals(20, SwerveParser.physicalPropertiesJson.statorCurrentLimit.angle);
   }
 
-  // ── testParsesAllModules ─────────────────────────────────────────────────
+  // -- testParsesAllModules -------------------------------------------------
 
   @Test
   void testParsesAllModulesNotNull() throws IOException {
@@ -304,7 +304,7 @@ class SwerveParserTest {
     assertEquals(-12.0, SwerveParser.moduleJsons[3].location.left, 0.001);
   }
 
-  // ── testModuleDefaultValues ──────────────────────────────────────────────
+  // -- testModuleDefaultValues ----------------------------------------------
 
   @Test
   void testModuleDefaultAbsoluteEncoderInverted() throws IOException {
@@ -320,7 +320,7 @@ class SwerveParserTest {
     assertEquals(1.0, SwerveParser.moduleJsons[0].absoluteEncoderGearRatio, 0.001);
   }
 
-  // ── testMissingDirectoryThrowsException ─────────────────────────────────
+  // -- testMissingDirectoryThrowsException ---------------------------------
 
   @Test
   void testMissingDirectoryThrowsException() {
@@ -329,7 +329,7 @@ class SwerveParserTest {
     assertThrows(AssertionError.class, () -> new SwerveParser(nonExistentDir));
   }
 
-  // ── testMissingSwervedriveJsonThrowsException ────────────────────────────
+  // -- testMissingSwervedriveJsonThrowsException ----------------------------
 
   @Test
   void testMissingSwervedriveJsonThrowsException() throws IOException {
@@ -347,7 +347,7 @@ class SwerveParserTest {
     assertThrows(AssertionError.class, () -> new SwerveParser(dir));
   }
 
-  // ── testGyroAxisValues ───────────────────────────────────────────────────
+  // -- testGyroAxisValues ---------------------------------------------------
 
   @Test
   void testGyroAxisYawParsed() throws IOException {
@@ -370,7 +370,7 @@ class SwerveParserTest {
     assertEquals("roll", SwerveParser.swerveDriveJson.gyroAxis);
   }
 
-  // ── Resource-based sanity: parse the bundled test config ─────────────────
+  // -- Resource-based sanity: parse the bundled test config -----------------
 
   @Test
   void testResourceDirSwerveDriveNotNull() throws IOException {

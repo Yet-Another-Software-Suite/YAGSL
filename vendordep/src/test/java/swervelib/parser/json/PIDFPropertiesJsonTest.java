@@ -12,7 +12,7 @@ class PIDFPropertiesJsonTest {
       new ObjectMapper()
           .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-  // ── Standard PIDF values ─────────────────────────────────────────────────
+  // -- Standard PIDF values -------------------------------------------------
 
   private static final String STANDARD_JSON =
       "{"
@@ -56,7 +56,7 @@ class PIDFPropertiesJsonTest {
     assertEquals(0.1, obj.angle.d, 0.001);
   }
 
-  // ── All zeroes ───────────────────────────────────────────────────────────
+  // -- All zeroes -----------------------------------------------------------
 
   private static final String ZERO_JSON =
       "{"
@@ -100,7 +100,7 @@ class PIDFPropertiesJsonTest {
     assertEquals(0.0, obj.angle.d, 0.001);
   }
 
-  // ── Large values ─────────────────────────────────────────────────────────
+  // -- Large values ---------------------------------------------------------
 
   private static final String LARGE_JSON =
       "{"

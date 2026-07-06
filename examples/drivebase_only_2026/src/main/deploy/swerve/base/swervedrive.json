@@ -5,7 +5,7 @@
     "id": 1,
     "canbus": ""
   },
-  "gyroAxis": "pitch",
+  "gyroAxis": "yaw",
   "gyroInvert": false,
   "modules": [
     "frontleft.json",

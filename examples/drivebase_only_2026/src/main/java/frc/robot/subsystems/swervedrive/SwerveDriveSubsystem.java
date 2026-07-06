@@ -3,7 +3,9 @@ package frc.robot.subsystems.swervedrive;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.io.File;
@@ -21,6 +23,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
 
   public SwerveDriveSubsystem()
   {
+    SmartDashboard.putData(this);
     var cfg = new SwerveDriveConfig()
         .withStartingPose(new Pose2d(3, 3, Rotation2d.kZero))
         .withSubsystem(this)
@@ -44,7 +47,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
 
   public Command drive(SwerveInputStream stream)
   {
-    return drive.drive(stream);
+    return drive.drive(()->ChassisSpeeds.fromFieldRelativeSpeeds(stream.get(), new Rotation2d(drive.getGyroAngle())));
   }
 
   public void periodic()

@@ -12,7 +12,7 @@ class PhysicalPropertiesJsonTest {
       new ObjectMapper()
           .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-  // ── Default values ───────────────────────────────────────────────────────
+  // -- Default values -------------------------------------------------------
 
   @Test
   void testDefaultGearingNotNull() {
@@ -32,7 +32,7 @@ class PhysicalPropertiesJsonTest {
     assertEquals(20, obj.statorCurrentLimit.angle);
   }
 
-  // ── Full JSON deserialization ─────────────────────────────────────────────
+  // -- Full JSON deserialization ---------------------------------------------
 
   private static final String FULL_JSON =
       "{"
@@ -73,7 +73,7 @@ class PhysicalPropertiesJsonTest {
     assertEquals(25, obj.statorCurrentLimit.angle);
   }
 
-  // ── JSON with only gearing (statorCurrentLimit defaults) ─────────────────
+  // -- JSON with only gearing (statorCurrentLimit defaults) -----------------
 
   private static final String GEARING_ONLY_JSON =
       "{"

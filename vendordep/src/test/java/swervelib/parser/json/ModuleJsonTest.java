@@ -12,7 +12,7 @@ class ModuleJsonTest {
       new ObjectMapper()
           .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-  // ── Default values ───────────────────────────────────────────────────────
+  // -- Default values -------------------------------------------------------
 
   @Test
   void testDefaultAbsoluteEncoderInverted() {
@@ -32,7 +32,7 @@ class ModuleJsonTest {
     assertNotNull(obj.gearing);
   }
 
-  // ── Full JSON deserialization ─────────────────────────────────────────────
+  // -- Full JSON deserialization ---------------------------------------------
 
   private static final String FULL_JSON =
       "{"
@@ -118,7 +118,7 @@ class ModuleJsonTest {
     assertEquals(-11.5, obj.location.left, 0.001);
   }
 
-  // ── Default optional fields when absent ──────────────────────────────────
+  // -- Default optional fields when absent ----------------------------------
 
   private static final String MINIMAL_JSON =
       "{"

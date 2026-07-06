@@ -13,7 +13,7 @@ class SwerveDriveJsonTest {
       new ObjectMapper()
           .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-  // ── GyroAxis enum tests ──────────────────────────────────────────────────
+  // -- GyroAxis enum tests --------------------------------------------------
 
   @Test
   void testGyroAxisYawExists() {
@@ -40,7 +40,7 @@ class SwerveDriveJsonTest {
     assertEquals(3, GyroAxis.values().length);
   }
 
-  // ── SwerveDriveJson JSON deserialization ─────────────────────────────────
+  // -- SwerveDriveJson JSON deserialization ---------------------------------
 
   @Test
   void testFullJsonGyroNotNull() throws Exception {

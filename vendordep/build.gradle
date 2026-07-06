@@ -10,13 +10,12 @@ plugins {
     id "com.diffplug.spotless" version "6.11.0"
 }
 
-ext.wpilibVersion = "2026.1.1-beta-1" // and again here, thanks gradle....
+ext.wpilibVersion = "2026.2.1" // and again here, thanks gradle....
 ext.releasePath = "$buildDir/maven"
 ext.pubVersion = System.getenv("releaseVersion") ?: System.getenv("releaseName") ?: "test"
 
 repositories {
     mavenCentral()
-    maven { url "https://yet-another-software-suite.github.io/YAMS/releases/" }
 }
 //if (project.hasProperty('releaseMode')) {
 wpilibRepositories.addAllReleaseRepositories(project)
@@ -33,11 +32,13 @@ sourceSets {
     main {
         java {
             srcDir "$rootDir/../yagsl/java/"
+            srcDir "$rootDir/../../YAMS/yams/java"
         }
     }
     test {
         java {
             srcDir "src/test/java"
+            srcDir "$rootDir/../../YAMS/yams/java"
         }
         resources {
             srcDir "src/test/resources"
@@ -69,14 +70,15 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:2.19.2"
     implementation "com.fasterxml.jackson.core:jackson-databind:2.19.2"
     implementation 'edu.wpi.first.thirdparty.frc2025.opencv:opencv-java:4.10.0-2'
-    implementation "yams:YAMS-java:2026.6.21"
 
     testImplementation platform("org.junit:junit-bom:5.11.4")
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.junit.jupiter:junit-jupiter-params"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation "com.networknt:json-schema-validator:1.5.6"
     testRuntimeOnly "us.hebi.quickbuf:quickbuf-runtime:1.4"
     testImplementation wpi.java.vendor.java()
+    testImplementation wpi.java.deps.wpilib()
 }
 
 // Set up exports properly

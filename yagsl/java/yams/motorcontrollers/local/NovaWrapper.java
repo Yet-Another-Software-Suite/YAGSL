@@ -1017,4 +1017,25 @@ public class NovaWrapper extends SmartMotorController
   {
     return Pair.of(Optional.empty(), Optional.empty());
   }
+
+  @Override
+  public void setMechanismGearing(MechanismGearing gearing) {
+    m_config.withGearing(gearing);
+    m_gearing = gearing;
+    if(RobotBase.isSimulation())
+    {
+      m_dcMotorSim = Optional.of(new DCMotorSim(LinearSystemId.createDCMotorSystem(m_motor,
+                                                                                     m_config.getMOI(),
+                                                                                     m_config.getGearing()
+                                                                                             .getMechanismToRotorRatio()),
+                                                  m_motor));
+
+        setSimSupplier(new DCMotorSimSupplier(m_dcMotorSim.get(), this));
+    }
+  }
+
+  @Override
+  public void setMechanismCircumference(Distance circumference) {
+    m_config.withMechanismCircumference(circumference);
+  }
 }

@@ -13,7 +13,7 @@ class PIDFConfigTest {
       new ObjectMapper()
           .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-  // ── Default construction ─────────────────────────────────────────────────
+  // -- Default construction -------------------------------------------------
 
   @Test
   void testDefaultConstructionPIsZero() {
@@ -33,7 +33,7 @@ class PIDFConfigTest {
     assertEquals(0.0, config.d, 0.0);
   }
 
-  // ── Field assignment ─────────────────────────────────────────────────────
+  // -- Field assignment -----------------------------------------------------
 
   @Test
   void testFieldAssignmentP() {
@@ -67,7 +67,7 @@ class PIDFConfigTest {
     assertEquals(0.1, config.d, 0.0);
   }
 
-  // ── JSON deserialization ─────────────────────────────────────────────────
+  // -- JSON deserialization -------------------------------------------------
 
   @Test
   void testJsonDeserializationP() throws IOException {
@@ -90,7 +90,7 @@ class PIDFConfigTest {
     assertEquals(0.05, config.d, 0.0001);
   }
 
-  // ── JSON zeroes ──────────────────────────────────────────────────────────
+  // -- JSON zeroes ----------------------------------------------------------
 
   @Test
   void testJsonZeroesP() throws IOException {
@@ -113,7 +113,7 @@ class PIDFConfigTest {
     assertEquals(0.0, config.d, 0.0);
   }
 
-  // ── JSON large values ────────────────────────────────────────────────────
+  // -- JSON large values ----------------------------------------------------
 
   @Test
   void testJsonLargeValuesP() throws IOException {
@@ -136,7 +136,7 @@ class PIDFConfigTest {
     assertEquals(10.0, config.d, 0.0001);
   }
 
-  // ── FAIL_ON_UNKNOWN_PROPERTIES=false ignores extra fields ────────────────
+  // -- FAIL_ON_UNKNOWN_PROPERTIES=false ignores extra fields ----------------
 
   @Test
   void testJsonIgnoresExtraFieldsDoesNotThrow() throws IOException {
