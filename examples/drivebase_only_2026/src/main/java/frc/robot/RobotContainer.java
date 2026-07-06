@@ -45,6 +45,7 @@ public class RobotContainer
   private void configureBindings()
   {
     swerve.setDefaultCommand(swerve.drive(driveAngularVelocity));
+    driverXbox.button(1).whileTrue(swerve.sysIdModule("frontleft"));
   }
 
   /**

@@ -16,6 +16,18 @@
         "d": {
           "type": "number",
           "description": "Derivative Gain"
+        },
+        "s": {
+          "type": "number",
+          "description": "kS property of the feedforward"
+        },
+        "v": {
+          "type": "number",
+          "description": "kV property of the feedforward"
+        },
+        "a": {
+          "type": "number",
+          "description": "kA property of the feedforward"
         }
       },
       "required": [
@@ -39,6 +51,18 @@
         "d": {
           "type": "number",
           "description": "Derivative Gain"
+        },
+        "s": {
+          "type": "number",
+          "description": "kS property of the feedforward"
+        },
+        "v": {
+          "type": "number",
+          "description": "kV property of the feedforward"
+        },
+        "a": {
+          "type": "number",
+          "description": "kA property of the feedforward"
         }
       },
       "required": [

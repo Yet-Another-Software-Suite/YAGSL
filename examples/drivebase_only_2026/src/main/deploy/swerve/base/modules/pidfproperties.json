@@ -1,13 +1,16 @@
 {
   "$schema": "https://example.com/schemas/pidfproperties.json",
   "drive": {
-    "p": 1,
+    "p": 0.1,
     "i": 0,
     "d": 0
   },
   "angle": {
-    "p": 5,
+    "p": 3.8476,
     "i": 0,
-    "d": 0
+    "d": 0,
+    "s": 0.26512,
+    "v": 0.085261,
+    "a": 0.41709
   }
 }

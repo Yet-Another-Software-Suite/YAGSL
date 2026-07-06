@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wpi.first.math.Pair;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.units.measure.LinearVelocity;
 import java.io.File;
 import java.io.IOException;
@@ -188,6 +189,10 @@ public class SwerveParser {
             pidfPropertiesJson.drive.p,
             pidfPropertiesJson.drive.i,
             pidfPropertiesJson.drive.d)
+        .withFeedforward(new SimpleMotorFeedforward(
+                pidfPropertiesJson.drive.s,
+                pidfPropertiesJson.drive.v,
+                pidfPropertiesJson.drive.a))
         .withIdleMode(MotorMode.COAST)
         .withStatorCurrentLimit(
             Amps.of(physicalPropertiesJson.statorCurrentLimit.drive))
@@ -209,6 +214,10 @@ public class SwerveParser {
             pidfPropertiesJson.angle.p,
             pidfPropertiesJson.angle.i,
             pidfPropertiesJson.angle.d)
+        .withFeedforward(new SimpleMotorFeedforward(
+                pidfPropertiesJson.angle.s,
+                pidfPropertiesJson.angle.v,
+                pidfPropertiesJson.angle.a))
         .withContinuousWrapping(
             Rotations.of(-0.5),
             Rotations.of(0.5))
@@ -284,7 +293,7 @@ public class SwerveParser {
             Inches.of(moduleJson.location.front),
             Inches.of(moduleJson.location.left))
         .withTelemetry(
-            swerveDriveJson.modules[moduleIndex],
+            swerveDriveJson.modules[moduleIndex].split("\\.json")[0],
             TelemetryVerbosity.HIGH);
 
     if (hardware.absoluteEncoderVendor != hardware.azimuthMotorVendor) {
