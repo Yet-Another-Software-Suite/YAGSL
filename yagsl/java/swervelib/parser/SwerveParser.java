@@ -1,13 +1,5 @@
 package swervelib.parser;
 
-import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Millisecond;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-import static edu.wpi.first.units.Units.Rotations;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +28,8 @@ import yams.motorcontrollers.SmartMotorControllerConfig;
 import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
+
+import static edu.wpi.first.units.Units.*;
 
 /**
  * Helper class used to parse the JSON directory with specified configuration
@@ -141,10 +135,21 @@ public class SwerveParser {
       SmartMotorControllerConfig azimuthConfig = createAzimuthMotorConfig(swerveDriveConfig, moduleJson,
           gearings.azimuth, i);
 
-      ModuleHardware hardware = createModuleHardware(moduleJson, azimuthConfig, swerveDriveConfig);
+      ModuleHardware hardware = createModuleHardware(moduleJson, azimuthConfig, driveConfig, swerveDriveConfig);
 
       totalMaxModuleSpeed = totalMaxModuleSpeed.plus(
           calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController));
+
+      // Automatic theorhetical feedforward for drive motors.
+      if((pidfPropertiesJson.drive.s+pidfPropertiesJson.drive.v+pidfPropertiesJson.drive.a) == 0) {
+          var sff = new SimpleMotorFeedforward(
+                  pidfPropertiesJson.drive.s,
+                  12.0 / driveConfig.convertToMechanism(swerveDriveConfig.getMaximumModuleLinearVelocity().orElseThrow())
+                          .in(RotationsPerSecond),
+                  pidfPropertiesJson.drive.a);
+          driveConfig.withFeedforward(sff);
+          hardware.driveMotorController.setFeedforward(sff.getKs(),sff.getKv(),sff.getKa(),0);
+      }
 
       modules[i] = createSwerveModule(
           moduleJson,
@@ -231,7 +236,7 @@ public class SwerveParser {
 
   private ModuleHardware createModuleHardware(
       ModuleJson moduleJson,
-      SmartMotorControllerConfig azimuthConfig,
+      SmartMotorControllerConfig azimuthConfig, SmartMotorControllerConfig driveConfig,
       SwerveDriveConfig swerveDriveConfig) {
     var azimuthMotorVendor = moduleJson.angle.getVendor(VENDOR.UNKNOWN);
 
@@ -253,12 +258,7 @@ public class SwerveParser {
 
     var azimuthMotorController = moduleJson.angle.getSmartMotorController(azimuthConfig);
 
-    var driveMotorController = moduleJson.drive.getSmartMotorController(
-        createDriveMotorConfig(
-            swerveDriveConfig,
-            moduleJson,
-            resolveGearings(moduleJson).drive,
-            0));
+    var driveMotorController = moduleJson.drive.getSmartMotorController(driveConfig);
 
     return new ModuleHardware(
         driveMotorController,
