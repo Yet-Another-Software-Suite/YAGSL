@@ -141,7 +141,7 @@ public class SwerveParser {
           calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController));
 
       // Automatic theorhetical feedforward for drive motors.
-      if((pidfPropertiesJson.drive.s+pidfPropertiesJson.drive.v+pidfPropertiesJson.drive.a) == 0) {
+      if((pidfPropertiesJson.drive.v) == 0) {
           var sff = new SimpleMotorFeedforward(
                   pidfPropertiesJson.drive.s,
                   12.0 / driveConfig.convertToMechanism(calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController))
