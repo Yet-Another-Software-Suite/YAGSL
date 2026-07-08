@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wpi.first.math.Pair;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.LinearVelocity;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.parser.json.DeviceJson.VENDOR;
@@ -209,7 +211,7 @@ public class SwerveParser {
         .withStatorCurrentLimit(
             Amps.of(physicalPropertiesJson.statorCurrentLimit.drive))
         .withTelemetry(
-            "drive_" + swerveDriveJson.modules[moduleIndex],
+            "drive_" + getModuleName(moduleIndex),
             TelemetryVerbosity.LOW);
   }
 
@@ -237,7 +239,7 @@ public class SwerveParser {
         .withStatorCurrentLimit(
             Amps.of(physicalPropertiesJson.statorCurrentLimit.angle))
         .withTelemetry(
-            "azimuth_" + swerveDriveJson.modules[moduleIndex],
+            "azimuth_" + getModuleName(moduleIndex),
             TelemetryVerbosity.LOW);
   }
 
@@ -300,8 +302,7 @@ public class SwerveParser {
         .withLocation(
             Inches.of(moduleJson.location.front),
             Inches.of(moduleJson.location.left))
-        .withTelemetry(
-            swerveDriveJson.modules[moduleIndex].split("\\.json")[0],
+        .withTelemetry(getModuleName(moduleIndex),
             TelemetryVerbosity.HIGH);
 
     if (hardware.absoluteEncoderVendor != hardware.azimuthMotorVendor) {
@@ -310,6 +311,11 @@ public class SwerveParser {
     }
 
     return new SwerveModule(config);
+  }
+
+  private String getModuleName(int moduleIndex)
+  {
+      return swerveDriveJson.modules[moduleIndex].split("\\.json")[0];
   }
 
   private void configureSwerveDrive(
@@ -337,7 +343,7 @@ public class SwerveParser {
   private record ModuleHardware(
       SmartMotorController driveMotorController,
       SmartMotorController azimuthMotorController,
-      Pair<?, ?> absoluteEncoder,
+      Pair<Supplier<Angle>, Object> absoluteEncoder,
       VENDOR azimuthMotorVendor,
       VENDOR absoluteEncoderVendor) {
   }
