@@ -1,0 +1,19 @@
+{
+  "$schema": "https://example.com/schemas/pidfproperties.json",
+  "drive": {
+    "p": 0.4,
+    "i": 0,
+    "d": 0,
+    "s": 0,
+    "v": 0.7,
+    "a": 0.1
+  },
+  "angle": {
+    "p": 3.8476,
+    "i": 0,
+    "d": 0,
+    "s": 0,
+    "v": 0,
+    "a": 0
+  }
+}

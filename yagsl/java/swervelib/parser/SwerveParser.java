@@ -10,6 +10,8 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+
+import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.parser.json.DeviceJson.VENDOR;
 import swervelib.parser.json.ModuleJson;
 import swervelib.parser.json.PIDFPropertiesJson;
@@ -69,10 +71,15 @@ public class SwerveParser {
     swerveDriveJson = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         .readValue(new File(directory, "swervedrive.json"), SwerveDriveJson.class);
+    var pidfFile = new File(directory, "modules/pidfproperties.json");
+    var simPidfFile = new File(directory, "modules/pidfproperties_sim.json");
+    if(simPidfFile.exists() && RobotBase.isSimulation())
+    {
+        pidfFile = simPidfFile;
+    }
     pidfPropertiesJson = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        .readValue(
-            new File(directory, "modules/pidfproperties.json"), PIDFPropertiesJson.class);
+        .readValue(pidfFile, PIDFPropertiesJson.class);
     physicalPropertiesJson = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         .readValue(
