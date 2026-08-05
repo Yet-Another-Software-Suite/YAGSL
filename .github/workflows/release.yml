@@ -49,6 +49,7 @@ jobs:
         run: git add . && git commit -m "Automatically add YAGSL version ${{inputs.releaseVersion}}" && git push
         working-directory: ${{ env.workingDirectory }}/build/maven/
       - name: Create Vendor JSON Repo PR
+        id: publish_wpilib
         uses: wpilibsuite/vendor-json-repo/.github/actions/add_vendordep@main
         with:
           repo: Yet-Another-Software-Suite/vendor-json-repo
@@ -57,6 +58,18 @@ jobs:
           pr_title: "Automatically add YAGSL version ${{inputs.releaseVersion}}"
           pr_branch: "publish_yagsl_${{inputs.releaseVersion}}"
         continue-on-error: true
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRERELEASE_FLAG=""
+          if [ "${{ steps.publish_wpilib.outcome }}" != "success" ]; then
+            PRERELEASE_FLAG="--prerelease"
+          fi
+          gh release create "${{ inputs.releaseVersion }}" \
+            --title "YAGSL ${{ inputs.releaseVersion }}" \
+            --generate-notes \
+            $PRERELEASE_FLAG
 #      - name: Setup Pages
 #        id: pages
 #        uses: actions/configure-pages@v5
