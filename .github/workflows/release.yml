@@ -6,6 +6,11 @@ on:
         description: "Release version number"
         type: string
         required: true
+      publishToWpilib:
+        description: "Publish to WPILib vendor JSON repo (full release). Uncheck for pre-release only."
+        type: boolean
+        required: false
+        default: false
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -50,6 +55,7 @@ jobs:
         working-directory: ${{ env.workingDirectory }}/build/maven/
       - name: Create Vendor JSON Repo PR
         id: publish_wpilib
+        if: inputs.publishToWpilib
         uses: wpilibsuite/vendor-json-repo/.github/actions/add_vendordep@main
         with:
           repo: Yet-Another-Software-Suite/vendor-json-repo
