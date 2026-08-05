@@ -78,7 +78,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SwerveParser</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Helper class used to parse the JSON directory with specified configuration options.</div>
+<div class="block">Helper class used to parse the JSON directory with specified configuration
+ options.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -91,29 +92,24 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static <a href="json/ControllerPropertiesJson.html" title="class in swervelib.parser.json">ControllerPropertiesJson</a></code></div>
-<div class="col-second even-row-color"><code><a href="#controllerPropertiesJson" class="member-name-link">controllerPropertiesJson</a></code></div>
+<div class="col-first even-row-color"><code>static <a href="json/ModuleJson.html" title="class in swervelib.parser.json">ModuleJson</a>[]</code></div>
+<div class="col-second even-row-color"><code><a href="#moduleJsons" class="member-name-link">moduleJsons</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Parsed controllerproperties.json</div>
-</div>
-<div class="col-first odd-row-color"><code>static <a href="json/ModuleJson.html" title="class in swervelib.parser.json">ModuleJson</a>[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#moduleJsons" class="member-name-link">moduleJsons</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Array holding the module jsons given in <a href="json/SwerveDriveJson.html" title="class in swervelib.parser.json"><code>SwerveDriveJson</code></a>.</div>
 </div>
-<div class="col-first even-row-color"><code>static <a href="json/PhysicalPropertiesJson.html" title="class in swervelib.parser.json">PhysicalPropertiesJson</a></code></div>
-<div class="col-second even-row-color"><code><a href="#physicalPropertiesJson" class="member-name-link">physicalPropertiesJson</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static <a href="json/PhysicalPropertiesJson.html" title="class in swervelib.parser.json">PhysicalPropertiesJson</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#physicalPropertiesJson" class="member-name-link">physicalPropertiesJson</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Parsed modules/physicalproperties.json</div>
 </div>
-<div class="col-first odd-row-color"><code>static <a href="json/PIDFPropertiesJson.html" title="class in swervelib.parser.json">PIDFPropertiesJson</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#pidfPropertiesJson" class="member-name-link">pidfPropertiesJson</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static <a href="json/PIDFPropertiesJson.html" title="class in swervelib.parser.json">PIDFPropertiesJson</a></code></div>
+<div class="col-second even-row-color"><code><a href="#pidfPropertiesJson" class="member-name-link">pidfPropertiesJson</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Parsed modules/pidfproperties.json</div>
 </div>
-<div class="col-first even-row-color"><code>static <a href="json/SwerveDriveJson.html" title="class in swervelib.parser.json">SwerveDriveJson</a></code></div>
-<div class="col-second even-row-color"><code><a href="#swerveDriveJson" class="member-name-link">swerveDriveJson</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static <a href="json/SwerveDriveJson.html" title="class in swervelib.parser.json">SwerveDriveJson</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#swerveDriveJson" class="member-name-link">swerveDriveJson</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Parsed swervedrive.json</div>
 </div>
 </div>
@@ -139,35 +135,16 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../SwerveDrive.html" title="class in swervelib">SwerveDrive</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSwerveDrive(double)" class="member-name-link">createSwerveDrive</a><wbr>(double&nbsp;maxSpeed)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>yams.mechanisms.swerve.SwerveDrive</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSwerveDrive(yams.mechanisms.config.SwerveDriveConfig)" class="member-name-link">createSwerveDrive</a><wbr>(yams.mechanisms.config.SwerveDriveConfig&nbsp;swerveDriveConfig)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create <a href="../SwerveDrive.html" title="class in swervelib"><code>SwerveDrive</code></a> from JSON configuration directory.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../SwerveDrive.html" title="class in swervelib">SwerveDrive</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSwerveDrive(double,double,double)" class="member-name-link">createSwerveDrive</a><wbr>(double&nbsp;maxSpeed,
- double&nbsp;angleMotorConversionFactor,
- double&nbsp;driveMotorConversion)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create <a href="../SwerveDrive.html" title="class in swervelib"><code>SwerveDrive</code></a> from JSON configuration directory.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../SwerveDrive.html" title="class in swervelib">SwerveDrive</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSwerveDrive(double,edu.wpi.first.math.geometry.Pose2d)" class="member-name-link">createSwerveDrive</a><wbr>(double&nbsp;maxSpeed,
- <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Pose2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Pose2d</a>&nbsp;initialPose)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create <a href="../SwerveDrive.html" title="class in swervelib"><code>SwerveDrive</code></a> from JSON configuration directory.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../SwerveModule.html" title="class in swervelib">SwerveModule</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getModuleConfigurationByName(java.lang.String,swervelib.parser.SwerveDriveConfiguration)" class="member-name-link">getModuleConfigurationByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="SwerveDriveConfiguration.html" title="class in swervelib.parser">SwerveDriveConfiguration</a>&nbsp;driveConfiguration)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Get the swerve module by the json name.</div>
+<div class="block">Create a <code>SwerveDrive</code> from the parsed JSON configuration.</div>
 </div>
 </div>
 </div>
@@ -191,13 +168,6 @@ loadScripts(document, 'script');</script>
 <h3>swerveDriveJson</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="json/SwerveDriveJson.html" title="class in swervelib.parser.json">SwerveDriveJson</a></span>&nbsp;<span class="element-name">swerveDriveJson</span></div>
 <div class="block">Parsed swervedrive.json</div>
-</section>
-</li>
-<li>
-<section class="detail" id="controllerPropertiesJson">
-<h3>controllerPropertiesJson</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="json/ControllerPropertiesJson.html" title="class in swervelib.parser.json">ControllerPropertiesJson</a></span>&nbsp;<span class="element-name">controllerPropertiesJson</span></div>
-<div class="block">Parsed controllerproperties.json</div>
 </section>
 </li>
 <li>
@@ -252,71 +222,15 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getModuleConfigurationByName(java.lang.String,swervelib.parser.SwerveDriveConfiguration)">
-<h3>getModuleConfigurationByName</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../SwerveModule.html" title="class in swervelib">SwerveModule</a></span>&nbsp;<span class="element-name">getModuleConfigurationByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="SwerveDriveConfiguration.html" title="class in swervelib.parser">SwerveDriveConfiguration</a>&nbsp;driveConfiguration)</span></div>
-<div class="block">Get the swerve module by the json name.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>name</code> - JSON name.</dd>
-<dd><code>driveConfiguration</code> - <a href="SwerveDriveConfiguration.html" title="class in swervelib.parser"><code>SwerveDriveConfiguration</code></a> to pull from.</dd>
-<dt>Returns:</dt>
-<dd><a href="SwerveModuleConfiguration.html" title="class in swervelib.parser"><code>SwerveModuleConfiguration</code></a> based on the file.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="createSwerveDrive(double)">
+<section class="detail" id="createSwerveDrive(yams.mechanisms.config.SwerveDriveConfig)">
 <h3>createSwerveDrive</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../SwerveDrive.html" title="class in swervelib">SwerveDrive</a></span>&nbsp;<span class="element-name">createSwerveDrive</span><wbr><span class="parameters">(double&nbsp;maxSpeed)</span></div>
-<div class="block">Create <a href="../SwerveDrive.html" title="class in swervelib"><code>SwerveDrive</code></a> from JSON configuration directory.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">yams.mechanisms.swerve.SwerveDrive</span>&nbsp;<span class="element-name">createSwerveDrive</span><wbr><span class="parameters">(yams.mechanisms.config.SwerveDriveConfig&nbsp;swerveDriveConfig)</span></div>
+<div class="block">Create a <code>SwerveDrive</code> from the parsed JSON configuration.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>maxSpeed</code> - Maximum speed of the robot in meters per second, used for both angular acceleration used in
-                 <a href="../SwerveController.html" title="class in swervelib"><code>SwerveController</code></a> and drive feedforward in
-                 <a href="../math/SwerveMath.html#createDriveFeedforward(double,double,double)"><code>SwerveMath.createDriveFeedforward(double, double, double)</code></a>.</dd>
+<dd><code>swerveDriveConfig</code> - <code>SwerveDriveConfig</code> to apply to the created <code>SwerveDrive</code>.</dd>
 <dt>Returns:</dt>
-<dd><a href="../SwerveDrive.html" title="class in swervelib"><code>SwerveDrive</code></a> instance.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="createSwerveDrive(double,double,double)">
-<h3>createSwerveDrive</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../SwerveDrive.html" title="class in swervelib">SwerveDrive</a></span>&nbsp;<span class="element-name">createSwerveDrive</span><wbr><span class="parameters">(double&nbsp;maxSpeed,
- double&nbsp;angleMotorConversionFactor,
- double&nbsp;driveMotorConversion)</span></div>
-<div class="block">Create <a href="../SwerveDrive.html" title="class in swervelib"><code>SwerveDrive</code></a> from JSON configuration directory.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>maxSpeed</code> - Maximum speed of the robot in meters per second, used for both angular
-                                   acceleration used in <a href="../SwerveController.html" title="class in swervelib"><code>SwerveController</code></a> and drive feedforward in
-                                   <a href="../math/SwerveMath.html#createDriveFeedforward(double,double,double)"><code>SwerveMath.createDriveFeedforward(double, double, double)</code></a>.</dd>
-<dd><code>angleMotorConversionFactor</code> - Angle (AKA azimuth) motor conversion factor to convert motor controller PID loop
-                                   units to degrees, usually created using
-                                   <a href="../math/SwerveMath.html#calculateDegreesPerSteeringRotation(double,double)"><code>SwerveMath.calculateDegreesPerSteeringRotation(double, double)</code></a>.</dd>
-<dd><code>driveMotorConversion</code> - Drive motor conversion factor to convert motor controller PID loop units to
-                                   meters per rotation, usually created using
-                                   <a href="../math/SwerveMath.html#calculateMetersPerRotation(double,double,double)"><code>SwerveMath.calculateMetersPerRotation(double, double, double)</code></a>.</dd>
-<dt>Returns:</dt>
-<dd><a href="../SwerveDrive.html" title="class in swervelib"><code>SwerveDrive</code></a> instance.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="createSwerveDrive(double,edu.wpi.first.math.geometry.Pose2d)">
-<h3>createSwerveDrive</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../SwerveDrive.html" title="class in swervelib">SwerveDrive</a></span>&nbsp;<span class="element-name">createSwerveDrive</span><wbr><span class="parameters">(double&nbsp;maxSpeed,
- <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Pose2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Pose2d</a>&nbsp;initialPose)</span></div>
-<div class="block">Create <a href="../SwerveDrive.html" title="class in swervelib"><code>SwerveDrive</code></a> from JSON configuration directory.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>maxSpeed</code> - Maximum speed of the robot in meters per second for normal+angular acceleration in
-                    <a href="../SwerveController.html" title="class in swervelib"><code>SwerveController</code></a> of the robot</dd>
-<dd><code>initialPose</code> - <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Pose2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link"><code>Pose2d</code></a> initial pose.</dd>
-<dt>Returns:</dt>
-<dd><a href="../SwerveDrive.html" title="class in swervelib"><code>SwerveDrive</code></a> instance.</dd>
+<dd>Configured <code>SwerveDrive</code>.</dd>
 </dl>
 </section>
 </li>

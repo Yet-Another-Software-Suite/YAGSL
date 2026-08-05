@@ -44,7 +44,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
@@ -82,6 +82,23 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<li>
+<section class="nested-class-summary" id="nested-class-summary">
+<h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static enum&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="DeviceJson.VENDOR.html" class="type-name-link" title="enum class in swervelib.parser.json">DeviceJson.VENDOR</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Vendor of a device (motor controller, encoder, or gyroscope).</div>
+</div>
+</div>
+</section>
+</li>
 <!-- =========== FIELD SUMMARY =========== -->
 <li>
 <section class="field-summary" id="field-summary">
@@ -97,14 +114,19 @@ loadScripts(document, 'script');</script>
 <div class="block">The CAN bus name which the device resides on if using CAN.</div>
 </div>
 <div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#id" class="member-name-link">id</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#channel" class="member-name-link">channel</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">SmartIO Channel.</div>
+</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#id" class="member-name-link">id</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The CAN ID or pin ID of the device.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#type" class="member-name-link">type</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">The device type, e.g.</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#type" class="member-name-link">type</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The device type</div>
 </div>
 </div>
 </section>
@@ -127,26 +149,45 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../encoders/SwerveAbsoluteEncoder.html" title="class in swervelib.encoders">SwerveAbsoluteEncoder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createEncoder(swervelib.motors.SwerveMotor)" class="member-name-link">createEncoder</a><wbr>(<a href="../../motors/SwerveMotor.html" title="class in swervelib.motors">SwerveMotor</a>&nbsp;motor)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/Pair.html" title="class or interface in edu.wpi.first.math" class="external-link">Pair</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Angle.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Angle</a>&gt;,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAbsoluteEncoder(swervelib.parser.deserializer.ReflectionsManager.VendorMotorController,yams.motorcontrollers.SmartMotorController,boolean)" class="member-name-link">getAbsoluteEncoder</a><wbr>(<a href="../deserializer/ReflectionsManager.VendorMotorController.html" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VendorMotorController</a>&nbsp;angleMotorVendor,
+ yams.motorcontrollers.SmartMotorController&nbsp;angleMotorController,
+ boolean&nbsp;inverted)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a <a href="../../encoders/SwerveAbsoluteEncoder.html" title="class in swervelib.encoders"><code>SwerveAbsoluteEncoder</code></a> from the current configuration.</div>
+<div class="block">Get the Absolute Encoder Supplier and Vendor Absolute Encoder Object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../imu/SwerveIMU.html" title="class in swervelib.imu">SwerveIMU</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createIMU()" class="member-name-link">createIMU</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/system/plant/DCMotor.html" title="class or interface in edu.wpi.first.math.system.plant" class="external-link">DCMotor</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDCMotor(java.lang.String)" class="member-name-link">getDCMotor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;motorType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Get the DC motor from the motor type.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/Pair.html" title="class or interface in edu.wpi.first.math" class="external-link">Pair</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Angle.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Angle</a>&gt;,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGyro(swervelib.parser.json.SwerveDriveJson.GyroAxis,boolean)" class="member-name-link">getGyro</a><wbr>(<a href="SwerveDriveJson.GyroAxis.html" title="enum class in swervelib.parser.json">SwerveDriveJson.GyroAxis</a>&nbsp;axis,
+ boolean&nbsp;inverted)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Get the gyro angle supplier.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../deserializer/ReflectionsManager.VendorMotorController.html" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VendorMotorController</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMotorController()" class="member-name-link">getMotorController</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a <a href="../../imu/SwerveIMU.html" title="class in swervelib.imu"><code>SwerveIMU</code></a> from the given configuration.</div>
+<div class="block">Get the <a href="../deserializer/ReflectionsManager.VendorMotorController.html" title="enum class in swervelib.parser.deserializer"><code>ReflectionsManager.VendorMotorController</code></a> object for the device.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../motors/SwerveMotor.html" title="class in swervelib.motors">SwerveMotor</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMotor(boolean)" class="member-name-link">createMotor</a><wbr>(boolean&nbsp;isDriveMotor)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>yams.motorcontrollers.SmartMotorController</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSmartMotorController(yams.motorcontrollers.SmartMotorControllerConfig)" class="member-name-link">getSmartMotorController</a><wbr>(yams.motorcontrollers.SmartMotorControllerConfig&nbsp;config)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a <a href="../../motors/SwerveMotor.html" title="class in swervelib.motors"><code>SwerveMotor</code></a> from the given configuration.</div>
+<div class="block">Get the <code>SmartMotorController</code> from the <a href="DeviceJson.html" title="class in swervelib.parser.json"><code>DeviceJson</code></a> when given the
+ <code>SmartMotorControllerConfig</code>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DeviceJson.VENDOR.html" title="enum class in swervelib.parser.json">DeviceJson.VENDOR</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVendor(swervelib.parser.json.DeviceJson.VENDOR)" class="member-name-link">getVendor</a><wbr>(<a href="DeviceJson.VENDOR.html" title="enum class in swervelib.parser.json">DeviceJson.VENDOR</a>&nbsp;attachedType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Get the vendor of the device.</div>
 </div>
 </div>
 </div>
@@ -169,7 +210,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="type">
 <h3>type</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">type</span></div>
-<div class="block">The device type, e.g. pigeon/pigeon2/sparkmax/talonfx/navx</div>
+<div class="block">The device type</div>
 </section>
 </li>
 <li>
@@ -177,6 +218,13 @@ loadScripts(document, 'script');</script>
 <h3>id</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">id</span></div>
 <div class="block">The CAN ID or pin ID of the device.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="channel">
+<h3>channel</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">channel</span></div>
+<div class="block">SmartIO Channel.</div>
 </section>
 </li>
 <li>
@@ -209,40 +257,88 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createEncoder(swervelib.motors.SwerveMotor)">
-<h3>createEncoder</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../encoders/SwerveAbsoluteEncoder.html" title="class in swervelib.encoders">SwerveAbsoluteEncoder</a></span>&nbsp;<span class="element-name">createEncoder</span><wbr><span class="parameters">(<a href="../../motors/SwerveMotor.html" title="class in swervelib.motors">SwerveMotor</a>&nbsp;motor)</span></div>
-<div class="block">Create a <a href="../../encoders/SwerveAbsoluteEncoder.html" title="class in swervelib.encoders"><code>SwerveAbsoluteEncoder</code></a> from the current configuration.</div>
+<section class="detail" id="getDCMotor(java.lang.String)">
+<h3>getDCMotor</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/system/plant/DCMotor.html" title="class or interface in edu.wpi.first.math.system.plant" class="external-link">DCMotor</a></span>&nbsp;<span class="element-name">getDCMotor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;motorType)</span></div>
+<div class="block">Get the DC motor from the motor type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>motor</code> - <a href="../../motors/SwerveMotor.html" title="class in swervelib.motors"><code>SwerveMotor</code></a> of which attached encoders will be created from, only used when the type is
-              "attached" or "canandencoder".</dd>
+<dd><code>motorType</code> - Motor type.</dd>
 <dt>Returns:</dt>
-<dd><a href="../../encoders/SwerveAbsoluteEncoder.html" title="class in swervelib.encoders"><code>SwerveAbsoluteEncoder</code></a> given.</dd>
+<dd><a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/system/plant/DCMotor.html" title="class or interface in edu.wpi.first.math.system.plant" class="external-link"><code>DCMotor</code></a></dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="createIMU()">
-<h3>createIMU</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../imu/SwerveIMU.html" title="class in swervelib.imu">SwerveIMU</a></span>&nbsp;<span class="element-name">createIMU</span>()</div>
-<div class="block">Create a <a href="../../imu/SwerveIMU.html" title="class in swervelib.imu"><code>SwerveIMU</code></a> from the given configuration.</div>
+<section class="detail" id="getGyro(swervelib.parser.json.SwerveDriveJson.GyroAxis,boolean)">
+<h3>getGyro</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/Pair.html" title="class or interface in edu.wpi.first.math" class="external-link">Pair</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Angle.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Angle</a>&gt;,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getGyro</span><wbr><span class="parameters">(<a href="SwerveDriveJson.GyroAxis.html" title="enum class in swervelib.parser.json">SwerveDriveJson.GyroAxis</a>&nbsp;axis,
+ boolean&nbsp;inverted)</span></div>
+<div class="block">Get the gyro angle supplier.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>axis</code> - Gyro axis.</dd>
+<dd><code>inverted</code> - Invert the gyro angle.</dd>
 <dt>Returns:</dt>
-<dd><a href="../../imu/SwerveIMU.html" title="class in swervelib.imu"><code>SwerveIMU</code></a> given.</dd>
+<dd><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> of <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Angle.html" title="class or interface in edu.wpi.first.units.measure" class="external-link"><code>Angle</code></a></dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="createMotor(boolean)">
-<h3>createMotor</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../motors/SwerveMotor.html" title="class in swervelib.motors">SwerveMotor</a></span>&nbsp;<span class="element-name">createMotor</span><wbr><span class="parameters">(boolean&nbsp;isDriveMotor)</span></div>
-<div class="block">Create a <a href="../../motors/SwerveMotor.html" title="class in swervelib.motors"><code>SwerveMotor</code></a> from the given configuration.</div>
+<section class="detail" id="getVendor(swervelib.parser.json.DeviceJson.VENDOR)">
+<h3>getVendor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="DeviceJson.VENDOR.html" title="enum class in swervelib.parser.json">DeviceJson.VENDOR</a></span>&nbsp;<span class="element-name">getVendor</span><wbr><span class="parameters">(<a href="DeviceJson.VENDOR.html" title="enum class in swervelib.parser.json">DeviceJson.VENDOR</a>&nbsp;attachedType)</span></div>
+<div class="block">Get the vendor of the device.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>isDriveMotor</code> - If the motor being generated is a drive motor.</dd>
+<dd><code>attachedType</code> - Vendor to return when the device is directly attached (not on CAN/DIO/Analog),
+                      since the attached vendor cannot be determined from the device type string alone.</dd>
 <dt>Returns:</dt>
-<dd><a href="../../motors/SwerveMotor.html" title="class in swervelib.motors"><code>SwerveMotor</code></a> given.</dd>
+<dd>Vendor of the device.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMotorController()">
+<h3>getMotorController</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../deserializer/ReflectionsManager.VendorMotorController.html" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VendorMotorController</a></span>&nbsp;<span class="element-name">getMotorController</span>()</div>
+<div class="block">Get the <a href="../deserializer/ReflectionsManager.VendorMotorController.html" title="enum class in swervelib.parser.deserializer"><code>ReflectionsManager.VendorMotorController</code></a> object for the device.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><a href="../deserializer/ReflectionsManager.VendorMotorController.html" title="enum class in swervelib.parser.deserializer"><code>ReflectionsManager.VendorMotorController</code></a> object for the device.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAbsoluteEncoder(swervelib.parser.deserializer.ReflectionsManager.VendorMotorController,yams.motorcontrollers.SmartMotorController,boolean)">
+<h3>getAbsoluteEncoder</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/Pair.html" title="class or interface in edu.wpi.first.math" class="external-link">Pair</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Angle.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Angle</a>&gt;,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getAbsoluteEncoder</span><wbr><span class="parameters">(<a href="../deserializer/ReflectionsManager.VendorMotorController.html" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VendorMotorController</a>&nbsp;angleMotorVendor,
+ yams.motorcontrollers.SmartMotorController&nbsp;angleMotorController,
+ boolean&nbsp;inverted)</span></div>
+<div class="block">Get the Absolute Encoder Supplier and Vendor Absolute Encoder Object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>angleMotorVendor</code> - Vendor of the angle/steering/azimuth motor controller, used when the
+                             absolute encoder is attached to the angle motor controller.</dd>
+<dd><code>angleMotorController</code> - Angle/steering/azimuth <code>SmartMotorController</code>, used when the
+                             absolute encoder is attached to the angle motor controller.</dd>
+<dd><code>inverted</code> - Inversion of the absolute encoder.</dd>
+<dt>Returns:</dt>
+<dd>Pair of <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> and Vendor Absolute Encoder <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSmartMotorController(yams.motorcontrollers.SmartMotorControllerConfig)">
+<h3>getSmartMotorController</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">yams.motorcontrollers.SmartMotorController</span>&nbsp;<span class="element-name">getSmartMotorController</span><wbr><span class="parameters">(yams.motorcontrollers.SmartMotorControllerConfig&nbsp;config)</span></div>
+<div class="block">Get the <code>SmartMotorController</code> from the <a href="DeviceJson.html" title="class in swervelib.parser.json"><code>DeviceJson</code></a> when given the
+ <code>SmartMotorControllerConfig</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>config</code> - <code>SmartMotorControllerConfig</code> to apply when creating <code>SmartMotorController</code>.</dd>
+<dt>Returns:</dt>
+<dd><code>SmartMotorController</code></dd>
 </dl>
 </section>
 </li>

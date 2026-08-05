@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -88,21 +92,22 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="caption"><span>Classes</span></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab3" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab3', 2)" class="table-tab">Enum Classes</button></div>
+<div id="class-summary.tabpanel" role="tabpanel" aria-labelledby="class-summary-tab0">
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ControllerPropertiesJson.html" title="class in swervelib.parser.json">ControllerPropertiesJson</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DeviceJson.html" title="class in swervelib.parser.json">DeviceJson</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block"><a href="../../SwerveController.html" title="class in swervelib"><code>SwerveController</code></a> parsed class.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DeviceJson.html" title="class in swervelib.parser.json">DeviceJson</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Device JSON parsed class.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="DeviceJson.VENDOR.html" title="enum class in swervelib.parser.json">DeviceJson.VENDOR</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="block">Vendor of a device (motor controller, encoder, or gyroscope).</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ModuleJson.html" title="class in swervelib.parser.json">ModuleJson</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block"><a href="../../SwerveModule.html" title="class in swervelib"><code>SwerveModule</code></a> JSON parsed class.</div>
+<div class="block"><code>SwerveModule</code> JSON parsed class.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MotorConfigDouble.html" title="class in swervelib.parser.json">MotorConfigDouble</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
@@ -114,15 +119,20 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PhysicalPropertiesJson.html" title="class in swervelib.parser.json">PhysicalPropertiesJson</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block"><a href="../SwerveModulePhysicalCharacteristics.html" title="class in swervelib.parser"><code>SwerveModulePhysicalCharacteristics</code></a> parsed data.</div>
+<div class="block">Used to configure the SwerveModule.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="PIDFPropertiesJson.html" title="class in swervelib.parser.json">PIDFPropertiesJson</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block"><a href="../../SwerveModule.html" title="class in swervelib"><code>SwerveModule</code></a> PID with Feedforward for the drive motor and angle motor.</div>
+<div class="block"><code>SwerveModule</code> PID with Feedforward for the drive motor and angle motor.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SwerveDriveJson.html" title="class in swervelib.parser.json">SwerveDriveJson</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block"><a href="../../SwerveDrive.html" title="class in swervelib"><code>SwerveDrive</code></a> JSON parsed class.</div>
+<div class="block"><code>SwerveDrive</code> JSON parsed class.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="SwerveDriveJson.GyroAxis.html" title="enum class in swervelib.parser.json">SwerveDriveJson.GyroAxis</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="block">Gyro Axis</div>
+</div>
 </div>
 </div>
 </div>

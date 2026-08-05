@@ -92,9 +92,24 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static enum&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="ReflectionsManager.AbsoluteEncoder.html" class="type-name-link" title="enum class in swervelib.parser.deserializer">ReflectionsManager.AbsoluteEncoder</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Absolute encoder vendor classes.</div>
+</div>
+<div class="col-first odd-row-color"><code>static enum&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="ReflectionsManager.Gyro.html" class="type-name-link" title="enum class in swervelib.parser.deserializer">ReflectionsManager.Gyro</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Gyro vendor classes.</div>
+</div>
+<div class="col-first even-row-color"><code>static enum&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="ReflectionsManager.VENDOR.html" class="type-name-link" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VENDOR</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Vendors that supply their own vendordep to communicate with their products.</div>
+</div>
+<div class="col-first odd-row-color"><code>static enum&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="ReflectionsManager.VendorMotorController.html" class="type-name-link" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VendorMotorController</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><code>SmartMotorController</code> vendor classes.</div>
 </div>
 </div>
 </section>
@@ -123,17 +138,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#checkIfVendorLibExists(swervelib.parser.deserializer.ReflectionsManager.VENDOR)" class="member-name-link">checkIfVendorLibExists</a><wbr>(<a href="ReflectionsManager.VENDOR.html" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VENDOR</a>&nbsp;vendor)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Check if the vendordep exists.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static &lt;T&gt;&nbsp;T</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#create(swervelib.parser.deserializer.ReflectionsManager.VENDOR,java.lang.String,java.lang.Class%5B%5D,java.lang.Object%5B%5D)" class="member-name-link">create</a><wbr>(<a href="ReflectionsManager.VENDOR.html" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VENDOR</a>&nbsp;v,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static &lt;T&gt;&nbsp;T</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#create(swervelib.parser.deserializer.ReflectionsManager.VENDOR,java.lang.String,java.lang.Class%5B%5D,java.lang.Object%5B%5D)" class="member-name-link">create</a><wbr>(<a href="ReflectionsManager.VENDOR.html" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VENDOR</a>&nbsp;v,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;className,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;[]&nbsp;parameterTypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>[]&nbsp;parameters)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Create objects if the vendordep exists.</div>
 </div>
 </div>
@@ -167,19 +177,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="checkIfVendorLibExists(swervelib.parser.deserializer.ReflectionsManager.VENDOR)">
-<h3>checkIfVendorLibExists</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">checkIfVendorLibExists</span><wbr><span class="parameters">(<a href="ReflectionsManager.VENDOR.html" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VENDOR</a>&nbsp;vendor)</span></div>
-<div class="block">Check if the vendordep exists.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>vendor</code> - Vendor to check for their library.</dd>
-<dt>Returns:</dt>
-<dd>Boolean on existence of their library.</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="create(swervelib.parser.deserializer.ReflectionsManager.VENDOR,java.lang.String,java.lang.Class[],java.lang.Object[])">
 <h3>create</h3>
