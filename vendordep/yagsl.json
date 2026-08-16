@@ -14,12 +14,7 @@
       "groupId": "swervelib",
       "artifactId": "YAGSL-java",
       "version": "${version}"
-    },
-	{
-            "groupId": "org.dyn4j",
-            "artifactId": "dyn4j",
-            "version": "5.0.2"
-	}
+    }
   ],
   "requires": [
     {
