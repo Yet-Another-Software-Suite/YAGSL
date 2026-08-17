@@ -336,7 +336,7 @@ public class SwerveParser {
         .withLocation(
             Inches.of(moduleJson.location.front),
             Inches.of(moduleJson.location.left))
-        .withDataLogName("Swerve/"+getModuleName(moduleIndex))
+        .withDataLogName("Swerve/modules/"+getModuleName(moduleIndex))
         .withTelemetry(getModuleName(moduleIndex),
             TelemetryVerbosity.LOW);
 
