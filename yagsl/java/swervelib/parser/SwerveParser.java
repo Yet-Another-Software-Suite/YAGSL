@@ -32,6 +32,8 @@ import yams.motorcontrollers.SmartMotorControllerConfig;
 import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
+import yams.telemetry.SmartMotorControllerTelemetry;
+import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -210,9 +212,24 @@ public class SwerveParser {
         .withIdleMode(MotorMode.COAST)
         .withStatorCurrentLimit(
             Amps.of(physicalPropertiesJson.statorCurrentLimit.drive))
-        .withTelemetry(
-            "drive_" + getModuleName(moduleIndex),
-            TelemetryVerbosity.LOW);
+        .withTelemetry("drive",
+                new SmartMotorControllerTelemetryConfig()
+                        .withDataLogName("Swerve/modules/"+getModuleName(moduleIndex)+"/drive")
+                        .withCustom(SmartMotorControllerTelemetry.BooleanTelemetryField.SimpleMotorFeedForward, false)
+                        .withCustom(new SmartMotorControllerTelemetry.DoubleTelemetryField[]{
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kP,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kI,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kD,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kS,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kV,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kA,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrentLimit,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrentLimit,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementPosition,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementVelocity
+                        },true));
   }
 
   private SmartMotorControllerConfig createAzimuthMotorConfig(
@@ -238,9 +255,26 @@ public class SwerveParser {
         .withIdleMode(MotorMode.BRAKE)
         .withStatorCurrentLimit(
             Amps.of(physicalPropertiesJson.statorCurrentLimit.angle))
-        .withTelemetry(
-            "azimuth_" + getModuleName(moduleIndex),
-            TelemetryVerbosity.LOW);
+        .withTelemetry("azimuth",
+                new SmartMotorControllerTelemetryConfig()
+                        .withDataLogName("Swerve/modules/"+getModuleName(moduleIndex)+"/azimuth")
+                        .withCustom(SmartMotorControllerTelemetry.BooleanTelemetryField.SimpleMotorFeedForward, false)
+                        .withCustom(new SmartMotorControllerTelemetry.DoubleTelemetryField[]{
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kP,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kI,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kD,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kS,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kV,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.kA,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrentLimit,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrentLimit,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismPosition,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismVelocity,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderPosition,
+                                SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderVelocity
+                        },true));
   }
 
   private ModuleHardware createModuleHardware(
@@ -302,8 +336,9 @@ public class SwerveParser {
         .withLocation(
             Inches.of(moduleJson.location.front),
             Inches.of(moduleJson.location.left))
+        .withDataLogName("Swerve/"+getModuleName(moduleIndex))
         .withTelemetry(getModuleName(moduleIndex),
-            TelemetryVerbosity.HIGH);
+            TelemetryVerbosity.LOW);
 
     if (hardware.absoluteEncoderVendor != hardware.azimuthMotorVendor) {
       config.withAbsoluteEncoder(
@@ -332,7 +367,8 @@ public class SwerveParser {
                 GyroAxis.valueOf(
                     swerveDriveJson.gyroAxis.toUpperCase()),
                 swerveDriveJson.gyroInvert).getFirst())
-        .withGyroInverted(swerveDriveJson.gyroInvert);
+        .withGyroInverted(swerveDriveJson.gyroInvert)
+        .withDataLogName("Swerve");
   }
 
   private record ModuleGearings(
