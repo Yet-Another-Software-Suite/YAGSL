@@ -280,7 +280,8 @@ loadScripts(document, 'script');</script>
 <dd><code>axis</code> - Gyro axis.</dd>
 <dd><code>inverted</code> - Invert the gyro angle.</dd>
 <dt>Returns:</dt>
-<dd><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> of <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Angle.html" title="class or interface in edu.wpi.first.units.measure" class="external-link"><code>Angle</code></a></dd>
+<dd><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> of <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Angle.html" title="class or interface in edu.wpi.first.units.measure" class="external-link"><code>Angle</code></a>, or <code>null</code> if the gyro type is <code>"custom"</code> and the
+ user is expected to configure the gyro themselves.</dd>
 </dl>
 </section>
 </li>
