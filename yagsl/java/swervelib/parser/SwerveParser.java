@@ -362,13 +362,18 @@ public class SwerveParser {
         .withMaximumModuleSpeed(maxModuleSpeed)
         .withDiscretizationTime(Millisecond.of(20))
         .withSimDiscretizationTime(Millisecond.of(20))
-        .withGyro(
-            swerveDriveJson.gyro.getGyro(
-                GyroAxis.valueOf(
-                    swerveDriveJson.gyroAxis.toUpperCase()),
-                swerveDriveJson.gyroInvert).getFirst())
-        .withGyroInverted(swerveDriveJson.gyroInvert)
         .withDataLogName("Swerve");
+
+    // "custom" gyro type: skip applying the gyro so the user can configure it themselves.
+    if (!"custom".equalsIgnoreCase(swerveDriveJson.gyro.type)) {
+      config
+          .withGyro(
+              swerveDriveJson.gyro.getGyro(
+                  GyroAxis.valueOf(
+                      swerveDriveJson.gyroAxis.toUpperCase()),
+                  swerveDriveJson.gyroInvert).getFirst())
+          .withGyroInverted(swerveDriveJson.gyroInvert);
+    }
   }
 
   private record ModuleGearings(

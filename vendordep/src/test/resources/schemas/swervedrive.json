@@ -11,10 +11,11 @@
             "navx3_can",
             "pigeon2_can",
             "canandgyro_can",
-            "systemcore_internal"
+            "systemcore_internal",
+            "custom"
           ],
           "type": "string",
-          "description": "The gyroscope type"
+          "description": "The gyroscope type. Use \"custom\" to skip YAGSL's gyro configuration and apply your own gyro to the SwerveDriveConfig before creating the SwerveDrive."
         },
         "id": {
           "type": "number",

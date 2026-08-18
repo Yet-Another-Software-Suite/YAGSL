@@ -73,10 +73,15 @@ public class DeviceJson
    *
    * @param axis     Gyro axis.
    * @param inverted Invert the gyro angle.
-   * @return {@link Supplier} of {@link Angle}
+   * @return {@link Supplier} of {@link Angle}, or {@code null} if the gyro type is {@code "custom"} and the
+   * user is expected to configure the gyro themselves.
    */
   public Pair<Supplier<Angle>, Object> getGyro(GyroAxis axis, boolean inverted)
   {
+    if ("custom".equalsIgnoreCase(type))
+    {
+      return null;
+    }
     if (type.contains("_"))
     {
       String[] vendorData           = type.split("_");
