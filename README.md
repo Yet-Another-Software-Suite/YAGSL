@@ -100,7 +100,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
         .withTelemetry(TelemetryVerbosity.HIGH);
     try
     {
-      drive = new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve/base"))
+      drive = SwerveParser.parse(new File(Filesystem.getDeployDirectory(), "swerve/base"))
           .createSwerveDrive(cfg);
     } catch (Exception e)
     {
