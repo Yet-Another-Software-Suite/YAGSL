@@ -35,16 +35,9 @@ public class SwerveDriveSubsystem extends SubsystemBase
         .withStartingPose(new Pose2d(3, 3, Rotation2d.kZero))
         .withSubsystem(this)
         .withTelemetry(TelemetryVerbosity.HIGH);
-    try
-    {
-      drive = new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve/base"))
-          .createSwerveDrive(cfg);
-    } catch (Exception e)
-    {
-      System.out.println("Error creating swerve drive");
-      System.out.println(e);
-      throw new RuntimeException(e);
-    }
+
+    drive = SwerveParser.parse(new File(Filesystem.getDeployDirectory(), "swerve/base"))
+        .createSwerveDrive(cfg);
   }
 
   public SwerveInputStream getAngularVelocityStream(DoubleSupplier x, DoubleSupplier y, DoubleSupplier rot)
