@@ -83,7 +83,7 @@ public class SwerveParser {
    *                              files
    *                              cannot be read
    */
-  public SwerveParser parse(File directory) {
+  public static SwerveParser parse(File directory) {
     SwerveParser inst = new SwerveParser();
 
     try {
