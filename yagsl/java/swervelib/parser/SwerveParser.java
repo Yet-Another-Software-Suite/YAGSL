@@ -3,13 +3,16 @@ package swervelib.parser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.wpi.first.math.Pair;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.LinearVelocity;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
@@ -65,21 +68,42 @@ public class SwerveParser {
   public static ModuleJson[] moduleJsons;
 
   /**
-   * Construct a swerve parser. Will throw an error if there is a missing file.
-   *
-   * @param directory Directory with swerve configurations.
-   * @throws IOException if a file doesn't exist.
+   * Construct a swerve parser.
    */
-  public SwerveParser(File directory) throws IOException {
+  public SwerveParser() {
+  }
+
+  /**
+   * Parses a swerve configuration directory and creates a {@link SwerveParser}
+   * containing the parsed configuration.
+   *
+   * @param directory the directory containing the swerve configuration files
+   * @return a {@link SwerveParser} containing the parsed configuration
+   * @throws UncheckedIOException if the directory or any of its configuration
+   *                              files
+   *                              cannot be read
+   */
+  public static SwerveParser parse(File directory) {
+    SwerveParser inst = new SwerveParser();
+
+    try {
+      parseDirectory(directory);
+    } catch (IOException e) {
+      throw new UncheckedIOException("Failed to parse swerve directory: " + directory, e);
+    }
+
+    return inst;
+  }
+
+  public static void parseDirectory(File directory) throws IOException {
     checkDirectory(directory);
     swerveDriveJson = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         .readValue(new File(directory, "swervedrive.json"), SwerveDriveJson.class);
     var pidfFile = new File(directory, "modules/pidfproperties.json");
     var simPidfFile = new File(directory, "modules/pidfproperties_sim.json");
-    if(simPidfFile.exists() && RobotBase.isSimulation())
-    {
-        pidfFile = simPidfFile;
+    if (simPidfFile.exists() && RobotBase.isSimulation()) {
+      pidfFile = simPidfFile;
     }
     pidfPropertiesJson = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -106,7 +130,7 @@ public class SwerveParser {
    * @param file JSON File to open.
    * @return JsonNode of file.
    */
-  private JsonNode openJson(File file) {
+  private static JsonNode openJson(File file) {
     try {
       return new ObjectMapper().readTree(file);
     } catch (IOException e) {
@@ -119,7 +143,7 @@ public class SwerveParser {
    *
    * @param directory JSON Configuration Directory
    */
-  private void checkDirectory(File directory) {
+  private static void checkDirectory(File directory) {
     assert new File(directory, "swervedrive.json").exists();
     assert new File(directory, "modules").exists() && new File(directory, "modules").isDirectory();
     assert new File(directory, "modules/pidfproperties.json").exists();
@@ -129,10 +153,11 @@ public class SwerveParser {
   /**
    * Create a {@link SwerveDrive} from the parsed JSON configuration.
    *
-   * @param swerveDriveConfig {@link SwerveDriveConfig} to apply to the created {@link SwerveDrive}.
+   * @param swerveDriveConfig {@link SwerveDriveConfig} to apply to the created
+   *                          {@link SwerveDrive}.
    * @return Configured {@link SwerveDrive}.
    */
-  public SwerveDrive createSwerveDrive(SwerveDriveConfig swerveDriveConfig) {
+  public static SwerveDrive createSwerveDrive(SwerveDriveConfig swerveDriveConfig) {
     SwerveModule[] modules = new SwerveModule[swerveDriveJson.modules.length];
     LinearVelocity totalMaxModuleSpeed = MetersPerSecond.zero();
 
@@ -152,14 +177,14 @@ public class SwerveParser {
           calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController));
 
       // Automatic theorhetical feedforward for drive motors.
-      if((pidfPropertiesJson.drive.v) == 0) {
-          var sff = new SimpleMotorFeedforward(
-                  pidfPropertiesJson.drive.s,
-                  12.0 / driveConfig.convertToMechanism(calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController))
-                          .in(RotationsPerSecond),
-                  pidfPropertiesJson.drive.a);
-          driveConfig.withFeedforward(sff);
-          hardware.driveMotorController.setFeedforward(sff.getKs(),sff.getKv(),sff.getKa(),0);
+      if ((pidfPropertiesJson.drive.v) == 0) {
+        var sff = new SimpleMotorFeedforward(
+            pidfPropertiesJson.drive.s,
+            12.0 / driveConfig.convertToMechanism(calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController))
+                .in(RotationsPerSecond),
+            pidfPropertiesJson.drive.a);
+        driveConfig.withFeedforward(sff);
+        hardware.driveMotorController.setFeedforward(sff.getKs(), sff.getKv(), sff.getKa(), 0);
       }
 
       modules[i] = createSwerveModule(
@@ -176,7 +201,7 @@ public class SwerveParser {
     return new SwerveDrive(swerveDriveConfig);
   }
 
-  private ModuleGearings resolveGearings(ModuleJson moduleJson) {
+  private static ModuleGearings resolveGearings(ModuleJson moduleJson) {
     var driveGearing = physicalPropertiesJson.gearing.drive;
     var azimuthGearing = physicalPropertiesJson.gearing.angle;
 
@@ -191,7 +216,7 @@ public class SwerveParser {
     return new ModuleGearings(driveGearing, azimuthGearing);
   }
 
-  private SmartMotorControllerConfig createDriveMotorConfig(
+  private static SmartMotorControllerConfig createDriveMotorConfig(
       SwerveDriveConfig swerveDriveConfig,
       ModuleJson moduleJson,
       DriveGearingJson driveGearing,
@@ -206,33 +231,33 @@ public class SwerveParser {
             pidfPropertiesJson.drive.i,
             pidfPropertiesJson.drive.d)
         .withFeedforward(new SimpleMotorFeedforward(
-                pidfPropertiesJson.drive.s,
-                pidfPropertiesJson.drive.v,
-                pidfPropertiesJson.drive.a))
+            pidfPropertiesJson.drive.s,
+            pidfPropertiesJson.drive.v,
+            pidfPropertiesJson.drive.a))
         .withIdleMode(MotorMode.COAST)
         .withStatorCurrentLimit(
             Amps.of(physicalPropertiesJson.statorCurrentLimit.drive))
         .withTelemetry("drive",
-                new SmartMotorControllerTelemetryConfig()
-                        .withDataLogName("Swerve/modules/"+getModuleName(moduleIndex)+"/drive")
-                        .withCustom(SmartMotorControllerTelemetry.BooleanTelemetryField.SimpleMotorFeedForward, false)
-                        .withCustom(new SmartMotorControllerTelemetry.DoubleTelemetryField[]{
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kP,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kI,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kD,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kS,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kV,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kA,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrentLimit,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrentLimit,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementPosition,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementVelocity
-                        },true));
+            new SmartMotorControllerTelemetryConfig()
+                .withDataLogName("Swerve/modules/" + getModuleName(moduleIndex) + "/drive")
+                .withCustom(SmartMotorControllerTelemetry.BooleanTelemetryField.SimpleMotorFeedForward, false)
+                .withCustom(new SmartMotorControllerTelemetry.DoubleTelemetryField[] {
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kP,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kI,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kD,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kS,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kV,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kA,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrentLimit,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrentLimit,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementPosition,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementVelocity
+                }, true));
   }
 
-  private SmartMotorControllerConfig createAzimuthMotorConfig(
+  private static SmartMotorControllerConfig createAzimuthMotorConfig(
       SwerveDriveConfig swerveDriveConfig,
       ModuleJson moduleJson,
       AngleGearingJson azimuthGearing,
@@ -246,9 +271,9 @@ public class SwerveParser {
             pidfPropertiesJson.angle.i,
             pidfPropertiesJson.angle.d)
         .withFeedforward(new SimpleMotorFeedforward(
-                pidfPropertiesJson.angle.s,
-                pidfPropertiesJson.angle.v,
-                pidfPropertiesJson.angle.a))
+            pidfPropertiesJson.angle.s,
+            pidfPropertiesJson.angle.v,
+            pidfPropertiesJson.angle.a))
         .withContinuousWrapping(
             Rotations.of(-0.5),
             Rotations.of(0.5))
@@ -256,28 +281,28 @@ public class SwerveParser {
         .withStatorCurrentLimit(
             Amps.of(physicalPropertiesJson.statorCurrentLimit.angle))
         .withTelemetry("azimuth",
-                new SmartMotorControllerTelemetryConfig()
-                        .withDataLogName("Swerve/modules/"+getModuleName(moduleIndex)+"/azimuth")
-                        .withCustom(SmartMotorControllerTelemetry.BooleanTelemetryField.SimpleMotorFeedForward, false)
-                        .withCustom(new SmartMotorControllerTelemetry.DoubleTelemetryField[]{
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kP,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kI,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kD,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kS,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kV,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.kA,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrentLimit,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrentLimit,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismPosition,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismVelocity,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderPosition,
-                                SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderVelocity
-                        },true));
+            new SmartMotorControllerTelemetryConfig()
+                .withDataLogName("Swerve/modules/" + getModuleName(moduleIndex) + "/azimuth")
+                .withCustom(SmartMotorControllerTelemetry.BooleanTelemetryField.SimpleMotorFeedForward, false)
+                .withCustom(new SmartMotorControllerTelemetry.DoubleTelemetryField[] {
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kP,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kI,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kD,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kS,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kV,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.kA,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrentLimit,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrentLimit,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismPosition,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismVelocity,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderPosition,
+                    SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderVelocity
+                }, true));
   }
 
-  private ModuleHardware createModuleHardware(
+  private static ModuleHardware createModuleHardware(
       ModuleJson moduleJson,
       SmartMotorControllerConfig azimuthConfig, SmartMotorControllerConfig driveConfig,
       SwerveDriveConfig swerveDriveConfig) {
@@ -311,7 +336,7 @@ public class SwerveParser {
         absoluteEncoderVendor);
   }
 
-  private LinearVelocity calculateMaxModuleSpeed(
+  private static LinearVelocity calculateMaxModuleSpeed(
       SmartMotorControllerConfig driveConfig,
       SmartMotorController driveMotorController) {
     return driveConfig.convertFromMechanism(
@@ -319,7 +344,7 @@ public class SwerveParser {
             driveMotorController.getDCMotor().freeSpeedRadPerSec));
   }
 
-  private SwerveModule createSwerveModule(
+  private static SwerveModule createSwerveModule(
       ModuleJson moduleJson,
       ModuleHardware hardware,
       int moduleIndex) {
@@ -336,7 +361,7 @@ public class SwerveParser {
         .withLocation(
             Inches.of(moduleJson.location.front),
             Inches.of(moduleJson.location.left))
-        .withDataLogName("Swerve/modules/"+getModuleName(moduleIndex))
+        .withDataLogName("Swerve/modules/" + getModuleName(moduleIndex))
         .withTelemetry(getModuleName(moduleIndex),
             TelemetryVerbosity.LOW);
 
@@ -348,12 +373,11 @@ public class SwerveParser {
     return new SwerveModule(config);
   }
 
-  private String getModuleName(int moduleIndex)
-  {
-      return swerveDriveJson.modules[moduleIndex].split("\\.json")[0];
+  private static String getModuleName(int moduleIndex) {
+    return swerveDriveJson.modules[moduleIndex].split("\\.json")[0];
   }
 
-  private void configureSwerveDrive(
+  private static void configureSwerveDrive(
       SwerveDriveConfig config,
       SwerveModule[] modules,
       LinearVelocity maxModuleSpeed) {
@@ -364,7 +388,8 @@ public class SwerveParser {
         .withSimDiscretizationTime(Millisecond.of(20))
         .withDataLogName("Swerve");
 
-    // "custom" gyro type: skip applying the gyro so the user can configure it themselves.
+    // "custom" gyro type: skip applying the gyro so the user can configure it
+    // themselves.
     if (!"custom".equalsIgnoreCase(swerveDriveJson.gyro.type)) {
       config
           .withGyro(
@@ -376,12 +401,12 @@ public class SwerveParser {
     }
   }
 
-  private record ModuleGearings(
+  private static record ModuleGearings(
       DriveGearingJson drive,
       AngleGearingJson azimuth) {
   }
 
-  private record ModuleHardware(
+  private static record ModuleHardware(
       SmartMotorController driveMotorController,
       SmartMotorController azimuthMotorController,
       Pair<Supplier<Angle>, Object> absoluteEncoder,
