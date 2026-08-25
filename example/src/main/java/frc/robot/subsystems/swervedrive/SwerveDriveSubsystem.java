@@ -153,14 +153,15 @@ public class SwerveDriveSubsystem extends SubsystemBase
   }
 
   /**
-   * Get the gyro's orientation as a {@link Rotation3d}, with pitch and roll fixed at zero.
+   * Get the gyro's full 3 axis orientation (roll, pitch, and yaw) as a {@link Rotation3d}.
    * <p>
-   * {@link SwerveDrive} only tracks a single yaw {@link edu.wpi.first.units.measure.Angle} (see
-   * {@link SwerveDrive#getGyroAngle()}), so pitch and roll are always zero here. This is by design: yaw is the only
-   * axis that MegaTag2 pose estimation actually requires, so any gyro that reports yaw -- NavX, Pigeon2, ADIS16470,
-   * ADXRS450, or otherwise -- works fine for MegaTag2. Feeding real pitch/roll from a full IMU is optional, not a
-   * prerequisite; depending on your camera mount and how noisy that extra data is, it could help or hurt the
-   * resulting pose, so treat it as a tuning knob rather than a requirement.
+   * {@link SwerveDrive} itself only tracks a single yaw {@link edu.wpi.first.units.measure.Angle} (see
+   * {@link SwerveDrive#getGyroAngle()}), since yaw is the only axis MegaTag2 pose estimation actually requires. This
+   * subsystem grabs the raw {@link Pigeon2} device instead (via {@link SwerveParser#createSwerveDriveDevices}, see
+   * "How to access raw hardware devices" in the docs) so it can report the IMU's real roll and pitch too. That's a
+   * nice to have here, not a requirement. Any gyro that only reports yaw (NavX, ADIS16470, ADXRS450, or otherwise)
+   * still works fine for MegaTag2, and feeding it real roll and pitch could help or hurt the resulting pose
+   * depending on your camera mount and how noisy that data is, so don't treat it as free accuracy.
    *
    * @return {@link Rotation3d} of the gyro.
    */
@@ -170,10 +171,13 @@ public class SwerveDriveSubsystem extends SubsystemBase
   }
 
   /**
-   * Get the robot's yaw angular velocity, derived from wheel odometry (kinematics of the current module states)
-   * since {@link SwerveDrive} doesn't expose a raw gyro angular velocity reading directly.
+   * Get the robot's full 3 axis angular velocity (roll, pitch, and yaw rates), read directly off the raw
+   * {@link Pigeon2} device obtained via {@link SwerveParser#createSwerveDriveDevices}. As with
+   * {@link #getGyroRotation3d()}, only the yaw rate is required for MegaTag2. The roll and pitch rates are extra
+   * accuracy this subsystem happens to have available because it grabbed the raw gyro, not something every robot
+   * needs to supply.
    *
-   * @return {@link AngularVelocity} of the robot's yaw rate.
+   * @return {@link AngularVelocity3d} of the gyro's roll, pitch, and yaw rates.
    */
   public AngularVelocity3d getGyroAngularVelocity()
   {

@@ -67,11 +67,13 @@ public class LimelightVisionSubsystem extends SubsystemBase
     // MegaTag2 fuses tag detections with the robot's current heading, so it must be submitted every loop before
     // reading a pose estimate.
     //
-    // Only yaw is actually required (and available) here -- SwerveDriveSubsystem.getGyroRotation3d()/
-    // getGyroAngularVelocity() are yaw-only, so pitch, roll, and their rates are always sent as zero. Any gyro that
-    // reports yaw (NavX, Pigeon2, ADIS16470, ADXRS450, ...) is sufficient for MegaTag2. A full IMU could supply real
-    // pitch/roll data instead, but that's optional, not required -- it could just as easily hurt MegaTag2's result
-    // as help it, depending on how noisy that data is and how the camera is mounted.
+    // Only yaw is actually required for MegaTag2. SwerveDriveSubsystem.getGyroRotation3d() and
+    // getGyroAngularVelocity() happen to report real pitch, roll, and per axis angular velocity here because they
+    // read straight off the Pigeon2 obtained through SwerveParser.createSwerveDriveDevices(), see
+    // "How to access raw hardware devices" in the docs. That's not a requirement though. Any gyro that only reports
+    // yaw (NavX, ADIS16470, ADXRS450, or otherwise) is perfectly sufficient for MegaTag2, and feeding real pitch and
+    // roll from a full IMU is optional. Depending on your camera mount and how noisy that extra data is, it could
+    // help or hurt the resulting pose just as easily.
     limelight.getSettings()
              .withRobotOrientation(new Orientation3d(drivetrain.getGyroRotation3d(),
                                                       drivetrain.getGyroAngularVelocity()))
