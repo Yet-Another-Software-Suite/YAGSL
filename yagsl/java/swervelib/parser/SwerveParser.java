@@ -158,7 +158,35 @@ public class SwerveParser {
    * @return Configured {@link SwerveDrive}.
    */
   public static SwerveDrive createSwerveDrive(SwerveDriveConfig swerveDriveConfig) {
+    return buildSwerveDrive(swerveDriveConfig).swerveDrive();
+  }
+
+  /**
+   * Create a {@link SwerveDrive} from the parsed JSON configuration, exposing the raw vendor hardware devices
+   * created along the way (drive/azimuth motor controllers, absolute encoders, and the gyro) alongside it. Useful
+   * when code needs direct access to a vendor device for configuration that isn't exposed through
+   * {@link yams.motorcontrollers.SmartMotorController} -- everything else should prefer
+   * {@link #createSwerveDrive(SwerveDriveConfig)}.
+   *
+   * @param swerveDriveConfig {@link SwerveDriveConfig} to apply to the created {@link SwerveDrive}.
+   * @return {@link SwerveDriveDevices} containing the configured {@link SwerveDrive} and every raw device created
+   * for it.
+   */
+  public static SwerveDriveDevices createSwerveDriveDevices(SwerveDriveConfig swerveDriveConfig) {
+    return buildSwerveDrive(swerveDriveConfig);
+  }
+
+  /**
+   * Build a {@link SwerveDrive} from the parsed JSON configuration, collecting the raw vendor hardware devices
+   * created for each module and the gyro along the way.
+   *
+   * @param swerveDriveConfig {@link SwerveDriveConfig} to apply to the created {@link SwerveDrive}.
+   * @return {@link SwerveDriveDevices} containing the configured {@link SwerveDrive} and every raw device created
+   * for it.
+   */
+  private static SwerveDriveDevices buildSwerveDrive(SwerveDriveConfig swerveDriveConfig) {
     SwerveModule[] modules = new SwerveModule[swerveDriveJson.modules.length];
+    SwerveModuleDevices[] moduleDevices = new SwerveModuleDevices[swerveDriveJson.modules.length];
     LinearVelocity totalMaxModuleSpeed = MetersPerSecond.zero();
 
     for (int i = 0; i < modules.length; i++) {
@@ -191,14 +219,19 @@ public class SwerveParser {
           moduleJson,
           hardware,
           i);
+
+      moduleDevices[i] = new SwerveModuleDevices(
+          hardware.driveMotorController.getMotorController(),
+          hardware.azimuthMotorController.getMotorController(),
+          hardware.absoluteEncoder.getSecond());
     }
 
-    configureSwerveDrive(
+    Object gyroDevice = configureSwerveDrive(
         swerveDriveConfig,
         modules,
         totalMaxModuleSpeed.div(modules.length));
 
-    return new SwerveDrive(swerveDriveConfig);
+    return new SwerveDriveDevices(new SwerveDrive(swerveDriveConfig), gyroDevice, moduleDevices);
   }
 
   private static ModuleGearings resolveGearings(ModuleJson moduleJson) {
@@ -377,7 +410,16 @@ public class SwerveParser {
     return swerveDriveJson.modules[moduleIndex].split("\\.json")[0];
   }
 
-  private static void configureSwerveDrive(
+  /**
+   * Apply the swerve drive's non-module configuration (module array, max speed, discretization, gyro).
+   *
+   * @param config       {@link SwerveDriveConfig} to apply the gyro/modules/etc. to.
+   * @param modules      {@link SwerveModule}s to apply.
+   * @param maxModuleSpeed Maximum module speed to apply.
+   * @return Raw gyro device (e.g. a {@code Pigeon2} instance), or {@code null} if the configured gyro type is
+   * {@code "custom"} (the caller is expected to supply/own their own gyro in that case).
+   */
+  private static Object configureSwerveDrive(
       SwerveDriveConfig config,
       SwerveModule[] modules,
       LinearVelocity maxModuleSpeed) {
@@ -390,15 +432,17 @@ public class SwerveParser {
 
     // "custom" gyro type: skip applying the gyro so the user can configure it
     // themselves.
-    if (!"custom".equalsIgnoreCase(swerveDriveJson.gyro.type)) {
-      config
-          .withGyro(
-              swerveDriveJson.gyro.getGyro(
-                  GyroAxis.valueOf(
-                      swerveDriveJson.gyroAxis.toUpperCase()),
-                  swerveDriveJson.gyroInvert).getFirst())
-          .withGyroInverted(swerveDriveJson.gyroInvert);
+    if ("custom".equalsIgnoreCase(swerveDriveJson.gyro.type)) {
+      return null;
     }
+
+    Pair<Supplier<Angle>, Object> gyro = swerveDriveJson.gyro.getGyro(
+        GyroAxis.valueOf(swerveDriveJson.gyroAxis.toUpperCase()),
+        swerveDriveJson.gyroInvert);
+    config
+        .withGyro(gyro.getFirst())
+        .withGyroInverted(swerveDriveJson.gyroInvert);
+    return gyro.getSecond();
   }
 
   private static record ModuleGearings(
@@ -412,5 +456,36 @@ public class SwerveParser {
       Pair<Supplier<Angle>, Object> absoluteEncoder,
       VENDOR azimuthMotorVendor,
       VENDOR absoluteEncoderVendor) {
+  }
+
+  /**
+   * Raw hardware devices created for a single {@link SwerveModule} by {@link SwerveParser}.
+   *
+   * @param drive           Raw drive motor controller device (e.g. a vendor {@code SparkMax} or {@code TalonFX}
+   *                        instance).
+   * @param azimuth         Raw azimuth/angle motor controller device.
+   * @param absoluteEncoder Raw absolute encoder device (e.g. a {@code CANcoder}, {@code AnalogEncoder}, or
+   *                        {@code DutyCycleEncoder} instance, or the azimuth motor controller's own device when its
+   *                        integrated absolute encoder feedback is used instead of a separate device).
+   */
+  public static record SwerveModuleDevices(
+      Object drive,
+      Object azimuth,
+      Object absoluteEncoder) {
+  }
+
+  /**
+   * Raw hardware devices created by {@link SwerveParser#createSwerveDriveDevices(SwerveDriveConfig)}, alongside the
+   * {@link SwerveDrive} it built.
+   *
+   * @param swerveDrive {@link SwerveDrive} built from these devices.
+   * @param gyro        Raw gyro device (e.g. a {@code Pigeon2} instance), or {@code null} if the configured gyro
+   *                    type is {@code "custom"} (the caller is expected to supply/own their own gyro in that case).
+   * @param modules     Raw devices for each module, in the same order as {@link SwerveDriveJson#modules}.
+   */
+  public static record SwerveDriveDevices(
+      SwerveDrive swerveDrive,
+      Object gyro,
+      SwerveModuleDevices[] modules) {
   }
 }

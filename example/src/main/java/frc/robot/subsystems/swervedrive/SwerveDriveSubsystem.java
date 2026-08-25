@@ -1,6 +1,8 @@
 package frc.robot.subsystems.swervedrive;
 
 
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -20,11 +22,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import limelight.networktables.AngularVelocity3d;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
 import org.json.simple.parser.ParseException;
 import swervelib.parser.SwerveParser;
+import swervelib.parser.SwerveParser.SwerveDriveDevices;
 import yams.mechanisms.config.SwerveDriveConfig;
 import yams.mechanisms.swerve.SwerveDrive;
 import yams.mechanisms.swerve.SwerveModule;
@@ -46,6 +51,11 @@ public class SwerveDriveSubsystem extends SubsystemBase
       DegreesPerSecond.of(540), DegreesPerSecondPerSecond.of(720));
 
   private SwerveDrive drive;
+  private Pigeon2 gyro;
+  private StatusSignal<AngularVelocity> gyroX;
+  private StatusSignal<AngularVelocity> gyroY;
+  private StatusSignal<AngularVelocity> gyroZ;
+
 
   public SwerveDriveSubsystem()
   {
@@ -56,8 +66,14 @@ public class SwerveDriveSubsystem extends SubsystemBase
         .withTelemetry(TelemetryVerbosity.HIGH);
 
     SwerveParser.parse(new File(Filesystem.getDeployDirectory(), "swerve/base"));
-    drive = SwerveParser
-        .createSwerveDrive(cfg);
+    SwerveDriveDevices devices = SwerveParser.createSwerveDriveDevices(cfg);
+    drive = devices.swerveDrive();
+    gyro = (Pigeon2)devices.gyro();
+    gyroX = gyro.getAngularVelocityXDevice();
+    gyroY = gyro.getAngularVelocityYDevice();
+    gyroZ = gyro.getAngularVelocityZDevice();
+    // You can also create the SwerveDrive without the ability to retrieve the devices like this.
+    // drive = SwerveParser.createSwerveDrive(cfg);
 
     configurePathPlanner();
   }
@@ -150,7 +166,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
    */
   public Rotation3d getGyroRotation3d()
   {
-    return new Rotation3d(0, 0, drive.getGyroAngle().in(Radians));
+    return gyro.getRotation3d();
   }
 
   /**
@@ -159,9 +175,9 @@ public class SwerveDriveSubsystem extends SubsystemBase
    *
    * @return {@link AngularVelocity} of the robot's yaw rate.
    */
-  public AngularVelocity getGyroAngularVelocity()
+  public AngularVelocity3d getGyroAngularVelocity()
   {
-    return RadiansPerSecond.of(drive.getRobotRelativeSpeed().omegaRadiansPerSecond);
+    return new AngularVelocity3d(gyroX.refresh().getValue(), gyroY.refresh().getValue(), gyroZ.refresh().getValue());
   }
 
   /**

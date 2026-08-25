@@ -72,12 +72,9 @@ public class LimelightVisionSubsystem extends SubsystemBase
     // reports yaw (NavX, Pigeon2, ADIS16470, ADXRS450, ...) is sufficient for MegaTag2. A full IMU could supply real
     // pitch/roll data instead, but that's optional, not required -- it could just as easily hurt MegaTag2's result
     // as help it, depending on how noisy that data is and how the camera is mounted.
-    AngularVelocity yawRate = drivetrain.getGyroAngularVelocity();
     limelight.getSettings()
              .withRobotOrientation(new Orientation3d(drivetrain.getGyroRotation3d(),
-                                                      new AngularVelocity3d(DegreesPerSecond.of(0),
-                                                                            DegreesPerSecond.of(0),
-                                                                            yawRate)))
+                                                      drivetrain.getGyroAngularVelocity()))
              .save();
 
     Optional<PoseEstimate> visionEstimate = poseEstimator.getPoseEstimate();
