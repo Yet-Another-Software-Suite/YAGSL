@@ -61,6 +61,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Absolute encoder device configuration.</div>
 </dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html#absoluteEncoder()" class="member-name-link">absoluteEncoder()</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html" title="class in swervelib.parser">SwerveParser.SwerveModuleDevices</a></dt>
+<dd>
+<div class="block">Returns the value of the <a href="./swervelib/parser/SwerveParser.SwerveModuleDevices.html#param-absoluteEncoder"><code>absoluteEncoder</code></a> record component.</div>
+</dd>
 <dt><a href="swervelib/parser/json/ModuleJson.html#absoluteEncoderGearRatio" class="member-name-link">absoluteEncoderGearRatio</a> - Variable in class swervelib.parser.json.<a href="swervelib/parser/json/ModuleJson.html" title="class in swervelib.parser.json">ModuleJson</a></dt>
 <dd>
 <div class="block">Reduction ratio for the absolute encoder to the motor.</div>
@@ -127,6 +131,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="yams/motorcontrollers/local/NovaWrapper.html#applyConfig(yams.motorcontrollers.SmartMotorControllerConfig)" class="member-name-link">applyConfig(SmartMotorControllerConfig)</a> - Method in class yams.motorcontrollers.local.<a href="yams/motorcontrollers/local/NovaWrapper.html" title="class in yams.motorcontrollers.local">NovaWrapper</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html#azimuth()" class="member-name-link">azimuth()</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html" title="class in swervelib.parser">SwerveParser.SwerveModuleDevices</a></dt>
+<dd>
+<div class="block">Returns the value of the <a href="./swervelib/parser/SwerveParser.SwerveModuleDevices.html#param-azimuth"><code>azimuth</code></a> record component.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:B">B</h2>
 <dl class="index">
@@ -179,9 +187,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Create objects if the vendordep exists.</div>
 </dd>
-<dt><a href="swervelib/parser/SwerveParser.html#createSwerveDrive(yams.mechanisms.config.SwerveDriveConfig)" class="member-name-link">createSwerveDrive(SwerveDriveConfig)</a> - Method in class swervelib.parser.<a href="swervelib/parser/SwerveParser.html" title="class in swervelib.parser">SwerveParser</a></dt>
+<dt><a href="swervelib/parser/SwerveParser.html#createSwerveDrive(yams.mechanisms.config.SwerveDriveConfig)" class="member-name-link">createSwerveDrive(SwerveDriveConfig)</a> - Static method in class swervelib.parser.<a href="swervelib/parser/SwerveParser.html" title="class in swervelib.parser">SwerveParser</a></dt>
 <dd>
 <div class="block">Create a <code>SwerveDrive</code> from the parsed JSON configuration.</div>
+</dd>
+<dt><a href="swervelib/parser/SwerveParser.html#createSwerveDriveDevices(yams.mechanisms.config.SwerveDriveConfig)" class="member-name-link">createSwerveDriveDevices(SwerveDriveConfig)</a> - Static method in class swervelib.parser.<a href="swervelib/parser/SwerveParser.html" title="class in swervelib.parser">SwerveParser</a></dt>
+<dd>
+<div class="block">Create a <code>SwerveDrive</code> from the parsed JSON configuration, exposing the raw vendor hardware devices
+ created along the way (drive/azimuth motor controllers, absolute encoders, and the gyro) alongside it.</div>
 </dd>
 <dt><a href="swervelib/parser/json/DeviceJson.VENDOR.html#CTRE" class="member-name-link">CTRE</a> - Enum constant in enum class swervelib.parser.json.<a href="swervelib/parser/json/DeviceJson.VENDOR.html" title="enum class in swervelib.parser.json">DeviceJson.VENDOR</a></dt>
 <dd>
@@ -258,6 +271,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The PIDF with Integral Zone used for the drive motor.</div>
 </dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html#drive()" class="member-name-link">drive()</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html" title="class in swervelib.parser">SwerveParser.SwerveModuleDevices</a></dt>
+<dd>
+<div class="block">Returns the value of the <a href="./swervelib/parser/SwerveParser.SwerveModuleDevices.html#param-drive"><code>drive</code></a> record component.</div>
+</dd>
 <dt><a href="swervelib/parser/json/modules/DriveGearingJson.html" class="type-name-link" title="class in swervelib.parser.json.modules">DriveGearingJson</a> - Class in <a href="swervelib/parser/json/modules/package-summary.html">swervelib.parser.json.modules</a></dt>
 <dd>
 <div class="block">Drive motor composite JSON parse class.</div>
@@ -286,6 +303,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="swervelib/telemetry/SwerveDriveTelemetry.html#endOdomCycle()" class="member-name-link">endOdomCycle()</a> - Static method in class swervelib.telemetry.<a href="swervelib/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
 <div class="block">Update the odom cycle time.</div>
+</dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a></dt>
+<dd>
+<div class="block">Indicates whether some other object is "equal to" this one.</div>
+</dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html" title="class in swervelib.parser">SwerveParser.SwerveModuleDevices</a></dt>
+<dd>
+<div class="block">Indicates whether some other object is "equal to" this one.</div>
 </dd>
 <dt><a href="swervelib/parser/json/modules/AngleGearingJson.html#equals(swervelib.parser.json.modules.DriveGearingJson)" class="member-name-link">equals(DriveGearingJson)</a> - Method in class swervelib.parser.json.modules.<a href="swervelib/parser/json/modules/AngleGearingJson.html" title="class in swervelib.parser.json.modules">AngleGearingJson</a></dt>
 <dd>
@@ -476,6 +501,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Robot Gyroscope used to determine the heading of the robot.</div>
 </dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html#gyro()" class="member-name-link">gyro()</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a></dt>
+<dd>
+<div class="block">Returns the value of the <a href="./swervelib/parser/SwerveParser.SwerveDriveDevices.html#param-gyro"><code>gyro</code></a> record component.</div>
+</dd>
 <dt><a href="swervelib/parser/json/SwerveDriveJson.html#gyroAxis" class="member-name-link">gyroAxis</a> - Variable in class swervelib.parser.json.<a href="swervelib/parser/json/SwerveDriveJson.html" title="class in swervelib.parser.json">SwerveDriveJson</a></dt>
 <dd>
 <div class="block">Gyro rotation axis used to determine what orientation the robots heading is.</div>
@@ -487,6 +516,14 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:H">H</h2>
 <dl class="index">
+<dt><a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html#hashCode()" class="member-name-link">hashCode()</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a></dt>
+<dd>
+<div class="block">Returns a hash code value for this object.</div>
+</dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html#hashCode()" class="member-name-link">hashCode()</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html" title="class in swervelib.parser">SwerveParser.SwerveModuleDevices</a></dt>
+<dd>
+<div class="block">Returns a hash code value for this object.</div>
+</dd>
 <dt><a href="swervelib/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html#HIGH" class="member-name-link">HIGH</a> - Enum constant in enum class swervelib.telemetry.<a href="swervelib/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html" title="enum class in swervelib.telemetry">SwerveDriveTelemetry.TelemetryVerbosity</a></dt>
 <dd>
 <div class="block">Full swerve drive data is sent back in both human and machine readable forms.</div>
@@ -596,6 +633,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Module JSONs in order clockwise order starting from front left.</div>
 </dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html#modules()" class="member-name-link">modules()</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a></dt>
+<dd>
+<div class="block">Returns the value of the <a href="./swervelib/parser/SwerveParser.SwerveDriveDevices.html#param-modules"><code>modules</code></a> record component.</div>
+</dd>
 <dt><a href="swervelib/parser/json/MotorConfigDouble.html" class="type-name-link" title="class in swervelib.parser.json">MotorConfigDouble</a> - Class in <a href="swervelib/parser/json/package-summary.html">swervelib.parser.json</a></dt>
 <dd>
 <div class="block">Used to store doubles for motor configuration.</div>
@@ -658,6 +699,13 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Proportional Gain for PID.</div>
 </dd>
+<dt><a href="swervelib/parser/SwerveParser.html#parse(java.io.File)" class="member-name-link">parse(File)</a> - Static method in class swervelib.parser.<a href="swervelib/parser/SwerveParser.html" title="class in swervelib.parser">SwerveParser</a></dt>
+<dd>
+<div class="block">Parses a swerve configuration directory and creates a <a href="swervelib/parser/SwerveParser.html" title="class in swervelib.parser"><code>SwerveParser</code></a>
+ containing the parsed configuration.</div>
+</dd>
+<dt><a href="swervelib/parser/SwerveParser.html#parseDirectory(java.io.File)" class="member-name-link">parseDirectory(File)</a> - Static method in class swervelib.parser.<a href="swervelib/parser/SwerveParser.html" title="class in swervelib.parser">SwerveParser</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="swervelib/parser/deserializer/ReflectionsManager.VENDOR.html#PHOENIX5" class="member-name-link">PHOENIX5</a> - Enum constant in enum class swervelib.parser.deserializer.<a href="swervelib/parser/deserializer/ReflectionsManager.VENDOR.html" title="enum class in swervelib.parser.deserializer">ReflectionsManager.VENDOR</a></dt>
 <dd>
 <div class="block">CTRE Phoenix 5 and 6</div>
@@ -944,6 +992,14 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="swervelib/parser/deserializer/reflections/StudicaLibDevices.html#%3Cinit%3E()" class="member-name-link">StudicaLibDevices()</a> - Constructor for class swervelib.parser.deserializer.reflections.<a href="swervelib/parser/deserializer/reflections/StudicaLibDevices.html" title="class in swervelib.parser.deserializer.reflections">StudicaLibDevices</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html#swerveDrive()" class="member-name-link">swerveDrive()</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a></dt>
+<dd>
+<div class="block">Returns the value of the <a href="./swervelib/parser/SwerveParser.SwerveDriveDevices.html#param-swerveDrive"><code>swerveDrive</code></a> record component.</div>
+</dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html#%3Cinit%3E(yams.mechanisms.swerve.SwerveDrive,java.lang.Object,swervelib.parser.SwerveParser.SwerveModuleDevices%5B%5D)" class="member-name-link">SwerveDriveDevices(SwerveDrive, Object, SwerveParser.SwerveModuleDevices[])</a> - Constructor for record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a></dt>
+<dd>
+<div class="block">Creates an instance of a <code>SwerveDriveDevices</code> record class.</div>
+</dd>
 <dt><a href="swervelib/parser/SwerveParser.html#swerveDriveJson" class="member-name-link">swerveDriveJson</a> - Static variable in class swervelib.parser.<a href="swervelib/parser/SwerveParser.html" title="class in swervelib.parser">SwerveParser</a></dt>
 <dd>
 <div class="block">Parsed swervedrive.json</div>
@@ -990,14 +1046,27 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Telemetry package for sending data to NT4 or SmartDashboard.</div>
 </dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html#%3Cinit%3E(java.lang.Object,java.lang.Object,java.lang.Object)" class="member-name-link">SwerveModuleDevices(Object, Object, Object)</a> - Constructor for record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html" title="class in swervelib.parser">SwerveParser.SwerveModuleDevices</a></dt>
+<dd>
+<div class="block">Creates an instance of a <code>SwerveModuleDevices</code> record class.</div>
+</dd>
 <dt><a href="swervelib/parser/SwerveParser.html" class="type-name-link" title="class in swervelib.parser">SwerveParser</a> - Class in <a href="swervelib/parser/package-summary.html">swervelib.parser</a></dt>
 <dd>
 <div class="block">Helper class used to parse the JSON directory with specified configuration
  options.</div>
 </dd>
-<dt><a href="swervelib/parser/SwerveParser.html#%3Cinit%3E(java.io.File)" class="member-name-link">SwerveParser(File)</a> - Constructor for class swervelib.parser.<a href="swervelib/parser/SwerveParser.html" title="class in swervelib.parser">SwerveParser</a></dt>
+<dt><a href="swervelib/parser/SwerveParser.html#%3Cinit%3E()" class="member-name-link">SwerveParser()</a> - Constructor for class swervelib.parser.<a href="swervelib/parser/SwerveParser.html" title="class in swervelib.parser">SwerveParser</a></dt>
 <dd>
 <div class="block">Construct a swerve parser.</div>
+</dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html" class="type-name-link" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a> - Record Class in <a href="swervelib/parser/package-summary.html">swervelib.parser</a></dt>
+<dd>
+<div class="block">Raw hardware devices created by <a href="swervelib/parser/SwerveParser.html#createSwerveDriveDevices(yams.mechanisms.config.SwerveDriveConfig)"><code>SwerveParser.createSwerveDriveDevices(SwerveDriveConfig)</code></a>, alongside the
+ <code>SwerveDrive</code> it built.</div>
+</dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html" class="type-name-link" title="class in swervelib.parser">SwerveParser.SwerveModuleDevices</a> - Record Class in <a href="swervelib/parser/package-summary.html">swervelib.parser</a></dt>
+<dd>
+<div class="block">Raw hardware devices created for a single <code>SwerveModule</code> by <a href="swervelib/parser/SwerveParser.html" title="class in swervelib.parser"><code>SwerveParser</code></a>.</div>
 </dd>
 <dt><a href="yams/motorcontrollers/local/NovaWrapper.html#synchronizeRelativeEncoder()" class="member-name-link">synchronizeRelativeEncoder()</a> - Method in class yams.motorcontrollers.local.<a href="yams/motorcontrollers/local/NovaWrapper.html" title="class in yams.motorcontrollers.local">NovaWrapper</a></dt>
 <dd>&nbsp;</dd>
@@ -1053,6 +1122,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="swervelib/parser/deserializer/reflections/ThriftyBotDevices.AbsoluteEncoderType.html#THROUGHBORE" class="member-name-link">THROUGHBORE</a> - Enum constant in enum class swervelib.parser.deserializer.reflections.<a href="swervelib/parser/deserializer/reflections/ThriftyBotDevices.AbsoluteEncoderType.html" title="enum class in swervelib.parser.deserializer.reflections">ThriftyBotDevices.AbsoluteEncoderType</a></dt>
 <dd>
 <div class="block">Through bore encoder.</div>
+</dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html#toString()" class="member-name-link">toString()</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveDriveDevices.html" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a></dt>
+<dd>
+<div class="block">Returns a string representation of this record class.</div>
+</dd>
+<dt><a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html#toString()" class="member-name-link">toString()</a> - Method in record class swervelib.parser.<a href="swervelib/parser/SwerveParser.SwerveModuleDevices.html" title="class in swervelib.parser">SwerveParser.SwerveModuleDevices</a></dt>
+<dd>
+<div class="block">Returns a string representation of this record class.</div>
 </dd>
 <dt><a href="swervelib/parser/json/DeviceJson.html#type" class="member-name-link">type</a> - Variable in class swervelib.parser.json.<a href="swervelib/parser/json/DeviceJson.html" title="class in swervelib.parser.json">DeviceJson</a></dt>
 <dd>

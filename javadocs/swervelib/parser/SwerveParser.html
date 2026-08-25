@@ -44,7 +44,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
@@ -83,6 +83,29 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<li>
+<section class="nested-class-summary" id="nested-class-summary">
+<h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static final record&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="SwerveParser.SwerveDriveDevices.html" class="type-name-link" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Raw hardware devices created by <a href="#createSwerveDriveDevices(yams.mechanisms.config.SwerveDriveConfig)"><code>createSwerveDriveDevices(SwerveDriveConfig)</code></a>, alongside the
+ <code>SwerveDrive</code> it built.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final record&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="SwerveParser.SwerveModuleDevices.html" class="type-name-link" title="class in swervelib.parser">SwerveParser.SwerveModuleDevices</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Raw hardware devices created for a single <code>SwerveModule</code> by <a href="SwerveParser.html" title="class in swervelib.parser"><code>SwerveParser</code></a>.</div>
+</div>
+</div>
+</section>
+</li>
 <!-- =========== FIELD SUMMARY =========== -->
 <li>
 <section class="field-summary" id="field-summary">
@@ -123,7 +146,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.io.File)" class="member-name-link">SwerveParser</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">SwerveParser</a>()</code></div>
 <div class="col-last even-row-color">
 <div class="block">Construct a swerve parser.</div>
 </div>
@@ -135,17 +158,32 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>yams.mechanisms.swerve.SwerveDrive</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSwerveDrive(yams.mechanisms.config.SwerveDriveConfig)" class="member-name-link">createSwerveDrive</a><wbr>(yams.mechanisms.config.SwerveDriveConfig&nbsp;swerveDriveConfig)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static yams.mechanisms.swerve.SwerveDrive</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createSwerveDrive(yams.mechanisms.config.SwerveDriveConfig)" class="member-name-link">createSwerveDrive</a><wbr>(yams.mechanisms.config.SwerveDriveConfig&nbsp;swerveDriveConfig)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Create a <code>SwerveDrive</code> from the parsed JSON configuration.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SwerveParser.SwerveDriveDevices.html" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createSwerveDriveDevices(yams.mechanisms.config.SwerveDriveConfig)" class="member-name-link">createSwerveDriveDevices</a><wbr>(yams.mechanisms.config.SwerveDriveConfig&nbsp;swerveDriveConfig)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create a <code>SwerveDrive</code> from the parsed JSON configuration, exposing the raw vendor hardware devices
+ created along the way (drive/azimuth motor controllers, absolute encoders, and the gyro) alongside it.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SwerveParser.html" title="class in swervelib.parser">SwerveParser</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#parse(java.io.File)" class="member-name-link">parse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Parses a swerve configuration directory and creates a <a href="SwerveParser.html" title="class in swervelib.parser"><code>SwerveParser</code></a>
+ containing the parsed configuration.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#parseDirectory(java.io.File)" class="member-name-link">parseDirectory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -200,17 +238,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.io.File)">
+<section class="detail" id="&lt;init&gt;()">
 <h3>SwerveParser</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SwerveParser</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</span>
-             throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Construct a swerve parser. Will throw an error if there is a missing file.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>directory</code> - Directory with swerve configurations.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if a file doesn't exist.</dd>
-</dl>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SwerveParser</span>()</div>
+<div class="block">Construct a swerve parser.</div>
 </section>
 </li>
 </ul>
@@ -222,15 +253,63 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="parse(java.io.File)">
+<h3>parse</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="SwerveParser.html" title="class in swervelib.parser">SwerveParser</a></span>&nbsp;<span class="element-name">parse</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</span></div>
+<div class="block">Parses a swerve configuration directory and creates a <a href="SwerveParser.html" title="class in swervelib.parser"><code>SwerveParser</code></a>
+ containing the parsed configuration.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>directory</code> - the directory containing the swerve configuration files</dd>
+<dt>Returns:</dt>
+<dd>a <a href="SwerveParser.html" title="class in swervelib.parser"><code>SwerveParser</code></a> containing the parsed configuration</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/UncheckedIOException.html" title="class or interface in java.io" class="external-link">UncheckedIOException</a></code> - if the directory or any of its configuration
+                              files
+                              cannot be read</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="parseDirectory(java.io.File)">
+<h3>parseDirectory</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">parseDirectory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</span>
+                           throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="createSwerveDrive(yams.mechanisms.config.SwerveDriveConfig)">
 <h3>createSwerveDrive</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">yams.mechanisms.swerve.SwerveDrive</span>&nbsp;<span class="element-name">createSwerveDrive</span><wbr><span class="parameters">(yams.mechanisms.config.SwerveDriveConfig&nbsp;swerveDriveConfig)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">yams.mechanisms.swerve.SwerveDrive</span>&nbsp;<span class="element-name">createSwerveDrive</span><wbr><span class="parameters">(yams.mechanisms.config.SwerveDriveConfig&nbsp;swerveDriveConfig)</span></div>
 <div class="block">Create a <code>SwerveDrive</code> from the parsed JSON configuration.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>swerveDriveConfig</code> - <code>SwerveDriveConfig</code> to apply to the created
+                          <code>SwerveDrive</code>.</dd>
+<dt>Returns:</dt>
+<dd>Configured <code>SwerveDrive</code>.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createSwerveDriveDevices(yams.mechanisms.config.SwerveDriveConfig)">
+<h3>createSwerveDriveDevices</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="SwerveParser.SwerveDriveDevices.html" title="class in swervelib.parser">SwerveParser.SwerveDriveDevices</a></span>&nbsp;<span class="element-name">createSwerveDriveDevices</span><wbr><span class="parameters">(yams.mechanisms.config.SwerveDriveConfig&nbsp;swerveDriveConfig)</span></div>
+<div class="block">Create a <code>SwerveDrive</code> from the parsed JSON configuration, exposing the raw vendor hardware devices
+ created along the way (drive/azimuth motor controllers, absolute encoders, and the gyro) alongside it. Useful
+ when code needs direct access to a vendor device for configuration that isn't exposed through
+ <code>SmartMotorController</code> -- everything else should prefer
+ <a href="#createSwerveDrive(yams.mechanisms.config.SwerveDriveConfig)"><code>createSwerveDrive(SwerveDriveConfig)</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>swerveDriveConfig</code> - <code>SwerveDriveConfig</code> to apply to the created <code>SwerveDrive</code>.</dd>
 <dt>Returns:</dt>
-<dd>Configured <code>SwerveDrive</code>.</dd>
+<dd><a href="SwerveParser.SwerveDriveDevices.html" title="class in swervelib.parser"><code>SwerveParser.SwerveDriveDevices</code></a> containing the configured <code>SwerveDrive</code> and every raw device created
+ for it.</dd>
 </dl>
 </section>
 </li>
