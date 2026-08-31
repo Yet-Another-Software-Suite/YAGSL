@@ -1,22 +1,27 @@
 package swervelib.parser;
 
+import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Millisecond;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import edu.wpi.first.math.Pair;
-
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.LinearVelocity;
-
+import edu.wpi.first.wpilibj.RobotBase;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.function.Supplier;
-
-import edu.wpi.first.wpilibj.RobotBase;
 import swervelib.parser.json.DeviceJson.VENDOR;
 import swervelib.parser.json.ModuleJson;
 import swervelib.parser.json.PIDFPropertiesJson;
@@ -37,8 +42,8 @@ import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.telemetry.SmartMotorControllerTelemetry;
 import yams.telemetry.SmartMotorControllerTelemetryConfig;
-
-import static edu.wpi.first.units.Units.*;
+import yams.telemetry.SwerveDriveTelemetryConfig;
+import yams.telemetry.SwerveModuleTelemetryConfig;
 
 /**
  * Helper class used to parse the JSON directory with specified configuration
@@ -394,9 +399,8 @@ public class SwerveParser {
         .withLocation(
             Inches.of(moduleJson.location.front),
             Inches.of(moduleJson.location.left))
-        .withDataLogName("Swerve/modules/" + getModuleName(moduleIndex))
-        .withTelemetry(getModuleName(moduleIndex),
-            TelemetryVerbosity.LOW);
+        .withTelemetry(getModuleName(moduleIndex), new SwerveModuleTelemetryConfig(TelemetryVerbosity.LOW)
+            .withDataLogName("Swerve/modules/" + getModuleName(moduleIndex)));
 
     if (hardware.absoluteEncoderVendor != hardware.azimuthMotorVendor) {
       config.withAbsoluteEncoder(
@@ -427,8 +431,13 @@ public class SwerveParser {
         .withModules(modules)
         .withMaximumModuleSpeed(maxModuleSpeed)
         .withDiscretizationTime(Millisecond.of(20))
-        .withSimDiscretizationTime(Millisecond.of(20))
-        .withDataLogName("Swerve");
+        .withSimDiscretizationTime(Millisecond.of(20));
+    if (config.getSwerveDriveTelemetryConfig().isEmpty() && config.getTelemetryVerbosity().isPresent())
+    {
+      // Force data-log, just incase.
+      config.withTelemetry(config.getTelemetryName(), new SwerveDriveTelemetryConfig(config.getTelemetryVerbosity().orElseThrow())
+          .withDataLogName("Swerve/"));
+    }
 
     // "custom" gyro type: skip applying the gyro so the user can configure it
     // themselves.

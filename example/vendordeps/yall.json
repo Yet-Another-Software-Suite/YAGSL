@@ -1,7 +1,7 @@
 {
     "fileName": "yall.json",
     "name": "YALL",
-    "version": "2026.4.22",
+  "version": "2026.8.30",
     "frcYear": "2026",
     "uuid": "29aa8c8f-05ae-40aa-96f9-552a5c8a0347",
     "mavenUrls": [
@@ -12,7 +12,7 @@
         {
             "groupId": "yall",
             "artifactId": "YALL-java",
-            "version": "2026.4.22"
+          "version": "2026.8.30"
         }
     ],
     "jniDependencies": [],

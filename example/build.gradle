@@ -12,7 +12,8 @@ sourceSets {
     main {
         java {
            srcDir '../yagsl/java/'
-        //   srcDir '../../YAMS/yams/java/'
+            //srcDir '../../YAMS/yams/java/'
+            //srcDir '../../YALL/yall/java'
         }
     }
 }

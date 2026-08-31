@@ -4,17 +4,14 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MilliOhms;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.swervedrive.SwerveDriveSubsystem;
 import frc.robot.subsystems.vision.LimelightVisionSubsystem;
-import frc.robot.subsystems.vision.PhotonVisionSubsystem;
 import yams.mechanisms.swerve.utility.SwerveInputStream;
 import yams.motorcontrollers.simulation.BatterySim;
 
@@ -45,7 +41,7 @@ public class RobotContainer
 
   private final SwerveDriveSubsystem     swerve          = new SwerveDriveSubsystem();
   private final LimelightVisionSubsystem limelightVision = new LimelightVisionSubsystem(swerve);
-  private final PhotonVisionSubsystem    photonVision    = new PhotonVisionSubsystem(swerve);
+//  private final PhotonVisionSubsystem    photonVision    = new PhotonVisionSubsystem(swerve);
 
   // Toggled by a button press to switch the drive stream between angular velocity (right stick X rotates) and
   // heading (right stick X/Y picks the desired heading angle) control.

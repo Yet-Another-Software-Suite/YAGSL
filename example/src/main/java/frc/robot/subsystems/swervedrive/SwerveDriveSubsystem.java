@@ -1,6 +1,14 @@
 package frc.robot.subsystems.swervedrive;
 
 
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -8,25 +16,25 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import limelight.networktables.AngularVelocity3d;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
+import limelight.networktables.AngularVelocity3d;
 import org.json.simple.parser.ParseException;
 import swervelib.parser.SwerveParser;
 import swervelib.parser.SwerveParser.SwerveDriveDevices;
@@ -36,8 +44,6 @@ import yams.mechanisms.swerve.SwerveModule;
 import yams.mechanisms.swerve.utility.SwerveInputStream;
 import yams.motorcontrollers.SmartMotorController;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
-
-import static edu.wpi.first.units.Units.*;
 
 public class SwerveDriveSubsystem extends SubsystemBase
 {
@@ -63,7 +69,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
     var cfg = new SwerveDriveConfig()
         .withStartingPose(new Pose2d(3, 3, Rotation2d.kZero))
         .withSubsystem(this)
-        .withTelemetry(TelemetryVerbosity.HIGH);
+        .withTelemetry("swerve", TelemetryVerbosity.HIGH);
 
     SwerveParser.parse(new File(Filesystem.getDeployDirectory(), "swerve/base"));
     SwerveDriveDevices devices = SwerveParser.createSwerveDriveDevices(cfg);
@@ -167,6 +173,14 @@ public class SwerveDriveSubsystem extends SubsystemBase
    */
   public Rotation3d getGyroRotation3d()
   {
+    // Pigeon2#getRotation3d() is built entirely from the device's quaternion status signals, not from the
+    // yaw/pitch/roll ones. Pigeon2SimState#setRawYaw() (see simulationPeriodic()) only sets that separate raw-yaw
+    // register - nothing in this Java-only simulation path fuses it back into the quaternion, so getRotation3d()
+    // silently reports identity forever in simulation. Feed MegaTag2 the known-good simulated ground truth instead.
+    if (RobotBase.isSimulation())
+    {
+      return new Rotation3d(0, 0, drive.getSimPose().getRotation().getRadians());
+    }
     return gyro.getRotation3d();
   }
 
@@ -192,6 +206,16 @@ public class SwerveDriveSubsystem extends SubsystemBase
   public Pose2d getPose()
   {
     return drive.getPose();
+  }
+
+  /**
+   * Reset the pose estimator (and, in simulation, the ground truth pose) to the given pose.
+   *
+   * @param pose Pose to reset to. Field relative, blue-origin.
+   */
+  public void resetOdometry(Pose2d pose)
+  {
+    drive.resetOdometry(pose);
   }
 
   /**
@@ -270,6 +294,22 @@ public class SwerveDriveSubsystem extends SubsystemBase
   public void simulationPeriodic()
   {
     drive.simIterate();
+    gyro.getSimState().setRawYaw(drive.getSimPose().getRotation().getDegrees());
+  }
+
+  public Pose2d getSimPose()
+  {
+    return drive.getSimPose();
+  }
+
+  public SwerveDrivePoseEstimator createPoseEstimator()
+  {
+    return new SwerveDrivePoseEstimator(drive.getKinematics(), gyro.getRotation2d(), drive.getModulePositions(), drive.getConfig().getInitialPose());
+  }
+
+  public void updatePoseEstimator(SwerveDrivePoseEstimator visionPoseEstimator)
+  {
+    visionPoseEstimator.update(gyro.getRotation2d(), drive.getModulePositions());
   }
 }
 

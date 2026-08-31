@@ -1,7 +1,7 @@
 {
     "fileName": "yams.json",
     "name": "Yet Another Mechanism System",
-    "version": "2026.8.25",
+    "version": "2026.8.31",
     "frcYear": "2026",
     "uuid": "a1051e86-a979-4880-a28b-a0d5362d1d96",
     "mavenUrls": [
@@ -12,28 +12,10 @@
         {
             "groupId": "yams",
             "artifactId": "YAMS-java",
-            "version": "2026.8.25"
+            "version": "2026.8.31"
         }
     ],
-    "cppDependencies": [
-        {
-            "groupId": "yams",
-            "artifactId": "YAMS-cpp",
-            "version": "2026.8.25",
-            "libName": "YAMS",
-            "headerClassifier": "headers",
-            "sharedLibrary": true,
-            "skipInvalidPlatforms": true,
-            "binaryPlatforms": [
-                "windowsx86-64",
-                "linuxarm64",
-                "linuxx86-64",
-                "linuxathena",
-                "linuxarm32",
-                "osxuniversal"
-            ]
-        }
-    ],
+    "cppDependencies": [],
     "jniDependencies": [],
     "requires": []
 }
