@@ -223,7 +223,8 @@ public class SwerveParser {
       modules[i] = createSwerveModule(
           moduleJson,
           hardware,
-          i);
+          i,
+          swerveDriveConfig);
 
       moduleDevices[i] = new SwerveModuleDevices(
           hardware.driveMotorController.getMotorController(),
@@ -259,6 +260,19 @@ public class SwerveParser {
       ModuleJson moduleJson,
       DriveGearingJson driveGearing,
       int moduleIndex) {
+    SmartMotorControllerTelemetryConfig driveTelemetryConfig = new SmartMotorControllerTelemetryConfig()
+        .withCustom(SmartMotorControllerTelemetry.BooleanTelemetryField.SimpleMotorFeedForward, false)
+        .withCustom(new SmartMotorControllerTelemetry.DoubleTelemetryField[]{
+            SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementPosition,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementVelocity
+        }, true);
+    swerveDriveConfig.getSwerveDriveTelemetryConfig()
+                     .flatMap(SwerveDriveTelemetryConfig::getDataLogName)
+                     .ifPresent(driveDataLogName -> driveTelemetryConfig.withDataLogName(
+                         driveDataLogName + "/modules/" + getModuleName(moduleIndex) + "/drive"));
+
     return new SmartMotorControllerConfig(swerveDriveConfig.getSubsystem())
         .withMotorInverted(moduleJson.inverted.drive)
         .withControlMode(ControlMode.CLOSED_LOOP)
@@ -275,24 +289,7 @@ public class SwerveParser {
         .withIdleMode(MotorMode.COAST)
         .withStatorCurrentLimit(
             Amps.of(physicalPropertiesJson.statorCurrentLimit.drive))
-        .withTelemetry("drive",
-            new SmartMotorControllerTelemetryConfig()
-                .withDataLogName("Swerve/modules/" + getModuleName(moduleIndex) + "/drive")
-                .withCustom(SmartMotorControllerTelemetry.BooleanTelemetryField.SimpleMotorFeedForward, false)
-                .withCustom(new SmartMotorControllerTelemetry.DoubleTelemetryField[] {
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kP,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kI,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kD,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kS,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kV,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kA,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrentLimit,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrentLimit,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementPosition,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementVelocity
-                }, true));
+        .withTelemetry("drive", driveTelemetryConfig);
   }
 
   private static SmartMotorControllerConfig createAzimuthMotorConfig(
@@ -300,6 +297,21 @@ public class SwerveParser {
       ModuleJson moduleJson,
       AngleGearingJson azimuthGearing,
       int moduleIndex) {
+    SmartMotorControllerTelemetryConfig azimuthTelemetryConfig = new SmartMotorControllerTelemetryConfig()
+        .withCustom(SmartMotorControllerTelemetry.BooleanTelemetryField.SimpleMotorFeedForward, false)
+        .withCustom(new SmartMotorControllerTelemetry.DoubleTelemetryField[]{
+            SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismPosition,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismVelocity,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderPosition,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderVelocity
+        }, true);
+    swerveDriveConfig.getSwerveDriveTelemetryConfig()
+                     .flatMap(SwerveDriveTelemetryConfig::getDataLogName)
+                     .ifPresent(driveDataLogName -> azimuthTelemetryConfig.withDataLogName(
+                         driveDataLogName + "/modules/" + getModuleName(moduleIndex) + "/azimuth"));
+
     return new SmartMotorControllerConfig(swerveDriveConfig.getSubsystem())
         .withMotorInverted(moduleJson.inverted.angle)
         .withControlMode(ControlMode.CLOSED_LOOP)
@@ -318,26 +330,7 @@ public class SwerveParser {
         .withIdleMode(MotorMode.BRAKE)
         .withStatorCurrentLimit(
             Amps.of(physicalPropertiesJson.statorCurrentLimit.angle))
-        .withTelemetry("azimuth",
-            new SmartMotorControllerTelemetryConfig()
-                .withDataLogName("Swerve/modules/" + getModuleName(moduleIndex) + "/azimuth")
-                .withCustom(SmartMotorControllerTelemetry.BooleanTelemetryField.SimpleMotorFeedForward, false)
-                .withCustom(new SmartMotorControllerTelemetry.DoubleTelemetryField[] {
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kP,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kI,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kD,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kS,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kV,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.kA,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrentLimit,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrentLimit,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismPosition,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismVelocity,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderPosition,
-                    SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderVelocity
-                }, true));
+        .withTelemetry("azimuth", azimuthTelemetryConfig);
   }
 
   private static ModuleHardware createModuleHardware(
@@ -385,7 +378,16 @@ public class SwerveParser {
   private static SwerveModule createSwerveModule(
       ModuleJson moduleJson,
       ModuleHardware hardware,
-      int moduleIndex) {
+      int moduleIndex,
+      SwerveDriveConfig swerveDriveConfig)
+  {
+    TelemetryVerbosity telemetryVerbosity = swerveDriveConfig.getTelemetryVerbosity()
+                                                             .orElse(TelemetryVerbosity.LOW);
+    SwerveModuleTelemetryConfig moduleTelemetryConfig = new SwerveModuleTelemetryConfig(telemetryVerbosity);
+    swerveDriveConfig.getSwerveDriveTelemetryConfig()
+                     .flatMap(SwerveDriveTelemetryConfig::getDataLogName)
+                     .ifPresent(driveDataLogName -> moduleTelemetryConfig.withDataLogName(
+                         driveDataLogName + "/modules/" + getModuleName(moduleIndex)));
     SwerveModuleConfig config = new SwerveModuleConfig(
         hardware.driveMotorController,
         hardware.azimuthMotorController)
@@ -399,8 +401,7 @@ public class SwerveParser {
         .withLocation(
             Inches.of(moduleJson.location.front),
             Inches.of(moduleJson.location.left))
-        .withTelemetry(getModuleName(moduleIndex), new SwerveModuleTelemetryConfig(TelemetryVerbosity.LOW)
-            .withDataLogName("Swerve/modules/" + getModuleName(moduleIndex)));
+        .withTelemetry(getModuleName(moduleIndex), moduleTelemetryConfig);
 
     if (hardware.absoluteEncoderVendor != hardware.azimuthMotorVendor) {
       config.withAbsoluteEncoder(

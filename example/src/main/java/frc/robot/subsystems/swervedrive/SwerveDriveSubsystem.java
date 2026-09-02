@@ -16,6 +16,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -44,6 +45,7 @@ import yams.mechanisms.swerve.SwerveModule;
 import yams.mechanisms.swerve.utility.SwerveInputStream;
 import yams.motorcontrollers.SmartMotorController;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
+import yams.telemetry.SwerveDriveTelemetryConfig;
 
 public class SwerveDriveSubsystem extends SubsystemBase
 {
@@ -69,7 +71,9 @@ public class SwerveDriveSubsystem extends SubsystemBase
     var cfg = new SwerveDriveConfig()
         .withStartingPose(new Pose2d(3, 3, Rotation2d.kZero))
         .withSubsystem(this)
-        .withTelemetry("swerve", TelemetryVerbosity.HIGH);
+        .withTranslationController(new PIDController(4, 0, 0))
+        .withRotationController(new PIDController(1, 0, 0))
+        .withTelemetry("swerve", new SwerveDriveTelemetryConfig(TelemetryVerbosity.HIGH));
 
     SwerveParser.parse(new File(Filesystem.getDeployDirectory(), "swerve/base"));
     SwerveDriveDevices devices = SwerveParser.createSwerveDriveDevices(cfg);
