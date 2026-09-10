@@ -107,7 +107,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
         drive::getPose,
         drive::resetOdometry,
         drive::getRobotRelativeSpeed,
-        (speeds, feedforwards) -> drive.setRobotRelativeChassisSpeeds(speeds),
+        (speeds, feedforwards) -> drive.setRobotRelativeChassisSpeeds(speeds, feedforwards.linearForces()),
         new PPHolonomicDriveController(new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
         config,
         () -> DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Red,

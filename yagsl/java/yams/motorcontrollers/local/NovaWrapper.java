@@ -35,6 +35,7 @@ import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Force;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Temperature;
@@ -225,6 +226,7 @@ public class NovaWrapper extends SmartMotorController
   public void setPosition(Angle angle)
   {
     setpointVelocity = Optional.empty();
+    setpointFeedforwardForce = Optional.empty();
     setpointPosition = Optional.ofNullable(angle);
     m_looseFollowers.ifPresent(smcs -> {for (var f : smcs) {f.setPosition(angle);}});
   }
@@ -246,8 +248,19 @@ public class NovaWrapper extends SmartMotorController
   {
     setpointPosition = Optional.empty();
     setpointVelocity = Optional.ofNullable(angularVelocity);
+    setpointFeedforwardForce = Optional.empty();
 //    m_simSupplier.ifPresent(simSupplier -> simSupplier.setMechanismVelocity(angularVelocity));
     m_looseFollowers.ifPresent(smcs -> {for (var f : smcs) {f.setVelocity(angularVelocity);}});
+  }
+
+  @Override
+  public void setVelocity(AngularVelocity angularVelocity, Force feedforwardForce)
+  {
+    setpointPosition = Optional.empty();
+    setpointVelocity = Optional.ofNullable(angularVelocity);
+    setpointFeedforwardForce = Optional.ofNullable(feedforwardForce);
+//    m_simSupplier.ifPresent(simSupplier -> simSupplier.setMechanismVelocity(angularVelocity));
+    m_looseFollowers.ifPresent(smcs -> {for (var f : smcs) {f.setVelocity(angularVelocity, feedforwardForce);}});
   }
 
   @Override
@@ -530,7 +543,7 @@ public class NovaWrapper extends SmartMotorController
   @Override
   public Current getStatorCurrent()
   {
-    return m_simSupplier.isPresent() ? m_simSupplier.get().getCurrentDraw() : Amps.of(m_nova.getStatorCurrent());
+    return m_simSupplier.isPresent() ? m_simSupplier.get().getStatorCurrent() : Amps.of(m_nova.getStatorCurrent());
   }
 
   @Override

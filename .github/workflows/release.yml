@@ -51,11 +51,44 @@ jobs:
 #      - name: Output Pages Tree
 #        run: find ${{ env.workingDirectory }}/build/maven/ -type f
       - name: Upload pages
-        run: git add . && git commit -m "Automatically add YAGSL version ${{inputs.releaseVersion}}" && git push
+        id: upload_pages
+        run: |
+          git add .
+          git commit -m "Automatically add YAGSL version ${{inputs.releaseVersion}}"
+          git push
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
         working-directory: ${{ env.workingDirectory }}/build/maven/
+      # The vendor JSON repo PR validates the published jsonUrl/maven artifacts over HTTPS, so the gh-pages push
+      # above has to actually be served by Pages before the PR is opened.
+      - name: Wait for GitHub Pages deployment
+        id: wait_pages
+        if: inputs.publishToWpilib
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PAGES_COMMIT: ${{ steps.upload_pages.outputs.commit }}
+        run: |
+          for _ in $(seq 1 60); do
+            build=$(gh api "repos/${{ github.repository }}/pages/builds/latest" --jq '"\(.status) \(.commit)"')
+            status=${build%% *}
+            commit=${build##* }
+            echo "Latest Pages build: $status ($commit), waiting for $PAGES_COMMIT"
+            if [ "$commit" = "$PAGES_COMMIT" ]; then
+              if [ "$status" = "built" ]; then
+                exit 0
+              fi
+              if [ "$status" = "errored" ]; then
+                echo "GitHub Pages build errored"
+                exit 1
+              fi
+            fi
+            sleep 15
+          done
+          echo "Timed out waiting for GitHub Pages to publish $PAGES_COMMIT"
+          exit 1
       - name: Create Vendor JSON Repo PR
         id: publish_wpilib
-        if: inputs.publishToWpilib
+        if: inputs.publishToWpilib && steps.wait_pages.outcome == 'success'
         uses: wpilibsuite/vendor-json-repo/.github/actions/add_vendordep@main
         with:
           repo: Yet-Another-Software-Suite/vendor-json-repo
