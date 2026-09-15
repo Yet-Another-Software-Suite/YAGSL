@@ -1,5 +1,5 @@
 {
-  "$schema": "https://example.com/schemas/pidfproperties.json",
+  "$schema": "https://config.yagsl.com/schemas/pidfproperties.json",
   "drive": {
     "p": 0.4,
     "i": 0,

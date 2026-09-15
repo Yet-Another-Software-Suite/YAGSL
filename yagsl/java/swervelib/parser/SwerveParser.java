@@ -352,6 +352,7 @@ public class SwerveParser {
         && swerveDriveConfig.useExternalFeedbackSensor()) {
       azimuthConfig
           .withExternalEncoder(absoluteEncoder.getSecond())
+          .withExternalEncoderZeroOffset(Degrees.of(moduleJson.absoluteEncoderOffset))
           .withUseExternalFeedbackEncoder(true);
     }
 

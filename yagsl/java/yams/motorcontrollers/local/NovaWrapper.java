@@ -423,7 +423,7 @@ public class NovaWrapper extends SmartMotorController
                                                              "Zero center could not be applied",
                                                              ".withExternalEncoderZeroOffset");
       }
-      if (config.getZeroOffset().isPresent())
+      if (config.getExternalEncoderZeroOffset().isPresent())
       {
         throw new SmartMotorControllerConfigurationException("Zero offset is unavailable for ThriftyNova",
                                                              "Zero offset could not be applied",
@@ -442,7 +442,7 @@ public class NovaWrapper extends SmartMotorController
                                                              "Zero center could not be applied",
                                                              ".withExternalEncoderZeroOffset");
       }
-      if (config.getZeroOffset().isPresent())
+      if (config.getExternalEncoderZeroOffset().isPresent())
       {
         throw new SmartMotorControllerConfigurationException("Zero offset is only available for external encoders",
                                                              "Zero offset could not be applied",

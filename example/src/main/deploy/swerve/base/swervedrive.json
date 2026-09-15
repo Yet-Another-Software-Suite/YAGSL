@@ -1,8 +1,8 @@
 {
-  "$schema": "https://example.com/schemas/swervedrive.json",
+  "$schema": "https://config.yagsl.com/schemas/swervedrive.json",
   "gyro": {
-    "type": "pigeon2_can",
-    "id": 1,
+    "type": "canandgyro_can",
+    "id": 5,
     "canbus": ""
   },
   "gyroAxis": "yaw",

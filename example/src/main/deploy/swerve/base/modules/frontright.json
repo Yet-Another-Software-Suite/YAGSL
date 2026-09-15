@@ -1,13 +1,13 @@
 {
-  "$schema": "https://example.com/schemas/module.json",
+  "$schema": "https://config.yagsl.com/schemas/module.json",
   "drive": {
-    "type": "sparkmax_neo",
-    "id": 4,
+    "type": "talonfx_krakenx60",
+    "id": 54,
     "canbus": ""
   },
   "angle": {
-    "type": "sparkmax_neo",
-    "id": 5,
+    "type": "talonfx_krakenx60",
+    "id": 12,
     "canbus": ""
   },
   "inverted": {
@@ -16,14 +16,14 @@
   },
   "absoluteEncoder": {
     "type": "cancoder_can",
-    "id": 6,
+    "id": 31,
     "channel": 0,
     "canbus": ""
   },
-  "absoluteEncoderOffset": 0,
+  "absoluteEncoderOffset": 80,
   "absoluteEncoderInverted": false,
   "location": {
-    "front": 10,
-    "left": -10
+    "front": 10.875,
+    "left": -10.875
   }
 }

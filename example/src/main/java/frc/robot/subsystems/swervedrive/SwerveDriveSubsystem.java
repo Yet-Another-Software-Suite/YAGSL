@@ -5,24 +5,24 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
+import com.reduxrobotics.sensors.canandgyro.Canandgyro;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -58,11 +58,8 @@ public class SwerveDriveSubsystem extends SubsystemBase
       MetersPerSecond.of(3.0), MetersPerSecondPerSecond.of(3.0),
       DegreesPerSecond.of(540), DegreesPerSecondPerSecond.of(720));
 
-  private SwerveDrive drive;
-  private Pigeon2 gyro;
-  private StatusSignal<AngularVelocity> gyroX;
-  private StatusSignal<AngularVelocity> gyroY;
-  private StatusSignal<AngularVelocity> gyroZ;
+  private SwerveDrive                   drive;
+  private Canandgyro                    gyro;
 
 
   public SwerveDriveSubsystem()
@@ -78,10 +75,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
     SwerveParser.parse(new File(Filesystem.getDeployDirectory(), "swerve/base"));
     SwerveDriveDevices devices = SwerveParser.createSwerveDriveDevices(cfg);
     drive = devices.swerveDrive();
-    gyro = (Pigeon2)devices.gyro();
-    gyroX = gyro.getAngularVelocityXDevice();
-    gyroY = gyro.getAngularVelocityYDevice();
-    gyroZ = gyro.getAngularVelocityZDevice();
+    gyro = (Canandgyro) devices.gyro();
     // You can also create the SwerveDrive without the ability to retrieve the devices like this.
     // drive = SwerveParser.createSwerveDrive(cfg);
 
@@ -177,12 +171,9 @@ public class SwerveDriveSubsystem extends SubsystemBase
    */
   public Rotation3d getGyroRotation3d()
   {
-    // Pigeon2#getRotation3d() is built entirely from the device's quaternion status signals, not from the
-    // yaw/pitch/roll ones. Pigeon2SimState#setRawYaw() (see simulationPeriodic()) only sets that separate raw-yaw
-    // register - nothing in this Java-only simulation path fuses it back into the quaternion, so getRotation3d()
-    // silently reports identity forever in simulation. Feed MegaTag2 the known-good simulated ground truth instead.
     if (RobotBase.isSimulation())
     {
+      // Only required if you cant simulate the gyro's orientation.'
       return new Rotation3d(0, 0, drive.getSimPose().getRotation().getRadians());
     }
     return gyro.getRotation3d();
@@ -199,7 +190,12 @@ public class SwerveDriveSubsystem extends SubsystemBase
    */
   public AngularVelocity3d getGyroAngularVelocity()
   {
-    return new AngularVelocity3d(gyroX.refresh().getValue(), gyroY.refresh().getValue(), gyroZ.refresh().getValue());
+    // Only required if you cant simulate the angular velocity of the gyro.
+    if (RobotBase.isSimulation())
+      return new AngularVelocity3d(RotationsPerSecond.zero(), RotationsPerSecond.zero(), RotationsPerSecond.zero());
+    return new AngularVelocity3d(RotationsPerSecond.of(gyro.getAngularVelocityRoll()),
+                                 RotationsPerSecond.of(gyro.getAngularVelocityPitch()),
+                                 RotationsPerSecond.of(gyro.getAngularVelocityYaw()));
   }
 
   /**
@@ -298,7 +294,6 @@ public class SwerveDriveSubsystem extends SubsystemBase
   public void simulationPeriodic()
   {
     drive.simIterate();
-    gyro.getSimState().setRawYaw(drive.getSimPose().getRotation().getDegrees());
   }
 
   public Pose2d getSimPose()
