@@ -99,7 +99,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-yams.motorcontrollers.SmartMotorController">Fields inherited from class&nbsp;yams.motorcontrollers.SmartMotorController</h3>
-<code>m_batterySimUUID, m_closedLoopControllerThread, m_config, m_expoProfile, m_expoState, m_looseFollowers, m_lqr, m_pid, m_simSupplier, m_slot, m_trapezoidProfile, m_trapState, parentTable, setpointPosition, setpointVelocity, telemetry, telemetryConfig, telemetryTable, tuningTable</code></div>
+<code>m_batterySimUUID, m_closedLoopControllerThread, m_config, m_expoProfile, m_expoState, m_looseFollowers, m_lqr, m_pid, m_simSupplier, m_slot, m_trapezoidProfile, m_trapState, parentTable, setpointFeedforwardForce, setpointPosition, setpointVelocity, telemetry, telemetryConfig, telemetryTable, tuningTable</code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -327,23 +327,27 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVelocity(edu.wpi.first.units.measure.AngularVelocity)" class="member-name-link">setVelocity</a><wbr>(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/AngularVelocity.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">AngularVelocity</a>&nbsp;angularVelocity)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVelocity(edu.wpi.first.units.measure.LinearVelocity)" class="member-name-link">setVelocity</a><wbr>(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/LinearVelocity.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">LinearVelocity</a>&nbsp;velocity)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVelocity(edu.wpi.first.units.measure.AngularVelocity,edu.wpi.first.units.measure.Force)" class="member-name-link">setVelocity</a><wbr>(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/AngularVelocity.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">AngularVelocity</a>&nbsp;angularVelocity,
+ <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Force.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Force</a>&nbsp;feedforwardForce)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVoltage(edu.wpi.first.units.measure.Voltage)" class="member-name-link">setVoltage</a><wbr>(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Voltage.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Voltage</a>&nbsp;voltage)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVelocity(edu.wpi.first.units.measure.LinearVelocity)" class="member-name-link">setVelocity</a><wbr>(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/LinearVelocity.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">LinearVelocity</a>&nbsp;velocity)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#simIterate()" class="member-name-link">simIterate</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVoltage(edu.wpi.first.units.measure.Voltage)" class="member-name-link">setVoltage</a><wbr>(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Voltage.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Voltage</a>&nbsp;voltage)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#synchronizeRelativeEncoder()" class="member-name-link">synchronizeRelativeEncoder</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#simIterate()" class="member-name-link">simIterate</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#synchronizeRelativeEncoder()" class="member-name-link">synchronizeRelativeEncoder</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-yams.motorcontrollers.SmartMotorController">Methods inherited from class&nbsp;yams.motorcontrollers.SmartMotorController</h3>
-<code>checkConfigSafety, close, create, getClosedLoopControllerSlot, getExponentialProfileState, getMechanismPositionSetpoint, getMechanismSetpointVelocity, getName, getSimSupplier, getTrapezoidalProfileState, isMotor, iterateClosedLoopController, setSimSupplier, setupTelemetry, setupTelemetry, startClosedLoopController, stopClosedLoopController, toString, updateTelemetry</code></div>
+<code>checkConfigSafety, close, create, getClosedLoopControllerSlot, getExponentialProfileState, getMechanismPositionSetpoint, getMechanismSetpointVelocity, getName, getSetpointFeedforwardForce, getSimSupplier, getTrapezoidalProfileState, isMotor, iterateClosedLoopController, setSimSupplier, setupTelemetry, setupTelemetry, setVelocity, startClosedLoopController, stopClosedLoopController, toString, updateTelemetry</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -496,7 +500,7 @@ loadScripts(document, 'script');</script>
 <h3>setVelocity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setVelocity</span><wbr><span class="parameters">(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/LinearVelocity.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">LinearVelocity</a>&nbsp;velocity)</span></div>
 <dl class="notes">
-<dt>Specified by:</dt>
+<dt>Overrides:</dt>
 <dd><code>setVelocity</code>&nbsp;in class&nbsp;<code>yams.motorcontrollers.SmartMotorController</code></dd>
 </dl>
 </section>
@@ -505,6 +509,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setVelocity(edu.wpi.first.units.measure.AngularVelocity)">
 <h3>setVelocity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setVelocity</span><wbr><span class="parameters">(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/AngularVelocity.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">AngularVelocity</a>&nbsp;angularVelocity)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>setVelocity</code>&nbsp;in class&nbsp;<code>yams.motorcontrollers.SmartMotorController</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setVelocity(edu.wpi.first.units.measure.AngularVelocity,edu.wpi.first.units.measure.Force)">
+<h3>setVelocity</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setVelocity</span><wbr><span class="parameters">(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/AngularVelocity.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">AngularVelocity</a>&nbsp;angularVelocity,
+ <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/units/measure/Force.html" title="class or interface in edu.wpi.first.units.measure" class="external-link">Force</a>&nbsp;feedforwardForce)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>setVelocity</code>&nbsp;in class&nbsp;<code>yams.motorcontrollers.SmartMotorController</code></dd>
