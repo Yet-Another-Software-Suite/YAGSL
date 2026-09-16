@@ -2,7 +2,7 @@
   "fileName": "yagsl-2026.9.16.json",
   "name": "YAGSL",
   "version": "2026.9.16",
-  "frcYear": "2026beta",
+  "frcYear": "2026",
   "uuid": "1ccce5a4-acd2-4d18-bca3-4b8047188400",
   "mavenUrls": [
     "https://yet-another-software-suite.github.io/YAGSL/releases/",
