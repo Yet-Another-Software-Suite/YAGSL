@@ -33,7 +33,7 @@ Alternatively, open the **Manage Vendor Libraries** menu, select **Install new l
 and paste the URL manually:
 
 ```
-https://yet-another-software-suite.github.io/YAGSL/yagsl/yagsl.json
+https://yet-another-software-suite.github.io/YAGSL/yagsl.json
 ```
 
 Run a Gradle build to download the library before continuing.
