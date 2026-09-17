@@ -1,19 +1,20 @@
 package swervelib.parser.json;
 
-import static edu.wpi.first.units.Units.Rotations;
-
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import java.util.function.Supplier;
 import swervelib.parser.deserializer.ReflectionsManager.AbsoluteEncoder;
 import swervelib.parser.deserializer.ReflectionsManager.Gyro;
 import swervelib.parser.deserializer.ReflectionsManager.VendorMotorController;
 import swervelib.parser.json.SwerveDriveJson.GyroAxis;
 import yams.motorcontrollers.SmartMotorController;
 import yams.motorcontrollers.SmartMotorControllerConfig;
+
+import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.Rotations;
 
 /**
  * Device JSON parsed class. Used to access the JSON data.
@@ -267,13 +268,13 @@ public class DeviceJson
     {
       case "analog":
       {
-        var analogEncoder = new AnalogEncoder(id);
+        var analogEncoder = new AnalogEncoder(channel);
         analogEncoder.setInverted(inverted);
         return Pair.of(() -> Rotations.of(analogEncoder.get()), analogEncoder);
       }
       case "dio":
       {
-        var dutyCycleEncoder = new DutyCycleEncoder(id);
+        var dutyCycleEncoder = new DutyCycleEncoder(channel);
         dutyCycleEncoder.setInverted(inverted);
         return Pair.of(() -> Rotations.of(dutyCycleEncoder.get()), dutyCycleEncoder);
       }
