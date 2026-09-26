@@ -393,7 +393,7 @@ public class SwerveParser {
         hardware.driveMotorController,
         hardware.azimuthMotorController)
         .withCosineCompensation(true)
-        .withOptimization(true)
+        //.withOptimization(true)
         .withAbsoluteEncoderOffset(
             Degrees.of(moduleJson.absoluteEncoderOffset))
         .withAbsoluteEncoderGearing(
