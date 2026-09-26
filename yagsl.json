@@ -1,7 +1,7 @@
 {
-  "fileName": "yagsl-2026.9.17.json",
+  "fileName": "yagsl-2026.9.16.json",
   "name": "YAGSL",
-  "version": "2026.9.17",
+  "version": "2026.9.16",
   "frcYear": "2026",
   "uuid": "1ccce5a4-acd2-4d18-bca3-4b8047188400",
   "mavenUrls": [
@@ -13,7 +13,7 @@
     {
       "groupId": "swervelib",
       "artifactId": "YAGSL-java",
-      "version": "2026.9.17"
+      "version": "2026.9.16"
     }
   ],
   "requires": [
