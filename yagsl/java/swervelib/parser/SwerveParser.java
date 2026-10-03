@@ -192,7 +192,7 @@ public class SwerveParser {
   private static SwerveDriveDevices buildSwerveDrive(SwerveDriveConfig swerveDriveConfig) {
     SwerveModule[] modules = new SwerveModule[swerveDriveJson.modules.length];
     SwerveModuleDevices[] moduleDevices = new SwerveModuleDevices[swerveDriveJson.modules.length];
-    LinearVelocity totalMaxModuleSpeed = MetersPerSecond.zero();
+    LinearVelocity maxModuleSpeed = null;
 
     for (int i = 0; i < modules.length; i++) {
       ModuleJson moduleJson = moduleJsons[i];
@@ -206,14 +206,17 @@ public class SwerveParser {
 
       ModuleHardware hardware = createModuleHardware(moduleJson, azimuthConfig, driveConfig, swerveDriveConfig);
 
-      totalMaxModuleSpeed = totalMaxModuleSpeed.plus(
-          calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController));
+      // Desaturate towards the slowest module so every module can reach its commanded speed.
+      LinearVelocity moduleMaxSpeed = calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController);
+      if (maxModuleSpeed == null || moduleMaxSpeed.lt(maxModuleSpeed)) {
+        maxModuleSpeed = moduleMaxSpeed;
+      }
 
       // Automatic theorhetical feedforward for drive motors.
       if ((pidfPropertiesJson.drive.v) == 0) {
         var sff = new SimpleMotorFeedforward(
             pidfPropertiesJson.drive.s,
-            12.0 / driveConfig.convertToMechanism(calculateMaxModuleSpeed(driveConfig, hardware.driveMotorController))
+            12.0 / driveConfig.convertToMechanism(moduleMaxSpeed)
                 .in(RotationsPerSecond),
             pidfPropertiesJson.drive.a);
         driveConfig.withFeedforward(sff);
@@ -235,7 +238,7 @@ public class SwerveParser {
     Object gyroDevice = configureSwerveDrive(
         swerveDriveConfig,
         modules,
-        totalMaxModuleSpeed.div(modules.length));
+        maxModuleSpeed);
 
     return new SwerveDriveDevices(new SwerveDrive(swerveDriveConfig), gyroDevice, moduleDevices);
   }
@@ -371,9 +374,11 @@ public class SwerveParser {
   private static LinearVelocity calculateMaxModuleSpeed(
       SmartMotorControllerConfig driveConfig,
       SmartMotorController driveMotorController) {
+    // DCMotor free speed is at the rotor, so reduce it through the gearing to get the wheel speed.
     return driveConfig.convertFromMechanism(
         RadiansPerSecond.of(
-            driveMotorController.getDCMotor().freeSpeedRadPerSec));
+            driveMotorController.getDCMotor().freeSpeedRadPerSec
+                * driveConfig.getGearing().getRotorToMechanismRatio()));
   }
 
   private static SwerveModule createSwerveModule(
@@ -396,17 +401,14 @@ public class SwerveParser {
         //.withOptimization(true)
         .withAbsoluteEncoderOffset(
             Degrees.of(moduleJson.absoluteEncoderOffset))
-        .withAbsoluteEncoderGearing(
-            GearBox.fromReductionStages(
-                moduleJson.absoluteEncoderGearRatio))
+        .withAbsoluteEncoderGearing(GearBox.fromReductionStages(moduleJson.absoluteEncoderGearRatio))
         .withLocation(
             Inches.of(moduleJson.location.front),
             Inches.of(moduleJson.location.left))
         .withTelemetry(getModuleName(moduleIndex), moduleTelemetryConfig);
 
     if (hardware.absoluteEncoderVendor != hardware.azimuthMotorVendor) {
-      config.withAbsoluteEncoder(
-          hardware.absoluteEncoder.getFirst());
+      config.withAbsoluteEncoder(hardware.absoluteEncoder.getFirst());
     }
 
     return new SwerveModule(config);
