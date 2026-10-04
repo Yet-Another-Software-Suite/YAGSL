@@ -40,7 +40,9 @@ Commands v3 robots pick what to run with **opmodes**, chosen on the Driver Stati
 
 ### Teleop
 
-All three use the left stick to translate. Pick the one that matches how your driver likes to steer:
+All three use the left stick to translate. Each teleop opmode instantiates its own `CommandXboxController` and
+`SwerveInputStream` to ensure modularity and clean lifecycle separation. Pick the one that matches how your driver
+likes to steer:
 
 | Opmode                       | Translation (left stick)                                                        | Rotation (right stick)                                                                                     |
 |------------------------------|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
@@ -52,12 +54,14 @@ All three use the left stick to translate. Pick the one that matches how your dr
 one to hand to a visitor at an outreach event, or to use when driving around people: no field orientation to
 explain, and nothing happens fast.
 
-Every teleop opmode also has these buttons (`opmodes/teleop/DriverButtons.java`):
+Every teleop opmode also shares standard driver button bindings (`opmodes/teleop/DriverButtons.java`):
 
-| Input           | Action                                                                                   |
-|-----------------|------------------------------------------------------------------------------------------|
-| **Y** (hold)    | Drive to a demo point (3m, 3m, 180°) with YAMS' `driveToPose`                             |
-| **Menu + View** | Zero the gyro (the robot is now facing away from you)                                     |
+| Input                  | Action                                                                                               |
+|------------------------|------------------------------------------------------------------------------------------------------|
+| **Right Bumper** (hold)| Boost drive speed scale from 50% to 100% (*Heading Control* & *Angular Velocity Control* only)       |
+| **X** (hold)           | Lock the wheels in an X pattern so the robot cannot easily be pushed                                 |
+| **Y** (hold)           | Drive to a demo point (3m, 3m, 180°) with YAMS' `driveToPose`                                        |
+| **Menu + View**        | Zero the gyro (the robot is now facing away from you)                                                |
 
 ### Autonomous
 
@@ -157,7 +161,7 @@ rotation gains into the `PIDController`s in `SwerveDriveMechanism`.
 build.gradle                                     # YAGSL_TESTING block compiles YAGSL from ../../yagsl/java
 vendordeps/                                      # CommandsV3, YAMS, Phoenix6, REVLib, ReduxLib
 src/main/java/frc/robot/
-├── Robot.java                                   # OpModeRobot: the swerve mechanism, controller, battery sim
+├── Robot.java                                   # OpModeRobot: the swerve mechanism, battery sim
 ├── mechanisms/
 │   └── SwerveDriveMechanism.java                 # YAGSL config → YAMS SwerveDrive; drive styles, driveToPose
 └── opmodes/

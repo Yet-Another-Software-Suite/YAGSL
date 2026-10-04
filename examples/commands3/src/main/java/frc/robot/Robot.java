@@ -9,14 +9,13 @@ import static org.wpilib.units.Units.Volts;
 
 import frc.robot.mechanisms.SwerveDriveMechanism;
 import org.wpilib.command3.Scheduler;
-import org.wpilib.command3.button.CommandXboxController;
 import org.wpilib.driverstation.internal.DriverStationBackend;
 import org.wpilib.framework.OpModeRobot;
 import org.wpilib.math.interpolation.InterpolatingDoubleTreeMap;
 import yams.core.motorcontrollers.simulation.BatterySim;
 
 /**
- * Holds the robot's mechanisms and the driver controller shared by the opmodes in {@code frc.robot.opmodes}.
+ * Holds the robot's mechanisms shared by the opmodes in {@code frc.robot.opmodes}.
  * {@link OpModeRobot} finds the {@code @Teleop} and {@code @Autonomous} opmodes in this package (and its subpackages)
  * and constructs the one selected on the driver station.
  */
@@ -27,10 +26,6 @@ public class Robot extends OpModeRobot
    * Swerve drive built by YAGSL from {@code deploy/swerve/base}.
    */
   public final SwerveDriveMechanism  swerve     = new SwerveDriveMechanism();
-  /**
-   * Driver controller.
-   */
-  public final CommandXboxController driverXbox = new CommandXboxController(0);
 
   private final Scheduler scheduler = Scheduler.getDefault();
 

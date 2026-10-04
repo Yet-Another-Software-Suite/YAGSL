@@ -2,16 +2,11 @@ package frc.robot.mechanisms;
 
 import static org.wpilib.units.Units.Degrees;
 import static org.wpilib.units.Units.Inches;
-import static org.wpilib.units.Units.Radians;
 
 import java.io.File;
 import java.util.List;
 import org.wpilib.command3.Command;
 import org.wpilib.command3.Mechanism;
-import org.wpilib.command3.button.CommandXboxController;
-import org.wpilib.driverstation.Alliance;
-import org.wpilib.driverstation.MatchState;
-import org.wpilib.driverstation.XboxController;
 import org.wpilib.math.controller.PIDController;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Rotation2d;
@@ -23,7 +18,6 @@ import org.wpilib.units.measure.Distance;
 import swervelib.commands3.SwerveParser;
 import yams.commands3.config.SwerveDriveConfig;
 import yams.commands3.swerve.SwerveDrive;
-import yams.commands3.swerve.SwerveInputStream;
 import yams.core.telemetry.SwerveDriveTelemetryConfig;
 import yams.core.telemetry.enums.TelemetryVerbosity;
 
@@ -42,14 +36,6 @@ public class SwerveDriveMechanism implements Mechanism
    * How close {@link #driveToPose(Pose2d)} has to get to its target, in heading, before it ends.
    */
   private static final Angle    POSE_ROTATION_TOLERANCE    = Degrees.of(5);
-  /**
-   * Controller stick deflection past which the right stick picks a new heading in heading control.
-   */
-  private static final double   HEADING_STICK_DEADBAND     = 0.5;
-  /**
-   * Fraction of the robot's maximum speeds used by {@link #driveDemo(CommandXboxController)}.
-   */
-  private static final double   DEMO_SPEED_SCALE           = 0.3;
 
   private final SwerveDrive drive;
 
@@ -75,105 +61,39 @@ public class SwerveDriveMechanism implements Mechanism
   }
 
   /**
-   * Field relative drive with angular velocity control. Every axis is negated because Xbox sticks read negative when
-   * pushed forward/left:
-   * <ul>
-   *   <li>Left stick: translation. Forward drives away from the driver station, left drives left. Alliance relative,
-   *   so it is flipped on the red alliance.</li>
-   *   <li>Right stick X: spin. Right spins clockwise.</li>
-   * </ul>
+   * Get the underlying YAMS {@link SwerveDrive}.
    *
-   * @param controller Driver controller.
-   * @return {@link Command} that drives until it is interrupted.
+   * @return The swerve drive.
    */
-  public Command driveAngularVelocity(CommandXboxController controller)
+  public SwerveDrive getDrive()
   {
-    XboxController hid = controller.getController();
-    return run(coroutine -> {
-      SwerveInputStream input = new SwerveInputStream(drive)
-          .withDeadband(0.05)
-          .withAllianceRelativeControl(true);
-      while (true)
-      {
-        input.withTranslation(-hid.getLeftY(), -hid.getLeftX())
-             .withRotation(-hid.getRightX());
-        drive.setFieldRelativeChassisSpeeds(input.get());
-        coroutine.yield();
-      }
-    }).named("Drive Angular Velocity");
+    return drive;
   }
 
   /**
-   * Field relative drive with heading control. Every axis is negated because Xbox sticks read negative when pushed
-   * forward/left:
-   * <ul>
-   *   <li>Left stick: translation. Forward drives away from the driver station, left drives left. Alliance relative,
-   *   so it is flipped on the red alliance.</li>
-   *   <li>Right stick: points the direction to face, so up faces away from the driver station and left faces left.
-   *   With the stick centered the robot keeps its current heading.</li>
-   * </ul>
+   * Lock the swerve drive wheels in an X pattern so the robot is difficult to push.
    *
-   * @param controller Driver controller.
-   * @return {@link Command} that drives until it is interrupted.
+   * @return {@link Command} that locks the wheels in place until canceled.
    */
-  public Command driveHeading(CommandXboxController controller)
+  public Command lockPose()
   {
-    XboxController hid = controller.getController();
     return run(coroutine -> {
-      SwerveInputStream input = new SwerveInputStream(drive)
-          .withDeadband(0.05)
-          .withAllianceRelativeControl(true)
-          .withHeadingControl(true);
       while (true)
       {
-        double headingX = -hid.getRightX();
-        double headingY = -hid.getRightY();
-        // Hold the current heading unless the stick is pushed far enough to pick a new one.
-        double heading = new Rotation2d(drive.getGyroAngle()).getRadians();
-        if (Math.hypot(headingX, headingY) > HEADING_STICK_DEADBAND)
-        {
-          // The stick points at the heading to face. Translation is alliance relative, so flip the heading on the
-          // red alliance to match.
-          heading = Math.atan2(headingX, headingY) + (isRedAlliance() ? Math.PI : 0);
-        }
-        input.withTranslation(-hid.getLeftY(), -hid.getLeftX())
-             .withHeading(Radians.of(heading));
-        drive.setFieldRelativeChassisSpeeds(input.get());
+        drive.lockPose();
         coroutine.yield();
       }
-    }).named("Drive Heading");
+    }).named("Lock Pose");
   }
 
   /**
-   * Slow, robot relative drive with angular velocity control, for demos and driving around people. Speeds are scaled
-   * to {@code DEMO_SPEED_SCALE} of the robot's maximum.
-   * <ul>
-   *   <li>Left stick: translation relative to the robot. Forward drives the way the robot is facing, left drives to
-   *   the robot's left.</li>
-   *   <li>Right stick X: spin. Right spins clockwise.</li>
-   * </ul>
+   * Lock the swerve drive wheels in an X pattern so the robot is difficult to push.
    *
-   * @param controller Driver controller.
-   * @return {@link Command} that drives until it is interrupted.
+   * @return {@link Command} that locks the wheels in place until canceled.
    */
-  public Command driveDemo(CommandXboxController controller)
+  public Command lock()
   {
-    XboxController hid = controller.getController();
-    return run(coroutine -> {
-      SwerveInputStream input = new SwerveInputStream(drive)
-          .withDeadband(0.05)
-          .withRobotRelative(true)
-          .withScaleTranslation(DEMO_SPEED_SCALE)
-          .withScaleRotation(DEMO_SPEED_SCALE);
-      while (true)
-      {
-        input.withTranslation(-hid.getLeftY(), -hid.getLeftX())
-             .withRotation(-hid.getRightX());
-        // The stream converts robot relative input into field relative velocities.
-        drive.setFieldRelativeChassisSpeeds(input.get());
-        coroutine.yield();
-      }
-    }).named("Drive Demo Mode");
+    return lockPose();
   }
 
   /**
@@ -256,10 +176,5 @@ public class SwerveDriveMechanism implements Mechanism
   public void simulationPeriodic()
   {
     drive.simIterate();
-  }
-
-  private static boolean isRedAlliance()
-  {
-    return MatchState.getAlliance().orElse(Alliance.BLUE) == Alliance.RED;
   }
 }
