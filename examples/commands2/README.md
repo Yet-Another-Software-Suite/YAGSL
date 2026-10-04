@@ -90,9 +90,22 @@ None of these are tuned for your robot. They're placeholders so the project buil
 
 ## Live tuning
 
-YAGSL builds the drive on YAMS, which publishes the drive's gains and test setpoints to NetworkTables so you can
-tune them from a dashboard (Elastic, Shuffleboard, AdvantageScope) while the robot runs, no redeploying. The
-config generator's **Tuning Guide** walks through the full process; these are the keys it uses.
+Live tuning is built directly into **YAMS**. YAMS publishes the drive's gains, setpoints, and live tuning commands
+to NetworkTables and the WPILib Tunables registry so you can tune your drivetrain and mechanism parameters in real-time
+from a dashboard (Elastic, Shuffleboard, AdvantageScope) while the robot runs, without redeploying code.
+
+The config generator's **Tuning Guide** walks through the full process; these are the commands and keys it uses.
+
+### Tuning Commands in YAMS
+
+- **Swerve Drive-to-Pose / Module Tuning Command**:
+  Published under `/Mechanisms/<driveName>/tuning/driveToPose` (named `"<driveName> DriveToPoseTuning"` or `"Drive to Pose"`).
+  When active, it continuously applies tuning values from `/Tuning/<driveName>/` to the drive and module controllers.
+- **Smart Motor Controller Live Tuning Command**:
+  For custom subsystems using `SmartMotorControllerConfig.setupLiveTuning()`, YAMS registers a shared `"Live Tuning"`
+  command on the subsystem published under `/Tuning/<SubsystemName>/Live Tuning`.
+
+### How to Live Tune
 
 Tuning is available because `SwerveDriveSubsystem` names the drive `"swerve"` and configures
 `.withTelemetry("swerve", new SwerveDriveTelemetryConfig(TelemetryVerbosity.HIGH))` with both drive-to-pose

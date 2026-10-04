@@ -14,6 +14,7 @@ documentation lives at [docs.yagsl.com](https://docs.yagsl.com).
 | Javadocs                | [yet-another-software-suite.github.io/YAGSL/javadocs](https://yet-another-software-suite.github.io/YAGSL/javadocs/) |
 | Library Source          | [github.com/Yet-Another-Software-Suite/YAGSL](https://github.com/Yet-Another-Software-Suite/YAGSL/)                 |
 | Wiki / Docs             | [docs.yagsl.com](https://docs.yagsl.com)                                                                            |
+| Example Projects        | [examples/](examples/)                                                                                              |
 
 ---
 

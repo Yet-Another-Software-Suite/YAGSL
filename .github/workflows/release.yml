@@ -34,18 +34,28 @@ jobs:
         working-directory: vendordep
         env:
           releaseVersion: ${{ inputs.releaseVersion }}
-      - name: Strip testing-only fixups from the example
+      # Build and test each example against the YAGSL sources being released before it is zipped.
+      - name: Build examples
         run: |
-          # The YAGSL_TESTING fixup compiles against yagsl/java directly so the example build
-          # doesn't depend on a published vendordep. The released example instead consumes the
-          # generated vendordep JSON like a real robot project would.
-          sed -i '/\/\/ YAGSL_TESTING/,/\/\/ END_YAGSL_TESTING/d' example/build.gradle
-          cp vendordep/build/maven/yagsl_commands2.json example/vendordeps/yagsl_commands2.json
-      - name: Zip example
+          for example in commands2 commands3; do
+            (cd "examples/$example" && chmod +x gradlew && ./gradlew build) || exit 1
+          done
+      - name: Strip testing-only fixups from the examples
+        run: |
+          for example in commands2 commands3; do
+            # The YAGSL_TESTING fixup compiles against yagsl/java directly so the example build
+            # doesn't depend on a published vendordep. The released example instead consumes the
+            # generated vendordep JSON like a real robot project would.
+            sed -i '/\/\/ YAGSL_TESTING/,/\/\/ END_YAGSL_TESTING/d' "examples/$example/build.gradle"
+            cp "vendordep/build/maven/yagsl_$example.json" "examples/$example/vendordeps/yagsl_$example.json"
+          done
+      - name: Zip examples
         run: |
           mkdir -p ${{ github.workspace }}/example-artifacts
-          zip -r ${{ github.workspace }}/example-artifacts/example-commands2.zip example/ \
-            -x "example/.gradle/*" -x "example/build/*" -x "example/bin/*"
+          cd examples
+          for example in commands2 commands3; do
+            zip -r "${{ github.workspace }}/example-artifacts/example-$example.zip" "$example" -x "$example/.gradle/*" -x "$example/build/*" -x "$example/bin/*"
+          done
       - uses: actions/upload-artifact@v7
         with:
           name: release-examples
@@ -247,7 +257,7 @@ jobs:
 
           Afterwards you should have `wpilib/@WPILIB_YEAR@/maven/swervelib/...` and `wpilib/@WPILIB_YEAR@/vendordeps/yagsl_commands2.json` / `yagsl_commands3.json`. Then, in VS Code, run **WPILib: Manage Vendor Libraries > Install new libraries (offline)** and pick **YAGSL (Commands v2)** or **(Commands v3)**.
 
-          A Commands v2 example project is also attached below.
+          Example robot projects for both command frameworks (`example-commands2.zip` and `example-commands3.zip`) are also attached below.
           EOF
             echo
           } > release-notes.md
