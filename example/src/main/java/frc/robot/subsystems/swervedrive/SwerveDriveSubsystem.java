@@ -240,9 +240,16 @@ public class SwerveDriveSubsystem extends SubsystemBase
     drive.addVisionMeasurement(visionPose, timestampSeconds);
   }
 
-  public Command drive(SwerveInputStream stream)
+  /**
+   * Drive with a field relative {@link SwerveInputStream}. YAMS converts the field relative velocities with the same
+   * heading its heading controller uses (the gyro on a robot, the simulated heading in simulation).
+   *
+   * @param stream Field relative {@link SwerveInputStream}.
+   * @return {@link Command} that drives with the stream.
+   */
+  public Command driveFieldRelative(SwerveInputStream stream)
   {
-    return drive.drive(() -> stream.get().toRobotRelative(new Rotation2d(drive.getGyroAngle())));
+    return run(() -> drive.setFieldRelativeChassisSpeeds(stream.get())).withName("Drive Field Relative");
   }
 
   /**

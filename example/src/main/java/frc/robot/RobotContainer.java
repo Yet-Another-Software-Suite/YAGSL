@@ -14,7 +14,8 @@ import org.wpilib.command2.Command;
 import org.wpilib.command2.Commands;
 import org.wpilib.command2.button.CommandXboxController;
 import org.wpilib.command2.button.Trigger;
-import org.wpilib.driverstation.XboxController;
+import org.wpilib.driverstation.Alliance;
+import org.wpilib.driverstation.MatchState;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.math.interpolation.InterpolatingDoubleTreeMap;
@@ -45,15 +46,22 @@ public class RobotContainer
 //  private final LimelightVisionSubsystem limelightVision = new LimelightVisionSubsystem(swerve);
 //  private final PhotonVisionSubsystem    photonVision    = new PhotonVisionSubsystem(swerve);
 
-  // Toggled by a button press to switch the drive stream between angular velocity (right stick X rotates) and
-  // heading (right stick X/Y picks the desired heading angle) control.
+  // Toggled with the A button to switch the drive stream between angular velocity control (right stick X spins the
+  // robot) and heading control (the right stick points the way the robot should face).
   private       boolean headingControlEnabled = false;
 
-  private final SwerveInputStream driveStream = swerve.getAngularVelocityStream(driverXbox::getLeftY,
-                                                                                 driverXbox::getLeftX,
-                                                                                 driverXbox::getLeftTrigger)
-                                                       .withControllerHeadingAxis(driverXbox::getRightX,
-                                                                                  driverXbox::getRightY)
+  // Field relative drive stream. Xbox sticks read negative when pushed forward/left, so every axis is negated:
+  //  - translation: left stick forward drives away from the driver station, left drives left.
+  //  - angular velocity: right stick right spins clockwise (YAMS' positive rotation is counter-clockwise).
+  //  - heading: the right stick points the direction to face, so up faces away from the driver station.
+  // Translation is alliance relative (flipped on red) by YAMS; the heading axes are flipped here to match, since a
+  // field relative heading is not.
+  private final SwerveInputStream driveStream = swerve.getAngularVelocityStream(() -> -driverXbox.getLeftY(),
+                                                                                 () -> -driverXbox.getLeftX(),
+                                                                                 () -> -driverXbox.getRightX())
+                                                       .withControllerHeadingAxis(
+                                                           () -> -driverXbox.getRightX() * allianceSign(),
+                                                           () -> -driverXbox.getRightY() * allianceSign())
                                                        .withHeadingControl(() -> headingControlEnabled)
                                                        .withDeadband(0.05)
                                                        .withAllianceRelativeControl();
@@ -95,12 +103,23 @@ public class RobotContainer
    */
   private void configureBindings()
   {
-    swerve.setDefaultCommand(swerve.drive(driveStream));
-    driverXbox.button(XboxController.Button.A).whileTrue(swerve.sysIdModule("frontleft"));
+    swerve.setDefaultCommand(swerve.driveFieldRelative(driveStream));
+    driverXbox.a().onTrue(Commands.runOnce(() -> headingControlEnabled = !headingControlEnabled));
+    driverXbox.b().whileTrue(swerve.sysIdModule("frontleft"));
     driverXbox.x().whileTrue(swerve.driveToPointPathPlanner(new Pose2d(Meters.of(3), Meters.of(3), Rotation2d.fromDegrees(180))));
     driverXbox.y().whileTrue(swerve.driveToPointYAMS(new Pose2d(Meters.of(3), Meters.of(3), Rotation2d.fromDegrees(180))));
     driverXbox.menu().and(driverXbox.view()).onTrue(swerve.zeroGyro());
-    driverXbox.a().toggleOnTrue(Commands.startEnd(() -> headingControlEnabled = true, () -> headingControlEnabled = false));
+  }
+
+  /**
+   * Sign that turns a blue alliance relative input into an alliance relative one: -1 on the red alliance (whose
+   * driver station faces the other way down the field), 1 otherwise.
+   *
+   * @return -1 on the red alliance, 1 otherwise.
+   */
+  private static double allianceSign()
+  {
+    return MatchState.getAlliance().orElse(Alliance.BLUE) == Alliance.RED ? -1 : 1;
   }
 
   /**

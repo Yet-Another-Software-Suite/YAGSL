@@ -81,7 +81,7 @@ public class ReflectionsManager
   public enum VendorMotorController
   {
     /**
-     * TalonFX Motor Controller wihtin KrakenX60 and KrakenX44
+     * TalonFX Motor Controller within the Falcon 500, KrakenX60, and KrakenX44
      */
     TALONFX("CTREDevices"),
     /**

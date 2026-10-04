@@ -66,6 +66,9 @@ public class DeviceJson
         return DCMotor.getKrakenX44(1);
       case "krakenx60":
         return DCMotor.getKrakenX60(1);
+      case "falcon":
+      case "falcon500":
+        return DCMotor.getFalcon500(1);
       case "pulsar":
         return new DCMotor(12, 3.1, 189, 1, 7500, 1);
       default:

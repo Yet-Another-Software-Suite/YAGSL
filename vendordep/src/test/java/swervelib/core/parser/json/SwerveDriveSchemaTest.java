@@ -105,6 +105,16 @@ class SwerveDriveSchemaTest {
     assertFalse(errors.isEmpty(), "expected validation errors for missing 'gyro' field");
   }
 
+  @ParameterizedTest
+  @ValueSource(strings = {"talonfx_falcon", "talonfx_falcon500"})
+  void moduleSchema_acceptsFalconMotors(String type) throws IOException {
+    ObjectNode instance = (ObjectNode) getInstance("modules/fl.json");
+    ((ObjectNode) instance.get("drive")).put("type", type);
+    ((ObjectNode) instance.get("angle")).put("type", type);
+    Set<ValidationMessage> errors = getSchema("module.json").validate(instance);
+    assertTrue(errors.isEmpty(), "expected " + type + " to be a valid motor type, got " + errors);
+  }
+
   @Test
   void moduleSchema_rejectsMissingDrive() throws IOException {
     ObjectNode instance = (ObjectNode) getInstance("modules/fl.json");

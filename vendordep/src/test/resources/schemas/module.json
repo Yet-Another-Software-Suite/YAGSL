@@ -9,6 +9,8 @@
           "enum": [
             "talonfx_krakenx44",
             "talonfx_krakenx60",
+            "talonfx_falcon",
+            "talonfx_falcon500",
             "talonfxs_neo",
             "talonfxs_neo2",
             "talonfxs_neo550",
@@ -61,6 +63,8 @@
           "enum": [
             "talonfx_krakenx44",
             "talonfx_krakenx60",
+            "talonfx_falcon",
+            "talonfx_falcon500",
             "talonfxs_neo",
             "talonfxs_neo2",
             "talonfxs_neo550",

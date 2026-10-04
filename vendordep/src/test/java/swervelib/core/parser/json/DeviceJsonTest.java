@@ -71,6 +71,22 @@ class DeviceJsonTest {
   }
 
   @Test
+  void getDCMotor_falcon_returnsFalcon500() {
+    DCMotor result = DeviceJson.getDCMotor("falcon");
+    DCMotor falcon500 = DCMotor.getFalcon500(1);
+    assertEquals(falcon500.freeSpeed, result.freeSpeed, 1e-9);
+    assertEquals(falcon500.stallTorque, result.stallTorque, 1e-9);
+  }
+
+  @Test
+  void getDCMotor_falcon500_matchesFalcon() {
+    DCMotor falcon = DeviceJson.getDCMotor("falcon");
+    DCMotor falcon500 = DeviceJson.getDCMotor("falcon500");
+    assertEquals(falcon.freeSpeed, falcon500.freeSpeed, 1e-9);
+    assertEquals(falcon.stallTorque, falcon500.stallTorque, 1e-9);
+  }
+
+  @Test
   void getDCMotor_pulsar_returns7500RpmFreeSpeed() {
     DCMotor result = DeviceJson.getDCMotor("pulsar");
     assertNotNull(result);
@@ -124,6 +140,12 @@ class DeviceJsonTest {
   }
 
   @Test
+  void getMotorController_talonfxFalcon_returnsTalonFX() {
+    assertEquals(
+        VendorMotorController.TALONFX, deviceWithType("talonfx_falcon").getMotorController());
+  }
+
+  @Test
   void getMotorController_talonfxsNeo_returnsTalonFXS() {
     assertEquals(
         VendorMotorController.TALONFXS, deviceWithType("talonfxs_neo").getMotorController());
@@ -167,6 +189,11 @@ class DeviceJsonTest {
   @Test
   void getVendor_talonfx_returnsCTRE() {
     assertEquals(VENDOR.CTRE, deviceWithType("talonfx_krakenx60").getVendor(VENDOR.UNKNOWN));
+  }
+
+  @Test
+  void getVendor_talonfxFalcon_returnsCTRE() {
+    assertEquals(VENDOR.CTRE, deviceWithType("talonfx_falcon").getVendor(VENDOR.UNKNOWN));
   }
 
   @Test
