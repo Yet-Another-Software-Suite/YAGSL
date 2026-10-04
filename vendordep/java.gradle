@@ -1,0 +1,115 @@
+// Java build configuration: sourceSets, dependencies, tests, and javadoc.
+// Applied from build.gradle.
+
+sourceSets {
+    main {
+        java {
+            srcDir "$rootDir/../yagsl/java/"
+            // StudicaLib, ThriftyLib, and AmLib have not published 2027_alpha7 vendordeps yet, so
+            // their device reflection classes (and the ThriftyLib-backed NovaWrapper) are left out
+            // of the build until they do. ReflectionsManager throws a "library not found" error at
+            // runtime if a JSON config asks for one of these devices.
+            exclude "swervelib/core/parser/deserializer/reflections/StudicaLibDevices.java"
+            exclude "swervelib/core/parser/deserializer/reflections/ThriftyBotDevices.java"
+            exclude "swervelib/core/parser/deserializer/reflections/AndymarkDevices.java"
+            exclude "yams/motorcontrollers/local/NovaWrapper.java"
+        }
+    }
+    test {
+        java {
+            srcDir "src/test/java"
+        }
+        resources {
+            srcDir "src/test/resources"
+        }
+    }
+}
+
+var javaVersion = "25"
+
+dependencies {
+    // Includes avaje-jsonb-generator, which generates the JSON adapters for YAGSL's @Json classes.
+    annotationProcessor wpi.java.deps.wpilibAnnotations()
+    implementation wpi.java.deps.wpilib()
+    // YAMS (yams_commands2.json + yams_commands3.json), Phoenix6, REVLib, ReduxLib and the WPILib
+    // command frameworks all come in through the vendordeps/ folder.
+    implementation wpi.java.vendor.java()
+
+    implementation "org.wpilib.cscore:cscore-java:$wpilibVersion"
+    implementation "org.wpilib.cameraserver:cameraserver-java:$wpilibVersion"
+    implementation "org.wpilib.ntcore:ntcore-java:$wpilibVersion"
+    implementation "org.wpilib.wpilibj:wpilibj-java:$wpilibVersion"
+    implementation "org.wpilib.wpiutil:wpiutil-java:$wpilibVersion"
+    implementation "org.wpilib.wpimath:wpimath-java:$wpilibVersion"
+    implementation "org.wpilib.wpiunits:wpiunits-java:$wpilibVersion"
+    implementation "org.wpilib.datalog:datalog-java:$wpilibVersion"
+    implementation "org.wpilib.hal:hal-java:$wpilibVersion"
+    implementation "org.wpilib.tunables:tunables-java:$wpilibVersion"
+    implementation "org.wpilib.telemetry:telemetry-java:$wpilibVersion"
+    implementation "org.ejml:ejml-simple:0.44.0"
+    implementation 'org.wpilib.thirdparty.opencv:opencv-java:2027-4.13.0-3'
+
+    // Native JNI libraries needed to run/simulate the Java side (HAL sim, vendor sim, etc.) in tests.
+    nativeDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.desktop)
+    nativeDebug wpi.java.vendor.jniDebug(wpi.platforms.desktop)
+    simulationDebug wpi.sim.enableDebug()
+
+    nativeRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.desktop)
+    nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
+    simulationRelease wpi.sim.enableRelease()
+
+    testImplementation platform("org.junit:junit-bom:5.11.4")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-params"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    testImplementation "com.networknt:json-schema-validator:1.5.6"
+}
+
+// Set up java tests
+test {
+    useJUnitPlatform()
+    systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+    testLogging {
+        events "failed"
+        exceptionFormat = "full"
+    }
+}
+
+processTestResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+wpi.sim.addGui().defaultEnabled = true
+wpi.sim.addDriverstation()
+wpi.java.configureTestTasks(test)
+
+tasks.test {
+    // Disable test when running 'build' task, but enable when running 'test' task directly
+    enabled = !gradle.startParameter.taskNames.contains('build')
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs.add '-XDstringConcat=inline'
+    options.encoding = 'UTF-8'
+}
+
+javadoc {
+    title = "Yet Another Generic Swerve Library API"
+    destinationDir = file("$releasePath/javadocs")
+    options {
+        encoding = 'UTF-8'
+        charSet = 'UTF-8'
+        links "https://docs.oracle.com/en/java/javase/$javaVersion/docs/api/",
+                'https://github.wpilib.org/allwpilib/docs/release/java/',
+                'https://codedocs.revrobotics.com/java/',
+                'https://api.ctr-electronics.com/phoenix6/stable/java/',
+                'https://yet-another-software-suite.github.io/YAMS/javadocs/'
+        tags 'todo:X"',
+                'apiNote:a:API Note:',
+                'implSpec:a:Implementation Requirements:',
+                'implNote:a:Implementation Note:'
+    }
+}
+
+build.dependsOn javadoc

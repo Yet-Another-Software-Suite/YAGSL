@@ -1,14 +1,13 @@
 package frc.robot.subsystems.swervedrive;
 
 
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-import static edu.wpi.first.units.Units.Second;
-import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volts;
+import static org.wpilib.units.Units.DegreesPerSecond;
+import static org.wpilib.units.Units.DegreesPerSecondPerSecond;
+import static org.wpilib.units.Units.MetersPerSecond;
+import static org.wpilib.units.Units.MetersPerSecondPerSecond;
+import static org.wpilib.units.Units.Second;
+import static org.wpilib.units.Units.Seconds;
+import static org.wpilib.units.Units.Volts;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -16,36 +15,34 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
-import com.reduxrobotics.sensors.canandgyro.Canandgyro;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import com.reduxrobotics.canandgyro.Canandgyro;
 import java.io.File;
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
-import limelight.networktables.AngularVelocity3d;
 import org.json.simple.parser.ParseException;
-import swervelib.parser.SwerveParser;
-import swervelib.parser.SwerveParser.SwerveDriveDevices;
-import yams.mechanisms.config.SwerveDriveConfig;
-import yams.mechanisms.swerve.SwerveDrive;
-import yams.mechanisms.swerve.SwerveModule;
-import yams.mechanisms.swerve.utility.SwerveInputStream;
-import yams.motorcontrollers.SmartMotorController;
-import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
-import yams.telemetry.SwerveDriveTelemetryConfig;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.Commands;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.command2.sysid.SysIdRoutine;
+import org.wpilib.driverstation.Alliance;
+import org.wpilib.driverstation.MatchState;
+import org.wpilib.framework.RobotBase;
+import org.wpilib.math.controller.PIDController;
+import org.wpilib.math.estimator.SwerveDrivePoseEstimator;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Rotation3d;
+import org.wpilib.smartdashboard.Field2d;
+import org.wpilib.system.Filesystem;
+import swervelib.commands2.SwerveParser;
+import swervelib.core.parser.SwerveParser.SwerveDriveDevices;
+import yams.commands2.config.SwerveDriveConfig;
+import yams.commands2.swerve.SwerveDrive;
+import yams.commands2.swerve.SwerveInputStream;
+import yams.core.mechanisms.swerve.SwerveModule;
+import yams.core.motorcontrollers.SmartMotorController;
+import yams.core.telemetry.SwerveDriveTelemetryConfig;
+import yams.core.telemetry.enums.TelemetryVerbosity;
 
 public class SwerveDriveSubsystem extends SubsystemBase
 {
@@ -64,16 +61,15 @@ public class SwerveDriveSubsystem extends SubsystemBase
 
   public SwerveDriveSubsystem()
   {
-    SmartDashboard.putData(this);
     var cfg = new SwerveDriveConfig()
-        .withStartingPose(new Pose2d(3, 3, Rotation2d.kZero))
+        .withStartingPose(new Pose2d(3, 3, Rotation2d.ZERO))
         .withSubsystem(this)
         .withTranslationController(new PIDController(4, 0, 0))
         .withRotationController(new PIDController(1, 0, 0))
         .withTelemetry("swerve", new SwerveDriveTelemetryConfig(TelemetryVerbosity.HIGH));
 
     SwerveParser.parse(new File(Filesystem.getDeployDirectory(), "swerve/base"));
-    SwerveDriveDevices devices = SwerveParser.createSwerveDriveDevices(cfg);
+    SwerveDriveDevices<SwerveDrive> devices = SwerveParser.createSwerveDriveDevices(cfg);
     drive = devices.swerveDrive();
     gyro = (Canandgyro) devices.gyro();
     // You can also create the SwerveDrive without the ability to retrieve the devices like this.
@@ -104,7 +100,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
         (speeds, feedforwards) -> drive.setRobotRelativeChassisSpeeds(speeds, feedforwards.linearForces()),
         new PPHolonomicDriveController(new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
         config,
-        () -> DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Red,
+        () -> MatchState.getAlliance().orElse(Alliance.BLUE) == Alliance.RED,
         this
     );
   }
@@ -159,7 +155,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
   /**
    * Get the gyro's full 3 axis orientation (roll, pitch, and yaw) as a {@link Rotation3d}.
    * <p>
-   * {@link SwerveDrive} itself only tracks a single yaw {@link edu.wpi.first.units.measure.Angle} (see
+   * {@link SwerveDrive} itself only tracks a single yaw {@link org.wpilib.units.measure.Angle} (see
    * {@link SwerveDrive#getGyroAngle()}), since yaw is the only axis MegaTag2 pose estimation actually requires. This
    * subsystem grabs the raw {@link Pigeon2} device instead (via {@link SwerveParser#createSwerveDriveDevices}, see
    * "How to access raw hardware devices" in the docs) so it can report the IMU's real roll and pitch too. That's a
@@ -179,24 +175,26 @@ public class SwerveDriveSubsystem extends SubsystemBase
     return gyro.getRotation3d();
   }
 
-  /**
-   * Get the robot's full 3 axis angular velocity (roll, pitch, and yaw rates), read directly off the raw
-   * {@link Pigeon2} device obtained via {@link SwerveParser#createSwerveDriveDevices}. As with
-   * {@link #getGyroRotation3d()}, only the yaw rate is required for MegaTag2. The roll and pitch rates are extra
-   * accuracy this subsystem happens to have available because it grabbed the raw gyro, not something every robot
-   * needs to supply.
-   *
-   * @return {@link AngularVelocity3d} of the gyro's roll, pitch, and yaw rates.
-   */
-  public AngularVelocity3d getGyroAngularVelocity()
-  {
-    // Only required if you cant simulate the angular velocity of the gyro.
-    if (RobotBase.isSimulation())
-      return new AngularVelocity3d(RotationsPerSecond.zero(), RotationsPerSecond.zero(), RotationsPerSecond.zero());
-    return new AngularVelocity3d(RotationsPerSecond.of(gyro.getAngularVelocityRoll()),
-                                 RotationsPerSecond.of(gyro.getAngularVelocityPitch()),
-                                 RotationsPerSecond.of(gyro.getAngularVelocityYaw()));
-  }
+  // getGyroAngularVelocity() returned YALL's AngularVelocity3d for the Limelight subsystem. YALL has no 2027_alpha7
+  // vendordep yet, so it is commented out until it does.
+//  /**
+//   * Get the robot's full 3 axis angular velocity (roll, pitch, and yaw rates), read directly off the raw
+//   * {@link Pigeon2} device obtained via {@link SwerveParser#createSwerveDriveDevices}. As with
+//   * {@link #getGyroRotation3d()}, only the yaw rate is required for MegaTag2. The roll and pitch rates are extra
+//   * accuracy this subsystem happens to have available because it grabbed the raw gyro, not something every robot
+//   * needs to supply.
+//   *
+//   * @return {@link AngularVelocity3d} of the gyro's roll, pitch, and yaw rates.
+//   */
+//  public AngularVelocity3d getGyroAngularVelocity()
+//  {
+//    // Only required if you cant simulate the angular velocity of the gyro.
+//    if (RobotBase.isSimulation())
+//      return new AngularVelocity3d(RotationsPerSecond.zero(), RotationsPerSecond.zero(), RotationsPerSecond.zero());
+//    return new AngularVelocity3d(RotationsPerSecond.of(gyro.getAngularVelocityRoll()),
+//                                 RotationsPerSecond.of(gyro.getAngularVelocityPitch()),
+//                                 RotationsPerSecond.of(gyro.getAngularVelocityYaw()));
+//  }
 
   /**
    * Gets the measured pose (position and rotation) of the robot, as reported by odometry.
@@ -220,7 +218,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
 
   /**
    * Get the {@link Field2d} used to display the robot's pose, so callers (e.g. vision subsystems) can publish
-   * additional {@link edu.wpi.first.wpilibj.smartdashboard.FieldObject2d}s onto the same field widget instead of
+   * additional {@link org.wpilib.smartdashboard.FieldObject2d}s onto the same field widget instead of
    * creating their own.
    *
    * @return {@link Field2d} of the drive.
@@ -235,7 +233,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
    * drive's pose estimator.
    *
    * @param visionPose        Vision-measured {@link Pose2d}, field relative, blue-origin.
-   * @param timestampSeconds  Timestamp the measurement was taken at, matching {@link edu.wpi.first.wpilibj.Timer#getFPGATimestamp()}.
+   * @param timestampSeconds  Timestamp the measurement was taken at, matching {@link org.wpilib.system.Timer#getTimestamp()}.
    */
   public void addVisionMeasurement(Pose2d visionPose, double timestampSeconds)
   {
@@ -244,7 +242,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
 
   public Command drive(SwerveInputStream stream)
   {
-    return drive.drive(()->ChassisSpeeds.fromFieldRelativeSpeeds(stream.get(), new Rotation2d(drive.getGyroAngle())));
+    return drive.drive(() -> stream.get().toRobotRelative(new Rotation2d(drive.getGyroAngle())));
   }
 
   /**
@@ -275,22 +273,24 @@ public class SwerveDriveSubsystem extends SubsystemBase
         )
     );
 
-    return Commands.runOnce(() -> azimuthMotor.setPosition(Rotation2d.kZero.getMeasure()))
-                   .andThen(routine.quasistatic(SysIdRoutine.Direction.kForward))
+    return Commands.runOnce(() -> azimuthMotor.setPosition(Rotation2d.ZERO.getMeasure()))
+                   .andThen(routine.quasistatic(SysIdRoutine.Direction.FORWARD))
                    .andThen(Commands.waitSeconds(1))
-                   .andThen(routine.quasistatic(SysIdRoutine.Direction.kReverse))
+                   .andThen(routine.quasistatic(SysIdRoutine.Direction.REVERSE))
                    .andThen(Commands.waitSeconds(1))
-                   .andThen(routine.dynamic(SysIdRoutine.Direction.kForward))
+                   .andThen(routine.dynamic(SysIdRoutine.Direction.FORWARD))
                    .andThen(Commands.waitSeconds(1))
-                   .andThen(routine.dynamic(SysIdRoutine.Direction.kReverse))
+                   .andThen(routine.dynamic(SysIdRoutine.Direction.REVERSE))
                    .withName("SysId " + moduleName + " Azimuth");
   }
 
+  @Override
   public void periodic()
   {
     drive.updateTelemetry();
   }
 
+  @Override
   public void simulationPeriodic()
   {
     drive.simIterate();

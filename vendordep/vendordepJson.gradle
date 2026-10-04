@@ -1,0 +1,209 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+// Generates yagsl_commands2.json and yagsl_commands3.json from the single yagsl.json base by
+// patching the parsed JSON per variant, instead of maintaining two hand-written template files.
+// The base file already declares the shared YAGSL-core javaDependency; each variant task adds its
+// own commands2/commands3 javaDependency on top, plus its requires/conflictsWith entries.
+//
+// uuid/name/fileName/jsonUrl are hardcoded per variant below (not read from the base file) so
+// each vendordep's identity stays fixed regardless of what the base yagsl.json's own fields say.
+// commands2 keeps the original YAGSL uuid so existing installs see it as the same vendordep.
+//
+// Each variant requires the matching YAMS vendordep and the WPILib command framework vendordep it
+// is built against, and conflicts with the other variant, since a project should only ever install
+// one of them. The WPILib command vendordeps ship with the WPILib installer and have no online
+// jsonUrl, so their onlineUrl is left empty.
+def baseVendorFile = "yagsl.json"
+
+// Vendor libraries every YAGSL variant requires, regardless of command framework.
+def sharedRequires = [
+    [
+        uuid           : '3f48eb8c-50fe-43a6-9cb7-44c86353c4cb',
+        errorMessage   : 'REVLib is required!',
+        offlineFileName: 'REVLib.json',
+        onlineUrl      : 'https://software-metadata.revrobotics.com/REVLib-2027.json',
+    ],
+    [
+        uuid           : 'e995de00-2c64-4df5-8831-c1441420ff19',
+        errorMessage   : 'Phoenix6 is required!',
+        offlineFileName: 'Phoenix6-26.70.0-alpha-2.json',
+        onlineUrl      : 'https://maven.ctr-electronics.com/release/com/ctre/phoenix6/latest/Phoenix6-frc2027-latest.json',
+    ],
+    [
+        uuid           : '151ecca8-670b-4026-8160-cdd2679ef2bd',
+        errorMessage   : 'ReduxLib is required!',
+        offlineFileName: 'ReduxLib-2027.0.0-alpha-7p1.json',
+        onlineUrl      : 'https://frcsdk.reduxrobotics.com/ReduxLib_2027.json',
+    ],
+    // TODO: Re-enable once StudicaLib, ThriftyLib, and AmLib publish 2027_alpha7 vendordeps.
+    // [
+    //     uuid           : '963ef341-8abd-4981-a969-c8ae3f592e82',
+    //     errorMessage   : 'StudicaLib is required!',
+    //     offlineFileName: 'StudicaLib.json',
+    //     onlineUrl      : '',
+    // ],
+    // [
+    //     uuid           : '60b2694b-9e6e-4026-81ee-6f167946f4b0',
+    //     errorMessage   : 'ThriftyLib is required!',
+    //     offlineFileName: 'ThriftyLib.json',
+    //     onlineUrl      : '',
+    // ],
+    // [
+    //     uuid           : 'f463c495-f27c-4102-9dde-af4e65a3eb2d',
+    //     errorMessage   : 'AmLib is required!',
+    //     offlineFileName: 'AmLib.json',
+    //     onlineUrl      : '',
+    // ],
+]
+
+def vendordepVariants = [
+    commands2: [
+        taskSuffix        : 'Commands2',
+        fileName          : 'yagsl_commands2.json',
+        name              : 'YAGSL (Commands v2)',
+        uuid              : '1ccce5a4-acd2-4d18-bca3-4b8047188400',
+        javaArtifactSuffix: 'commands2',
+        requires          : [
+            [
+                uuid           : '111e20f7-815e-48f8-9dd6-e675ce75b266',
+                errorMessage   : 'Commands V2 is required! Install it from the WPILib vendor libraries.',
+                offlineFileName: 'CommandsV2.json',
+                onlineUrl      : '',
+            ],
+            [
+                uuid           : 'a1051e86-a979-4880-a28b-a0d5362d1d96',
+                errorMessage   : 'YAMS (Commands v2) is required!',
+                offlineFileName: 'yams_commands2.json',
+                onlineUrl      : 'https://yet-another-software-suite.github.io/YAMS/yams_commands2.json',
+            ],
+        ],
+        conflictsWith     : 'commands3',
+    ],
+    commands3: [
+        taskSuffix        : 'Commands3',
+        fileName          : 'yagsl_commands3.json',
+        name              : 'YAGSL (Commands v3)',
+        uuid              : 'e2b4dc30-23dc-4981-89ef-d2bb52b08928',
+        javaArtifactSuffix: 'commands3',
+        requires          : [
+            [
+                uuid           : '4decdc05-a056-46cf-9561-39449bbb0130',
+                errorMessage   : 'Commands v3 is required! Install it from the WPILib vendor libraries.',
+                offlineFileName: 'CommandsV3.json',
+                onlineUrl      : '',
+            ],
+            [
+                uuid           : '9eadd383-6bdc-4107-957a-b50cd3146f17',
+                errorMessage   : 'YAMS (Commands v3) is required!',
+                offlineFileName: 'yams_commands3.json',
+                onlineUrl      : 'https://yet-another-software-suite.github.io/YAMS/yams_commands3.json',
+            ],
+        ],
+        conflictsWith     : 'commands2',
+    ],
+]
+
+ext.createVendordepJsonTask = { variant ->
+    tasks.create("vendordepJson${variant.taskSuffix}") {
+        description = "Builds the ${variant.fileName} vendordep json file."
+        group = 'Build'
+        def outFile = file("$releasePath/${variant.fileName}")
+        inputs.file(baseVendorFile)
+        inputs.property('version', pubVersion)
+        outputs.file(outFile)
+
+        // Generate in doLast (not at configuration time) so `clean build` doesn't delete the file
+        // between configuration and the zip task that packages it.
+        doLast {
+            def baseText = file(baseVendorFile).text
+                    .replace('${version}', pubVersion)
+                    .replace('${groupId}', artifactGroupId)
+                    .replace('${artifactId}', baseArtifactId)
+                    .replace('${uuid}', variant.uuid)
+            def vendordep = new JsonSlurper().parseText(baseText)
+            vendordep.fileName = variant.fileName
+            vendordep.name = variant.name
+            vendordep.uuid = variant.uuid
+            vendordep.jsonUrl = "https://yet-another-software-suite.github.io/YAGSL/${variant.fileName}"
+            vendordep.javaDependencies << [
+                groupId   : artifactGroupId,
+                artifactId: "${baseArtifactId}-${variant.javaArtifactSuffix}",
+                version   : pubVersion,
+            ]
+            vendordep.requires = variant.requires + sharedRequires
+            def other = vendordepVariants[variant.conflictsWith]
+            vendordep.conflictsWith = [
+                [
+                    uuid           : other.uuid,
+                    errorMessage   : "${variant.name} cannot be used with ${other.name}. Remove one of them.",
+                    offlineFileName: other.fileName,
+                ]
+            ]
+
+            def pretty = JsonOutput.prettyPrint(JsonOutput.toJson(vendordep))
+            // Groovy's pretty-printer spreads empty arrays/objects across three lines; collapse them
+            // back down so empty fields render as a plain "[]".
+            pretty = pretty.replaceAll(/(?s)\[\s*\]/, '[]').replaceAll(/(?s)\{\s*\}/, '{}')
+            outFile.parentFile.mkdirs()
+            outFile.text = pretty
+        }
+    }
+}
+
+vendordepVariants.each { name, variant ->
+    def jsonTask = createVendordepJsonTask(variant)
+    def zipTask = tasks.create("${name}VendordepJsonZip", Zip) {
+        destinationDirectory = outputsFolder
+        archiveBaseName = "vendordepJson${variant.taskSuffix}"
+
+        from("$releasePath/${variant.fileName}") {
+            into '/'
+        }
+        dependsOn jsonTask
+    }
+    addTaskToCopyAllOutputs(zipTask)
+    build.dependsOn zipTask
+}
+
+// Fails the build unless every vendordep variant JSON was generated, parses, and has the expected
+// identity, javaDependencies (the base file's + its own variant), requires, and conflictsWith entries.
+task verifyVendordepJsons {
+    description = 'Verifies that a vendordep JSON was generated for every command framework variant.'
+    group = 'Verification'
+    dependsOn vendordepVariants.values().collect { "vendordepJson${it.taskSuffix}" }
+
+    doLast {
+        vendordepVariants.each { name, variant ->
+            def jsonFile = file("$releasePath/${variant.fileName}")
+            if (!jsonFile.exists()) {
+                throw new GradleException("Missing vendordep JSON: $jsonFile")
+            }
+            def json = new JsonSlurper().parse(jsonFile)
+            def problems = []
+            if (json.fileName != variant.fileName) problems << "fileName is ${json.fileName}"
+            if (json.uuid != variant.uuid) problems << "uuid is ${json.uuid}"
+            if (json.version != pubVersion) problems << "version is ${json.version}"
+            def artifacts = json.javaDependencies.collect { it.artifactId } as Set
+            // The base file's javaDependencies plus this variant's own artifact.
+            def expectedArtifacts = (new JsonSlurper().parse(file(baseVendorFile)).javaDependencies.collect {
+                it.artifactId.replace('${artifactId}', baseArtifactId)
+            } + [
+                "${baseArtifactId}-${variant.javaArtifactSuffix}".toString()
+            ]) as Set
+            if (artifacts != expectedArtifacts) problems << "javaDependencies are $artifacts, expected $expectedArtifacts"
+            def requiredUuids = json.requires.collect { it.uuid } as Set
+            def missingRequires = (variant.requires + sharedRequires).collect { it.uuid }.findAll { !requiredUuids.contains(it) }
+            if (missingRequires) problems << "requires is missing $missingRequires"
+            def other = vendordepVariants[variant.conflictsWith]
+            if (json.conflictsWith.collect { it.uuid } != [other.uuid]) problems << "conflictsWith does not point at ${other.fileName}"
+            if (problems) {
+                throw new GradleException("${variant.fileName} is invalid: ${problems.join('; ')}")
+            }
+            logger.lifecycle("Verified ${variant.fileName}")
+        }
+    }
+}
+
+build.dependsOn verifyVendordepJsons
+tasks.matching { it.name == 'publish' }.configureEach { dependsOn verifyVendordepJsons }

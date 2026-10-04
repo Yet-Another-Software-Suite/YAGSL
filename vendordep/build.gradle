@@ -1,145 +1,49 @@
 plugins {
     id 'cpp'
     id 'java'
-    id 'google-test'
-    id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin' version '2025.0'
-    id 'edu.wpi.first.NativeUtils' version '2026.0.1'
-    id "edu.wpi.first.GradleRIO" version "2026.2.1" // Version supplied here
-    id 'edu.wpi.first.GradleJni' version '1.1.0'
-    id 'edu.wpi.first.GradleVsCode' version '2.1.0'
-    id "com.diffplug.spotless" version "6.11.0"
+    id 'idea'
+    id 'org.wpilib.WPILibRepositoriesPlugin' version '2027.0.0'
+    id 'org.wpilib.NativeUtils' version '2027.14.3'
+    id 'org.wpilib.GradleJni' version '2027.0.0'
+    id 'org.wpilib.GradleVsCode' version '2027.0.0'
+    id 'org.wpilib.GradleRIO' version '2027.0.0-alpha-7'
+    id 'com.diffplug.spotless' version '8.0.0'
 }
 
-ext.wpilibVersion = "2026.2.1" // and again here, thanks gradle....
+// WPILib Version
+ext.wpilibVersion = "2027.0.0-alpha-7"
 ext.releasePath = "$buildDir/maven"
 ext.pubVersion = System.getenv("releaseVersion") ?: System.getenv("releaseName") ?: "test"
 
 repositories {
     mavenCentral()
 }
-//if (project.hasProperty('releaseMode')) {
-wpilibRepositories.addAllReleaseRepositories(project)
-//} else {
-//wpilibRepositories.addAllDevelopmentRepositories(project)
-//}
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+wpilibRepositories.use2027Repos()
+if (project.hasProperty('releaseMode')) {
+    wpilibRepositories.addAllReleaseRepositories(project)
+} else {
+    wpilibRepositories.addAllDevelopmentRepositories(project)
 }
 
-sourceSets {
-    main {
-        java {
-            srcDir "$rootDir/../yagsl/java/"
-        }
-    }
-    test {
-        java {
-            srcDir "src/test/java"
-        }
-        resources {
-            srcDir "src/test/resources"
-        }
-    }
-}
-
-var javaVersion = "17"
-
-// Apply C++ configuration
+// Apply native toolchain/platform configuration. YAGSL has no C++ library, but GradleRIO's vendordep
+// handling (wpi.java.vendor) still runs through NativeUtils.
 apply from: 'config.gradle'
 
-// Apply Java configuration
-dependencies {
-    //    implementation wpi.java.deps.wpilib()
-    implementation wpi.java.vendor.java()
-
-    implementation 'org.dyn4j:dyn4j:5.0.2'
-    implementation "edu.wpi.first.cscore:cscore-java:$wpilibVersion"
-    implementation "edu.wpi.first.cameraserver:cameraserver-java:$wpilibVersion"
-    implementation "edu.wpi.first.ntcore:ntcore-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpilibj:wpilibj-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpiutil:wpiutil-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpimath:wpimath-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpiunits:wpiunits-java:$wpilibVersion"
-    implementation "edu.wpi.first.hal:hal-java:$wpilibVersion"
-    implementation "org.ejml:ejml-simple:0.44.0"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:2.19.2"
-    implementation "com.fasterxml.jackson.core:jackson-core:2.19.2"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.19.2"
-    implementation 'edu.wpi.first.thirdparty.frc2025.opencv:opencv-java:4.10.0-2'
-
-    testImplementation platform("org.junit:junit-bom:5.11.4")
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testImplementation "org.junit.jupiter:junit-jupiter-params"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
-    testImplementation "com.networknt:json-schema-validator:1.5.6"
-    testRuntimeOnly "us.hebi.quickbuf:quickbuf-runtime:1.4"
-    testImplementation wpi.java.vendor.java()
-    testImplementation wpi.java.deps.wpilib()
-}
-
-// Set up exports properly
-nativeUtils {
-    exportsConfigs {
-        // Main library is just default empty. This will export everything
-        YAGSL {
-        }
-    }
-}
-
-javadoc {
-    title = "Yet Another Generic Swerve Library API"
-    destinationDir = file("$releasePath/javadocs")
-    options {
-        links "https://docs.oracle.com/en/java/javase/$javaVersion/docs/api/",
-                'https://github.wpilib.org/allwpilib/docs/release/java/',
-                'https://codedocs.revrobotics.com/java/',
-                'https://api.ctr-electronics.com/phoenix6/latest/java/',
-                'https://api.ctr-electronics.com/phoenix/latest/java/',
-                "https://www.kauailabs.com/public_files/navx-mxp/apidocs/java/"
-        tags 'todo:X"',
-                'apiNote:a:"API Note:"',
-                'implSpec:a:"Implementation Requirements:"',
-                'implNote:a:"Implementation Note:"'
-    }
-}
-
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "failed"
-        exceptionFormat = "full"
-    }
-}
-
-processTestResources {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-model {
-    components {
-    }
-}
+// Apply Java build configuration (sourceSets, dependencies, tests, javadoc)
+apply from: 'java.gradle'
 
 spotless {
     java {
         target fileTree('.') {
             include '**/*.java'
-            exclude '**/build/**', '**/build-*/**'
+            exclude '**/build/**', '**/build-*/**', '**/bin/**'
         }
         toggleOffOn()
-        googleJavaFormat()
+        googleJavaFormat().skipJavadocFormatting()
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()
-    }
-    cpp {
-        target fileTree('.') {
-            include '**/*.cpp', '**/*.h'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        eclipseCdt()
     }
     groovyGradle {
         target fileTree('.') {
@@ -147,7 +51,7 @@ spotless {
             exclude '**/build/**', '**/build-*/**'
         }
         greclipse()
-        indentWithSpaces(4)
+        leadingTabsToSpaces(4)
         trimTrailingWhitespace()
         endWithNewline()
     }
@@ -157,20 +61,14 @@ spotless {
             exclude '**/build/**', '**/build-*/**'
         }
         trimTrailingWhitespace()
-        indentWithSpaces(4)
+        leadingTabsToSpaces(4)
         endWithNewline()
     }
 }
 
-spotlessCpp.dependsOn javadoc
-spotlessJava.dependsOn javadoc
-spotlessGroovyGradle.dependsOn javadoc
-spotlessMisc.dependsOn javadoc
-
 build.dependsOn spotlessApply
-
 apply from: 'publish.gradle'
 
 wrapper {
-    gradleVersion = '8.14.3'
+    gradleVersion = '9.4.1'
 }

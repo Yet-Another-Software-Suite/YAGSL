@@ -1,53 +1,21 @@
 {
-  "fileName": "yagsl-${version}.json",
+  "fileName": "yagsl.json",
   "name": "YAGSL",
   "version": "${version}",
-  "frcYear": "2026",
-  "uuid": "1ccce5a4-acd2-4d18-bca3-4b8047188400",
+  "wpilibYear": "2027_alpha7",
+  "uuid": "${uuid}",
   "mavenUrls": [
-    "https://yet-another-software-suite.github.io/YAGSL/releases/",
-	"https://repo1.maven.org/maven2"
+    "https://yet-another-software-suite.github.io/YAGSL/releases/"
   ],
   "jsonUrl": "https://yet-another-software-suite.github.io/YAGSL/yagsl.json",
   "javaDependencies": [
     {
-      "groupId": "swervelib",
-      "artifactId": "YAGSL-java",
+      "groupId": "${groupId}",
+      "artifactId": "${artifactId}-core",
       "version": "${version}"
     }
   ],
-  "requires": [
-    {
-      "uuid": "3f48eb8c-50fe-43a6-9cb7-44c86353c4cb",
-      "errorMessage": "REVLib is required!",
-      "offlineFileName": "REVLib.json",
-      "onlineUrl": "https://software-metadata.revrobotics.com/REVLib-2026.json"
-    },
-    {
-      "uuid": "e995de00-2c64-4df5-8831-c1441420ff19",
-      "errorMessage": "Phoenix6 is required!",
-      "offlineFileName": "Phoenix6-replay-26.0.0-beta-1",
-      "onlineUrl": "https://maven.ctr-electronics.com/release/com/ctre/phoenix6/latest/Phoenix6-replay-frc2026-beta-latest.json"
-    },
-    {
-      "uuid": "ab676553-b602-441f-a38d-f1296eff6537",
-      "errorMessage": "Phoenix5 is required!",
-      "offlineFileName": "Phoenix5-replay-5.36.0-beta-1.json",
-      "onlineUrl": "https://maven.ctr-electronics.com/release/com/ctre/phoenix/Phoenix5-replay-frc2026-beta-latest.json"
-    },
-    {
-      "uuid": "cb311d09-36e9-4143-a032-55bb2b94443b",
-      "errorMessage": "Studica is required!",
-      "offlineFileName": "StudicaLib.json",
-      "onlineUrl": "https://dev.studica.com/maven/release/2026/json/StudicaLib-2026.0.1-beta.json"
-    },
-    {
-      "uuid": "60b2694b-9e6e-4026-81ee-6f167946f4b0",
-      "errorMessage": "ThriftyLib is required!",
-      "offlineFileName": "ThriftyLib.json",
-      "onlineUrl": "https://docs.home.thethriftybot.com/ThriftyLib.json"
-    }
-  ],
+  "cppDependencies": [],
   "jniDependencies": [],
-  "cppDependencies": []
+  "requires": []
 }

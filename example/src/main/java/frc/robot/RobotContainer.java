@@ -4,24 +4,24 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MilliOhms;
-import static edu.wpi.first.units.Units.Volts;
+import static org.wpilib.units.Units.Meters;
+import static org.wpilib.units.Units.MilliOhms;
+import static org.wpilib.units.Units.Volts;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.swervedrive.SwerveDriveSubsystem;
-import frc.robot.subsystems.vision.LimelightVisionSubsystem;
-import yams.mechanisms.swerve.utility.SwerveInputStream;
-import yams.motorcontrollers.simulation.BatterySim;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.Commands;
+import org.wpilib.command2.button.CommandXboxController;
+import org.wpilib.command2.button.Trigger;
+import org.wpilib.driverstation.XboxController;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.interpolation.InterpolatingDoubleTreeMap;
+import org.wpilib.tunable.Selectable;
+import org.wpilib.tunable.Tunables;
+import yams.commands2.swerve.SwerveInputStream;
+import yams.core.motorcontrollers.simulation.BatterySim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -34,13 +34,15 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   // The robot's subsystems and commands are defined here...
-  // Establish a Sendable Chooser that will be able to be sent to the SmartDashboard, allowing selection of desired auto
+  // Establish a Selectable that is published as a tunable, allowing selection of desired auto.
   // Built from PathPlanner's AutoBuilder once the swerve subsystem has configured it, so autos discovered in
   // deploy/pathplanner/autos (e.g. "New Auto") show up automatically.
-  private final SendableChooser<Command> autoChooser;
+  private final Selectable<Command> autoChooser;
 
   private final SwerveDriveSubsystem     swerve          = new SwerveDriveSubsystem();
-  private final LimelightVisionSubsystem limelightVision = new LimelightVisionSubsystem(swerve);
+  // YALL (Limelight) and PhotonLib have no 2027_alpha7 vendordep yet, so the vision subsystems are excluded from the
+  // build (see build.gradle). Restore these once they do.
+//  private final LimelightVisionSubsystem limelightVision = new LimelightVisionSubsystem(swerve);
 //  private final PhotonVisionSubsystem    photonVision    = new PhotonVisionSubsystem(swerve);
 
   // Toggled by a button press to switch the drive stream between angular velocity (right stick X rotates) and
@@ -49,7 +51,7 @@ public class RobotContainer
 
   private final SwerveInputStream driveStream = swerve.getAngularVelocityStream(driverXbox::getLeftY,
                                                                                  driverXbox::getLeftX,
-                                                                                 ()->driverXbox.getRawAxis(2))
+                                                                                 driverXbox::getLeftTrigger)
                                                        .withControllerHeadingAxis(driverXbox::getRightX,
                                                                                   driverXbox::getRightY)
                                                        .withHeadingControl(() -> headingControlEnabled)
@@ -60,7 +62,7 @@ public class RobotContainer
     configureBatterySim();
 
     autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    Tunables.publish("Auto Chooser", autoChooser);
 
     configureBindings();
   }
@@ -87,17 +89,17 @@ public class RobotContainer
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary predicate, or via the
-   * named factories in {@link edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller PS4}
-   * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight joysticks}.
+   * named factories in {@link org.wpilib.command2.button.CommandGenericHID}'s subclasses for
+   * {@link CommandXboxController Xbox}/{@link org.wpilib.command2.button.CommandPS4Controller PS4}
+   * controllers or {@link org.wpilib.command2.button.CommandJoystick Flight joysticks}.
    */
   private void configureBindings()
   {
     swerve.setDefaultCommand(swerve.drive(driveStream));
-    driverXbox.button(1).whileTrue(swerve.sysIdModule("frontleft"));
+    driverXbox.button(XboxController.Button.A).whileTrue(swerve.sysIdModule("frontleft"));
     driverXbox.x().whileTrue(swerve.driveToPointPathPlanner(new Pose2d(Meters.of(3), Meters.of(3), Rotation2d.fromDegrees(180))));
     driverXbox.y().whileTrue(swerve.driveToPointYAMS(new Pose2d(Meters.of(3), Meters.of(3), Rotation2d.fromDegrees(180))));
-    driverXbox.start().and(driverXbox.back()).onTrue(swerve.zeroGyro());
+    driverXbox.menu().and(driverXbox.view()).onTrue(swerve.zeroGyro());
     driverXbox.a().toggleOnTrue(Commands.startEnd(() -> headingControlEnabled = true, () -> headingControlEnabled = false));
   }
 

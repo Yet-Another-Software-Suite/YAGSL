@@ -4,11 +4,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.CommandScheduler;
+import org.wpilib.driverstation.internal.DriverStationBackend;
+import org.wpilib.framework.TimedRobot;
+import org.wpilib.system.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -21,13 +21,28 @@ public class Robot extends TimedRobot
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private final RobotContainer m_robotContainer;
 
-  private Timer disabledTimer;
+  private final Timer disabledTimer;
 
+  /**
+   * This function is run when the robot is first started up and should be used for any initialization code.
+   */
   public Robot()
   {
     instance = this;
+    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // autonomous chooser on the dashboard.
+    m_robotContainer = new RobotContainer();
+
+    // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
+    // immediately when disabled, but then also let it be pushed more
+    disabledTimer = new Timer();
+
+    if (isSimulation())
+    {
+      DriverStationBackend.silenceJoystickConnectionAlert(true);
+    }
   }
 
   public static Robot getInstance()
@@ -36,28 +51,8 @@ public class Robot extends TimedRobot
   }
 
   /**
-   * This function is run when the robot is first started up and should be used for any initialization code.
-   */
-  @Override
-  public void robotInit()
-  {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-
-    // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
-    // immediately when disabled, but then also let it be pushed more 
-    disabledTimer = new Timer();
-
-    if (isSimulation())
-    {
-      DriverStation.silenceJoystickConnectionWarning(true);
-    }
-  }
-
-  /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics that you want ran
-   * during disabled, autonomous, teleoperated and test.
+   * during disabled, autonomous, teleoperated and utility.
    *
    * <p>This runs after the mode specific periodic functions, but before LiveWindow and
    * SmartDashboard integrated updating.
@@ -143,17 +138,17 @@ public class Robot extends TimedRobot
   }
 
   @Override
-  public void testInit()
+  public void utilityInit()
   {
-    // Cancels all running commands at the start of test mode.
+    // Cancels all running commands at the start of utility (formerly test) mode.
     CommandScheduler.getInstance().cancelAll();
   }
 
   /**
-   * This function is called periodically during test mode.
+   * This function is called periodically during utility mode.
    */
   @Override
-  public void testPeriodic()
+  public void utilityPeriodic()
   {
   }
 
