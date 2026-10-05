@@ -42,19 +42,7 @@ public class HeadingTeleop implements OpMode
         .withScaleTranslation(DriverButtons.NORMAL_SPEED_SCALE)
         .withScaleRotation(DriverButtons.NORMAL_SPEED_SCALE)
         .withAllianceRelativeControl(true)
-        .withHeading(() -> {
-          double headingX = -hid.getRightX();
-          double headingY = -hid.getRightY();
-          // Hold the current heading unless the stick is pushed far enough to pick a new one.
-          double heading = robot.swerve.getGyroRotation3d().toRotation2d().getRadians();
-          if (Math.hypot(headingX, headingY) > HEADING_STICK_DEADBAND)
-          {
-            // The stick points at the heading to face. Translation is alliance relative, so flip the heading on the
-            // red alliance to match.
-            heading = Math.atan2(headingX, headingY) + (isRedAlliance() ? Math.PI : 0);
-          }
-          return Radians.of(heading);
-        })
+        .withControllerHeadingAxis(() -> -hid.getRightX(), () -> -hid.getRightY())
         .withHeadingControl(true);
 
     Command driveCommand = robot.swerve.run(coroutine -> {
