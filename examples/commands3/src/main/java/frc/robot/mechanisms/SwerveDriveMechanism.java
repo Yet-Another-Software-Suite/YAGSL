@@ -10,7 +10,9 @@ import org.wpilib.command3.Mechanism;
 import org.wpilib.math.controller.PIDController;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.math.geometry.Transform2d;
+import org.wpilib.math.kinematics.ChassisVelocities;
 import org.wpilib.smartdashboard.Field2d;
 import org.wpilib.system.Filesystem;
 import org.wpilib.units.measure.Angle;
@@ -68,6 +70,16 @@ public class SwerveDriveMechanism implements Mechanism
   public SwerveDrive getDrive()
   {
     return drive;
+  }
+
+  /**
+   * Drive the robot with the given field-relative {@link ChassisVelocities}.
+   *
+   * @param velocity Field-relative {@link ChassisVelocities} to apply.
+   */
+  public void drive(ChassisVelocities velocity)
+  {
+    drive.setFieldRelativeChassisSpeeds(velocity);
   }
 
   /**
@@ -160,6 +172,26 @@ public class SwerveDriveMechanism implements Mechanism
   public Field2d getField2d()
   {
     return drive.getField2d();
+  }
+
+  /**
+   * Get the current heading of the robot, as reported by the gyro.
+   *
+   * @return {@link Rotation2d} of the robot's heading.
+   */
+  public Rotation2d getHeading()
+  {
+    return drive.getGyroRotation3d().toRotation2d();
+  }
+
+  /**
+   * Get the gyro's 3D orientation.
+   *
+   * @return {@link Rotation3d} of the gyro.
+   */
+  public Rotation3d getGyroRotation3d()
+  {
+    return drive.getGyroRotation3d();
   }
 
   /**

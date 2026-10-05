@@ -29,19 +29,18 @@ public class AngularVelocityTeleop implements OpMode
    */
   public AngularVelocityTeleop(Robot robot)
   {
-    driveStream = new SwerveInputStream(robot.swerve.getDrive())
+    XboxController hid = driverXbox.getController();
+    driveStream = new SwerveInputStream(robot.swerve.getDrive(), () -> -hid.getLeftY(), () -> -hid.getLeftX())
+        .withControllerRotationAxis(() -> -hid.getRightX())
         .withDeadband(0.05)
         .withScaleTranslation(DriverButtons.NORMAL_SPEED_SCALE)
         .withScaleRotation(DriverButtons.NORMAL_SPEED_SCALE)
         .withAllianceRelativeControl(true);
 
-    XboxController hid = driverXbox.getController();
     Command driveCommand = robot.swerve.run(coroutine -> {
       while (true)
       {
-        driveStream.withTranslation(-hid.getLeftY(), -hid.getLeftX())
-                   .withRotation(-hid.getRightX());
-        robot.swerve.getDrive().setFieldRelativeChassisSpeeds(driveStream.get());
+        robot.swerve.drive(driveStream.get());
         coroutine.yield();
       }
     }).named("Drive Angular Velocity");

@@ -19,8 +19,10 @@ sourceSets {
             // the local sources instead of a published vendordep. Released examples have this block
             // stripped and use yagsl_commands3.json instead.
             srcDirs '../../yagsl/java'
+            srcDirs '../../../YAMS/yams/java'
             // Commands v3 examples only build YAGSL core and the commands3 layer.
             exclude 'swervelib/commands2/**'
+            exclude 'yams/commands2/**'
             // StudicaLib, ThriftyLib, and AmLib have no 2027_alpha7 vendordep yet.
             exclude 'swervelib/core/parser/deserializer/reflections/StudicaLibDevices.java'
             exclude 'swervelib/core/parser/deserializer/reflections/ThriftyBotDevices.java'

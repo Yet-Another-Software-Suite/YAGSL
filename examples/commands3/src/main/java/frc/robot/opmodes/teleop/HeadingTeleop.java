@@ -36,30 +36,31 @@ public class HeadingTeleop implements OpMode
    */
   public HeadingTeleop(Robot robot)
   {
-    driveStream = new SwerveInputStream(robot.swerve.getDrive())
+    XboxController hid = driverXbox.getController();
+    driveStream = new SwerveInputStream(robot.swerve.getDrive(), () -> -hid.getLeftY(), () -> -hid.getLeftX())
         .withDeadband(0.05)
         .withScaleTranslation(DriverButtons.NORMAL_SPEED_SCALE)
         .withScaleRotation(DriverButtons.NORMAL_SPEED_SCALE)
         .withAllianceRelativeControl(true)
+        .withHeading(() -> {
+          double headingX = -hid.getRightX();
+          double headingY = -hid.getRightY();
+          // Hold the current heading unless the stick is pushed far enough to pick a new one.
+          double heading = robot.swerve.getGyroRotation3d().toRotation2d().getRadians();
+          if (Math.hypot(headingX, headingY) > HEADING_STICK_DEADBAND)
+          {
+            // The stick points at the heading to face. Translation is alliance relative, so flip the heading on the
+            // red alliance to match.
+            heading = Math.atan2(headingX, headingY) + (isRedAlliance() ? Math.PI : 0);
+          }
+          return Radians.of(heading);
+        })
         .withHeadingControl(true);
 
-    XboxController hid = driverXbox.getController();
     Command driveCommand = robot.swerve.run(coroutine -> {
       while (true)
       {
-        double headingX = -hid.getRightX();
-        double headingY = -hid.getRightY();
-        // Hold the current heading unless the stick is pushed far enough to pick a new one.
-        double heading = new Rotation2d(robot.swerve.getDrive().getGyroAngle()).getRadians();
-        if (Math.hypot(headingX, headingY) > HEADING_STICK_DEADBAND)
-        {
-          // The stick points at the heading to face. Translation is alliance relative, so flip the heading on the
-          // red alliance to match.
-          heading = Math.atan2(headingX, headingY) + (isRedAlliance() ? Math.PI : 0);
-        }
-        driveStream.withTranslation(-hid.getLeftY(), -hid.getLeftX())
-                   .withHeading(Radians.of(heading));
-        robot.swerve.getDrive().setFieldRelativeChassisSpeeds(driveStream.get());
+        robot.swerve.drive(driveStream.get());
         coroutine.yield();
       }
     }).named("Drive Heading");

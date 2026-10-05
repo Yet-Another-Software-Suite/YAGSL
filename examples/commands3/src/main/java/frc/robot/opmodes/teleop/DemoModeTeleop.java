@@ -31,19 +31,18 @@ public class DemoModeTeleop implements OpMode
    */
   public DemoModeTeleop(Robot robot)
   {
-    driveStream = new SwerveInputStream(robot.swerve.getDrive())
+    XboxController hid = driverXbox.getController();
+    driveStream = new SwerveInputStream(robot.swerve.getDrive(), () -> -hid.getLeftY(), () -> -hid.getLeftX())
+        .withControllerRotationAxis(() -> -hid.getRightX())
         .withDeadband(0.05)
         .withRobotRelative(true)
         .withScaleTranslation(DEMO_SPEED_SCALE)
         .withScaleRotation(DEMO_SPEED_SCALE);
 
-    XboxController hid = driverXbox.getController();
     Command driveCommand = robot.swerve.run(coroutine -> {
       while (true)
       {
-        driveStream.withTranslation(-hid.getLeftY(), -hid.getLeftX())
-                   .withRotation(-hid.getRightX());
-        robot.swerve.getDrive().setFieldRelativeChassisSpeeds(driveStream.get());
+        robot.swerve.drive(driveStream.get());
         coroutine.yield();
       }
     }).named("Drive Demo Mode");
