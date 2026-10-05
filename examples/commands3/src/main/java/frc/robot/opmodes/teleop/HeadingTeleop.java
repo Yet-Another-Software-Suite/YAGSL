@@ -41,9 +41,9 @@ public class HeadingTeleop implements OpMode
         .withDeadband(0.05)
         .withScaleTranslation(DriverButtons.NORMAL_SPEED_SCALE)
         .withScaleRotation(DriverButtons.NORMAL_SPEED_SCALE)
-        .withAllianceRelativeControl(true)
+        .setAllianceRelativeControl(true)
         .withControllerHeadingAxis(() -> -hid.getRightX(), () -> -hid.getRightY())
-        .withHeadingControl(true);
+        .setHeadingControl(true);
 
     Command driveCommand = robot.swerve.run(coroutine -> {
       while (true)

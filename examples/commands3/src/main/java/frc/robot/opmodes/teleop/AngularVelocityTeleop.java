@@ -35,7 +35,7 @@ public class AngularVelocityTeleop implements OpMode
         .withDeadband(0.05)
         .withScaleTranslation(DriverButtons.NORMAL_SPEED_SCALE)
         .withScaleRotation(DriverButtons.NORMAL_SPEED_SCALE)
-        .withAllianceRelativeControl(true);
+        .setAllianceRelativeControl(true);
 
     Command driveCommand = robot.swerve.run(coroutine -> {
       while (true)

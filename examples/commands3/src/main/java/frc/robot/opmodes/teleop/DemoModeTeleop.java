@@ -35,7 +35,7 @@ public class DemoModeTeleop implements OpMode
     driveStream = new SwerveInputStream(robot.swerve.getDrive(), () -> -hid.getLeftY(), () -> -hid.getLeftX())
         .withControllerRotationAxis(() -> -hid.getRightX())
         .withDeadband(0.05)
-        .withRobotRelative(true)
+        .setRobotRelative(true)
         .withScaleTranslation(DEMO_SPEED_SCALE)
         .withScaleRotation(DEMO_SPEED_SCALE);
 
