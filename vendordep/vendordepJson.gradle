@@ -10,48 +10,13 @@ import groovy.json.JsonSlurper
 // each vendordep's identity stays fixed regardless of what the base yagsl.json's own fields say.
 // commands2 keeps the original YAGSL uuid so existing installs see it as the same vendordep.
 //
-// Each variant requires the matching YAMS vendordep and the WPILib command framework vendordep it
-// is built against, and conflicts with the other variant, since a project should only ever install
-// one of them. The WPILib command vendordeps ship with the WPILib installer and have no online
-// jsonUrl, so their onlineUrl is left empty.
+// Each variant requires only the matching YAMS vendordep, and conflicts with the other variant,
+// since a project should only ever install one of them. Every other vendor library (REVLib,
+// Phoenix6, ReduxLib, ThriftyLib, StudicaLib, AmLib) is optional: YAGSL only loads a vendor's
+// devices (the swervelib.core.parser.deserializer.reflections classes) through reflection when a
+// JSON configuration uses them, so their vendordeps are only in vendordeps/ to build and test
+// against locally.
 def baseVendorFile = "yagsl.json"
-
-// Vendor libraries every YAGSL variant requires, regardless of command framework.
-def sharedRequires = [
-    [
-        uuid           : '3f48eb8c-50fe-43a6-9cb7-44c86353c4cb',
-        errorMessage   : 'REVLib is required!',
-        offlineFileName: 'REVLib.json',
-        onlineUrl      : 'https://software-metadata.revrobotics.com/REVLib-2027.json',
-    ],
-    [
-        uuid           : 'e995de00-2c64-4df5-8831-c1441420ff19',
-        errorMessage   : 'Phoenix6 is required!',
-        offlineFileName: 'Phoenix6-26.70.0-alpha-2.json',
-        onlineUrl      : 'https://maven.ctr-electronics.com/release/com/ctre/phoenix6/latest/Phoenix6-frc2027-latest.json',
-    ],
-    [
-        uuid           : '151ecca8-670b-4026-8160-cdd2679ef2bd',
-        errorMessage   : 'ReduxLib is required!',
-        offlineFileName: 'ReduxLib-2027.0.0-alpha-7p1.json',
-        onlineUrl      : 'https://frcsdk.reduxrobotics.com/ReduxLib_2027.json',
-    ],
-    // ThriftyLib is optional: YAGSL only loads ThriftyBotDevices through reflection when a JSON config asks for a
-    // Nova, so it is only in vendordeps/ to build and test against locally.
-    // TODO: Re-enable once StudicaLib and AmLib publish 2027_alpha7 vendordeps.
-    // [
-    //     uuid           : '963ef341-8abd-4981-a969-c8ae3f592e82',
-    //     errorMessage   : 'StudicaLib is required!',
-    //     offlineFileName: 'StudicaLib.json',
-    //     onlineUrl      : '',
-    // ],
-    // [
-    //     uuid           : 'f463c495-f27c-4102-9dde-af4e65a3eb2d',
-    //     errorMessage   : 'AmLib is required!',
-    //     offlineFileName: 'AmLib.json',
-    //     onlineUrl      : '',
-    // ],
-]
 
 def vendordepVariants = [
     commands2: [
@@ -115,7 +80,7 @@ ext.createVendordepJsonTask = { variant ->
                 artifactId: "${baseArtifactId}-${variant.javaArtifactSuffix}",
                 version   : pubVersion,
             ]
-            vendordep.requires = variant.requires + sharedRequires
+            vendordep.requires = variant.requires
             def other = vendordepVariants[variant.conflictsWith]
             vendordep.conflictsWith = [
                 [
@@ -176,9 +141,10 @@ task verifyVendordepJsons {
                 "${baseArtifactId}-${variant.javaArtifactSuffix}".toString()
             ]) as Set
             if (artifacts != expectedArtifacts) problems << "javaDependencies are $artifacts, expected $expectedArtifacts"
-            def requiredUuids = json.requires.collect { it.uuid } as Set
-            def missingRequires = (variant.requires + sharedRequires).collect { it.uuid }.findAll { !requiredUuids.contains(it) }
-            if (missingRequires) problems << "requires is missing $missingRequires"
+            // Only the matching YAMS vendordep is required; every other vendor library is optional.
+            def requiredFiles = json.requires.collect { it.offlineFileName }
+            def expectedFiles = variant.requires.collect { it.offlineFileName }
+            if (requiredFiles != expectedFiles) problems << "requires is $requiredFiles, expected only $expectedFiles"
             def other = vendordepVariants[variant.conflictsWith]
             if (json.conflictsWith.collect { it.uuid } != [other.uuid]) problems << "conflictsWith does not point at ${other.fileName}"
             if (problems) {
