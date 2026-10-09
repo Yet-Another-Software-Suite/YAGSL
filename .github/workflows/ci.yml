@@ -1,5 +1,16 @@
 name: YAGSL CI
-on: [push, pull_request]
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - "examples/**"
+      - "yagsl/**"
+      - "vendordep/**"
+  pull_request:
+    paths:
+      - "examples/**"
+      - "yagsl/**"
+      - "vendordep/**"
 jobs:
   build:
     runs-on: ubuntu-latest
