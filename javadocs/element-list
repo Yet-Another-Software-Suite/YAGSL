@@ -1,7 +1,8 @@
-swervelib.parser
-swervelib.parser.deserializer
-swervelib.parser.deserializer.reflections
-swervelib.parser.json
-swervelib.parser.json.modules
-swervelib.telemetry
-yams.motorcontrollers.local
+swervelib.commands2
+swervelib.commands3
+swervelib.core.parser
+swervelib.core.parser.deserializer
+swervelib.core.parser.deserializer.reflections
+swervelib.core.parser.json
+swervelib.core.parser.json.modules
+swervelib.core.telemetry

@@ -1,0 +1,64 @@
+{
+    "fileName": "yagsl_commands2.json",
+    "name": "YAGSL (Commands v2)",
+    "version": "2026.10.08",
+    "wpilibYear": "2027_alpha7",
+    "uuid": "1ccce5a4-acd2-4d18-bca3-4b8047188400",
+    "mavenUrls": [
+        "https://yet-another-software-suite.github.io/YAGSL/releases/"
+    ],
+    "jsonUrl": "https://yet-another-software-suite.github.io/YAGSL/yagsl_commands2.json",
+    "javaDependencies": [
+        {
+            "groupId": "swervelib",
+            "artifactId": "YAGSL-core",
+            "version": "2026.10.08"
+        },
+        {
+            "groupId": "swervelib",
+            "artifactId": "YAGSL-commands2",
+            "version": "2026.10.08"
+        }
+    ],
+    "cppDependencies": [],
+    "jniDependencies": [],
+    "requires": [
+        {
+            "uuid": "111e20f7-815e-48f8-9dd6-e675ce75b266",
+            "errorMessage": "Commands V2 is required! Install it from the WPILib vendor libraries.",
+            "offlineFileName": "CommandsV2.json",
+            "onlineUrl": ""
+        },
+        {
+            "uuid": "a1051e86-a979-4880-a28b-a0d5362d1d96",
+            "errorMessage": "YAMS (Commands v2) is required!",
+            "offlineFileName": "yams_commands2.json",
+            "onlineUrl": "https://yet-another-software-suite.github.io/YAMS/yams_commands2.json"
+        },
+        {
+            "uuid": "3f48eb8c-50fe-43a6-9cb7-44c86353c4cb",
+            "errorMessage": "REVLib is required!",
+            "offlineFileName": "REVLib.json",
+            "onlineUrl": "https://software-metadata.revrobotics.com/REVLib-2027.json"
+        },
+        {
+            "uuid": "e995de00-2c64-4df5-8831-c1441420ff19",
+            "errorMessage": "Phoenix6 is required!",
+            "offlineFileName": "Phoenix6-26.70.0-alpha-2.json",
+            "onlineUrl": "https://maven.ctr-electronics.com/release/com/ctre/phoenix6/latest/Phoenix6-frc2027-latest.json"
+        },
+        {
+            "uuid": "151ecca8-670b-4026-8160-cdd2679ef2bd",
+            "errorMessage": "ReduxLib is required!",
+            "offlineFileName": "ReduxLib-2027.0.0-alpha-7p1.json",
+            "onlineUrl": "https://frcsdk.reduxrobotics.com/ReduxLib_2027.json"
+        }
+    ],
+    "conflictsWith": [
+        {
+            "uuid": "e2b4dc30-23dc-4981-89ef-d2bb52b08928",
+            "errorMessage": "YAGSL (Commands v2) cannot be used with YAGSL (Commands v3). Remove one of them.",
+            "offlineFileName": "yagsl_commands3.json"
+        }
+    ]
+}
