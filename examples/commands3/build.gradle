@@ -23,11 +23,9 @@ sourceSets {
             // Commands v3 examples only build YAGSL core and the commands3 layer.
             exclude 'swervelib/commands2/**'
             exclude 'yams/commands2/**'
-            // StudicaLib, ThriftyLib, and AmLib have no 2027_alpha7 vendordep yet.
+            // StudicaLib and AmLib have no 2027_alpha7 vendordep yet.
             exclude 'swervelib/core/parser/deserializer/reflections/StudicaLibDevices.java'
-            exclude 'swervelib/core/parser/deserializer/reflections/ThriftyBotDevices.java'
             exclude 'swervelib/core/parser/deserializer/reflections/AndymarkDevices.java'
-            exclude 'yams/motorcontrollers/local/NovaWrapper.java'
             // END_YAGSL_TESTING
         }
     }

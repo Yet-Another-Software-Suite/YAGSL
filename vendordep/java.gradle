@@ -5,14 +5,11 @@ sourceSets {
     main {
         java {
             srcDir "$rootDir/../yagsl/java/"
-            // StudicaLib, ThriftyLib, and AmLib have not published 2027_alpha7 vendordeps yet, so
-            // their device reflection classes (and the ThriftyLib-backed NovaWrapper) are left out
-            // of the build until they do. ReflectionsManager throws a "library not found" error at
-            // runtime if a JSON config asks for one of these devices.
+            // StudicaLib and AmLib have not published 2027_alpha7 vendordeps yet, so their device
+            // reflection classes are left out of the build until they do. ReflectionsManager throws a
+            // "library not found" error at runtime if a JSON config asks for one of these devices.
             exclude "swervelib/core/parser/deserializer/reflections/StudicaLibDevices.java"
-            exclude "swervelib/core/parser/deserializer/reflections/ThriftyBotDevices.java"
             exclude "swervelib/core/parser/deserializer/reflections/AndymarkDevices.java"
-            exclude "yams/motorcontrollers/local/NovaWrapper.java"
         }
     }
     test {
@@ -31,7 +28,7 @@ dependencies {
     // Includes avaje-jsonb-generator, which generates the JSON adapters for YAGSL's @Json classes.
     annotationProcessor wpi.java.deps.wpilibAnnotations()
     implementation wpi.java.deps.wpilib()
-    // YAMS (yams_commands2.json + yams_commands3.json), Phoenix6, REVLib, ReduxLib and the WPILib
+    // YAMS (yams_commands2.json + yams_commands3.json), Phoenix6, REVLib, ReduxLib, ThriftyLib and the WPILib
     // command frameworks all come in through the vendordeps/ folder.
     implementation wpi.java.vendor.java()
 

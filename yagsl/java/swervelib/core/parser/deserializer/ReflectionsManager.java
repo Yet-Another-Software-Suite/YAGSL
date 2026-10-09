@@ -36,7 +36,7 @@ public class ReflectionsManager
     /**
      * ThriftyLib
      */
-    THRIFTYBOT("com.thethriftybot.ThriftyNova"),
+    THRIFTYBOT("com.thrifty.nova.Nova"),
     /**
      * Studica
      */
