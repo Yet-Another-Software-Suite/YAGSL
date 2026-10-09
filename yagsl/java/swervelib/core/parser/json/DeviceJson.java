@@ -40,7 +40,8 @@ public class DeviceJson
    */
   public int    channel = 0;
   /**
-   * The CAN bus name which the device resides on if using CAN.
+   * The CAN bus the device is on if using CAN: empty for can_s0, or the bus number, such as {@code "1"} for can_s1.
+   * CTRE devices also take a CANivore's name. See {@link swervelib.core.parser.CANBuses}.
    */
   public String canbus  = "";
 
