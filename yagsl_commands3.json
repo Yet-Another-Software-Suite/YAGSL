@@ -7,7 +7,7 @@
     "mavenUrls": [
         "https://yet-another-software-suite.github.io/YAGSL/releases/"
     ],
-    "jsonUrl": "https://yet-another-software-suite.github.io/YAGSL/yagsl_commands3.json",
+    "jsonUrl": "https://cdn.yassrobotics.com/yagsl_commands3.json",
     "javaDependencies": [
         {
             "groupId": "swervelib",
@@ -27,7 +27,7 @@
             "uuid": "9eadd383-6bdc-4107-957a-b50cd3146f17",
             "errorMessage": "YAMS (Commands v3) is required!",
             "offlineFileName": "yams_commands3.json",
-            "onlineUrl": "https://yet-another-software-suite.github.io/YAMS/yams_commands3.json"
+            "onlineUrl": "https://cdn.yassrobotics.com/yams_commands3.json"
         },
         {
             "uuid": "3f48eb8c-50fe-43a6-9cb7-44c86353c4cb",
