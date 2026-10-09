@@ -28,24 +28,6 @@
             "errorMessage": "YAMS (Commands v3) is required!",
             "offlineFileName": "yams_commands3.json",
             "onlineUrl": "https://cdn.yassrobotics.com/yams_commands3.json"
-        },
-        {
-            "uuid": "3f48eb8c-50fe-43a6-9cb7-44c86353c4cb",
-            "errorMessage": "REVLib is required!",
-            "offlineFileName": "REVLib.json",
-            "onlineUrl": "https://software-metadata.revrobotics.com/REVLib-2027.json"
-        },
-        {
-            "uuid": "e995de00-2c64-4df5-8831-c1441420ff19",
-            "errorMessage": "Phoenix6 is required!",
-            "offlineFileName": "Phoenix6-26.70.0-alpha-2.json",
-            "onlineUrl": "https://maven.ctr-electronics.com/release/com/ctre/phoenix6/latest/Phoenix6-frc2027-latest.json"
-        },
-        {
-            "uuid": "151ecca8-670b-4026-8160-cdd2679ef2bd",
-            "errorMessage": "ReduxLib is required!",
-            "offlineFileName": "ReduxLib-2027.0.0-alpha-7p1.json",
-            "onlineUrl": "https://frcsdk.reduxrobotics.com/ReduxLib_2027.json"
         }
     ],
     "conflictsWith": [
