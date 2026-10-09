@@ -69,7 +69,7 @@ def vendordepVariants = [
                 uuid           : 'a1051e86-a979-4880-a28b-a0d5362d1d96',
                 errorMessage   : 'YAMS (Commands v2) is required!',
                 offlineFileName: 'yams_commands2.json',
-                onlineUrl      : 'https://yet-another-software-suite.github.io/YAMS/yams_commands2.json',
+                onlineUrl      : 'https://cdn.yassrobotics.com/yams_commands2.json',
             ],
         ],
         conflictsWith     : 'commands3',
@@ -85,7 +85,7 @@ def vendordepVariants = [
                 uuid           : '9eadd383-6bdc-4107-957a-b50cd3146f17',
                 errorMessage   : 'YAMS (Commands v3) is required!',
                 offlineFileName: 'yams_commands3.json',
-                onlineUrl      : 'https://yet-another-software-suite.github.io/YAMS/yams_commands3.json',
+                onlineUrl      : 'https://cdn.yassrobotics.com/yams_commands3.json',
             ],
         ],
         conflictsWith     : 'commands2',
@@ -113,7 +113,7 @@ ext.createVendordepJsonTask = { variant ->
             vendordep.fileName = variant.fileName
             vendordep.name = variant.name
             vendordep.uuid = variant.uuid
-            vendordep.jsonUrl = "https://yet-another-software-suite.github.io/YAGSL/${variant.fileName}"
+            vendordep.jsonUrl = "https://cdn.yassrobotics.com/${variant.fileName}"
             vendordep.javaDependencies << [
                 groupId   : artifactGroupId,
                 artifactId: "${baseArtifactId}-${variant.javaArtifactSuffix}",
