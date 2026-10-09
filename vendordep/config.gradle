@@ -1,18 +1,28 @@
 import org.gradle.internal.os.OperatingSystem
 
 nativeUtils.addWpiNativeUtils()
-nativeUtils.withCrossRoboRIO()
+nativeUtils.withCrossSystemCore()
+nativeUtils.withCrossLinuxArm64()
 
 nativeUtils {
     wpi {
         configureDependencies {
             wpiVersion = wpilibVersion
-            opencvYear = "frc2025"
-            niLibVersion = "2025.0.0"
-            opencvVersion = "4.10.0-2"
+            mrcLibVersion = '2027.1.0-alpha-1-105-g5bc2129'
+            opencvVersion = "2027-4.13.0-3"
         }
     }
 }
+
+// WORKAROUND: GradleRIO 2027.0.0-alpha-6 calls nativeUtils.wpi.configureDependencies()
+// eagerly at plugin-apply time with an action that does not set mrcLibVersion (fixed in
+// post-alpha-6 source but no consumable artifact yet). configureDependencies is fire-once,
+// so a user configureDependencies { } block here is a no-op. Bypass by setting the Property
+// directly on the already-initialized versions. Remove when a GradleRIO release with
+// mrcLibVersion in WPIVersionsExtension is published to the Gradle plugin portal.
+// https://github.com/wpilibsuite/vendor-template/issues/72
+nativeUtils.wpi.versions.mrcLibVersion.set('2027.1.0-alpha-1-105-g5bc2129')
+
 
 nativeUtils.wpi.addWarnings()
 nativeUtils.wpi.addWarningsAsErrors()
@@ -20,22 +30,37 @@ nativeUtils.wpi.addWarningsAsErrors()
 nativeUtils.setSinglePrintPerPlatform()
 
 model {
-    // Uncomment this, and remove lines below it to enable builds for just roborio
     components {
         all {
-            targetPlatform nativeUtils.wpi.platforms.roborio
+            if (project.hasProperty('onlylinuxathena')) {
+                it.targetPlatform nativeUtils.wpi.platforms.roborio
+            } else if (project.hasProperty('onlylinuxarm32')) {
+                it.targetPlatform nativeUtils.wpi.platforms.linuxarm32
+            } else if (project.hasProperty('onlylinuxarm64')) {
+                it.targetPlatform nativeUtils.wpi.platforms.linuxarm64
+            } else if (project.hasProperty('onlywindowsarm64')) {
+                it.targetPlatform nativeUtils.wpi.platforms.windowsarm64
+            } else if (project.hasProperty('onlylinuxsystemcore')) {
+                it.targetPlatform nativeUtils.wpi.platforms.systemcore
+            } else if (project.hasProperty('onlywindows64')) {
+                it.targetPlatform nativeUtils.wpi.platforms.windowsx64
+            } else if (project.hasProperty('onlyosxuniversal')) {
+                it.targetPlatform nativeUtils.wpi.platforms.osxuniversal
+            } else if (project.hasProperty('onlylinuxx64')) {
+                it.targetPlatform nativeUtils.wpi.platforms.linuxx64
+            } else {
+                nativeUtils.useAllPlatforms(it)
+            }
         }
     }
-    //    components {
-    //        all {
-    //            nativeUtils.useAllPlatforms(it)
-    //        }
-    //    }
-    //    binaries {
-    //        withType(NativeBinarySpec).all {
-    //            nativeUtils.usePlatformArguments(it)
-    //        }
-    //    }
+    binaries {
+        withType(StaticLibraryBinarySpec).all {
+            buildable = false
+        }
+        withType(NativeBinarySpec).all {
+            nativeUtils.usePlatformArguments(it)
+        }
+    }
 }
 
 ext.appendDebugPathToBinaries = { binaries->
@@ -141,7 +166,6 @@ ext.createAllCombined = { list, name, base, type, project ->
     }
 
     return task
-
 }
 
 ext.includeStandardZipFormat = { task, value ->
@@ -149,15 +173,11 @@ ext.includeStandardZipFormat = { task, value ->
         if (binary.buildable) {
             if (binary instanceof SharedLibraryBinarySpec) {
                 task.dependsOn binary.tasks.link
-                task.from(new File(binary.sharedLibraryFile.absolutePath + ".debug")) {
-                    into nativeUtils.getPlatformPath(binary) + '/shared'
-                }
-                def sharedPath = binary.sharedLibraryFile.absolutePath
-                sharedPath = sharedPath.substring(0, sharedPath.length() - 4)
-
-                task.from(new File(sharedPath + '.pdb')) {
-                    into nativeUtils.getPlatformPath(binary) + '/shared'
-                }
+                // Deliberately not publishing the standalone debug-info file (.pdb on Windows,
+                // .so.debug on Linux) for debug binaries: it's mostly Eigen/wpimath template
+                // debug info (hundreds of MB per platform) and consumers only need it to step
+                // into YAMS's own source, not their robot code. The debug .dll/.so itself is
+                // still published so debug-mode dependency resolution/linking still works.
                 task.from(binary.sharedLibraryFile) {
                     into nativeUtils.getPlatformPath(binary) + '/shared'
                 }

@@ -2,14 +2,10 @@ apply plugin: 'maven-publish'
 
 ext.licenseFile = files("$rootDir/LICENSE.txt")
 
-def templateVendorFile = "yagsl.json"
-def pubVersion = System.getenv("releaseVersion") ?: "test"
-
-def releasesRepoUrl = "$releasePath/releases"
-
-def outputsFolder = file("$buildDir/outputs")
+ext.outputsFolder = file("$buildDir/outputs")
 
 def versionFile = file("$outputsFolder/version.txt")
+def releasesRepoUrl = "$releasePath/releases"
 
 task outputVersions() {
     description = 'Prints the versions of wpilib to a file for use by the downstream packaging project'
@@ -31,7 +27,7 @@ task libraryBuild() {}
 build.dependsOn outputVersions
 
 task copyAllOutputs(type: Copy) {
-    destinationDir file("$buildDir/allOutputs")
+    destinationDir = file("$buildDir/allOutputs")
     from versionFile
     dependsOn outputVersions
 }
@@ -45,144 +41,133 @@ ext.addTaskToCopyAllOutputs = { task ->
     copyAllOutputs.from task.archiveFile
 }
 
-def artifactGroupId = 'swervelib'
-def baseArtifactId = 'YAGSL'
-def zipBaseName = "_GROUP_swervelib_ID_${baseArtifactId}-cpp_CLS"
-def javaBaseName = "_GROUP_swervelib_ID_${baseArtifactId}-java_CLS"
+ext.artifactGroupId = 'swervelib'
+ext.baseArtifactId = 'YAGSL'
 
-task cppHeadersZip(type: Zip) {
-    destinationDirectory = outputsFolder
-    archiveBaseName = zipBaseName
-    archiveClassifier = "headers"
-
-    from(licenseFile) {
-        into '/'
-    }
-
-    from('src/main/native/include') {
-        into '/'
-    }
-}
-
-task cppSourceZip(type: Zip) {
-    destinationDirectory = outputsFolder
-    archiveBaseName = zipBaseName
-    archiveClassifier = "sources"
-
-    from(licenseFile) {
-        into '/'
-    }
-
-    from('src/main/native/cpp') {
-        into '/'
-    }
-}
-
-build.dependsOn cppHeadersZip
-addTaskToCopyAllOutputs(cppHeadersZip)
-build.dependsOn cppSourceZip
-addTaskToCopyAllOutputs(cppSourceZip)
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
-}
-
+// -----------------------------------------------------------------------------------------------
+// Java artifacts: "core" (swervelib.core, no command-framework dependency) plus one jar per supported WPILib
+// command version ("commands2", "commands3"). "core" is everything outside of swervelib/commands2
+// and swervelib/commands3; each command variant is only its own swervelib/<name> package. Each gets
+// the same five jar tasks: a short-classifier jar + sources-jar for the Maven publication below, and
+// a vendordep-output-named jar/sources-jar/javadoc-jar for copyAllOutputs. Add a name here (and a
+// matching entry in vendordepJson.gradle's vendordepVariants) to publish a new variant.
+// -----------------------------------------------------------------------------------------------
 task javadocJar(type: Jar, dependsOn: javadoc) {
     archiveClassifier = 'javadoc'
     from javadoc.destinationDir
 }
 
-task outputJar(type: Jar, dependsOn: classes) {
-    archiveBaseName = javaBaseName
-    destinationDirectory = outputsFolder
-    from sourceSets.main.output
+def commandVariantNames = ['commands2', 'commands3']
+def javaArtifactNames = ['core'] + commandVariantNames
+def javaArtifacts = [:]
+
+javaArtifactNames.each { name ->
+    def filterPackages = { spec ->
+        if (name == 'core') {
+            commandVariantNames.each { variant -> spec.exclude "swervelib/${variant}/**" }
+        } else {
+            spec.include "swervelib/${name}/**"
+        }
+    }
+    def outputBaseName = "_GROUP_swervelib_ID_${baseArtifactId}-${name}_CLS"
+    def titleCaseName = name.capitalize()
+
+    // The Maven publication uses each jar's classifier as-is, so these must be unclassified and
+    // "sources" for the published files to be <artifactId>-<version>.jar and
+    // <artifactId>-<version>-sources.jar, which is what the vendordep JSON's javaDependencies resolve
+    // to. The per-variant base name keeps the variants from overwriting each other in build/libs.
+    def jar = tasks.create("${name}Jar", Jar) {
+        dependsOn classes
+        archiveBaseName = "${baseArtifactId}-${name}"
+        from(sourceSets.main.output, filterPackages)
+    }
+    def sourcesJar = tasks.create("${name}SourcesJar", Jar) {
+        dependsOn classes
+        archiveBaseName = "${baseArtifactId}-${name}"
+        archiveClassifier = 'sources'
+        from(sourceSets.main.allSource, filterPackages)
+    }
+    def outputJar = tasks.create("output${titleCaseName}Jar", Jar) {
+        dependsOn classes
+        archiveBaseName = outputBaseName
+        destinationDirectory = outputsFolder
+        from(sourceSets.main.output, filterPackages)
+    }
+    def outputSourcesJar = tasks.create("output${titleCaseName}SourcesJar", Jar) {
+        dependsOn classes
+        archiveBaseName = outputBaseName
+        destinationDirectory = outputsFolder
+        archiveClassifier = 'sources'
+        from(sourceSets.main.allSource, filterPackages)
+    }
+    def outputJavadocJar = tasks.create("output${titleCaseName}JavadocJar", Jar) {
+        dependsOn javadoc
+        archiveBaseName = outputBaseName
+        destinationDirectory = outputsFolder
+        archiveClassifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    javaArtifacts[name] = [
+        jar: jar, sourcesJar: sourcesJar,
+        outputJar: outputJar, outputSourcesJar: outputSourcesJar, outputJavadocJar: outputJavadocJar,
+    ]
+
+    addTaskToCopyAllOutputs(outputSourcesJar)
+    addTaskToCopyAllOutputs(outputJavadocJar)
+    addTaskToCopyAllOutputs(outputJar)
+    build.dependsOn outputSourcesJar
+    build.dependsOn outputJavadocJar
+    build.dependsOn outputJar
 }
 
-task outputSourcesJar(type: Jar, dependsOn: classes) {
-    archiveBaseName = javaBaseName
-    destinationDirectory = outputsFolder
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
-}
+// Builds yagsl_commands2.json/yagsl_commands3.json from yagsl.json and wires up their zip tasks
+// (commands2VendordepJsonZip/commands3VendordepJsonZip) and build/copyAllOutputs dependencies.
+apply from: 'vendordepJson.gradle'
 
-task outputJavadocJar(type: Jar, dependsOn: javadoc) {
-    archiveBaseName = javaBaseName
-    destinationDirectory = outputsFolder
-    archiveClassifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-// Apply template variables from the vendordep file.
-// Replaces ${VARIABLE} with VARIABLE: value in expand()
-task vendordepJson() {
-    description = 'Builds the vendordep json file.'
-    group = 'Build'
-    outputs.file("$releasePath/$templateVendorFile")
-
-    copy {
-        from templateVendorFile
-        into "$releasePath/"
-        expand(version: pubVersion,
-        groupId: artifactGroupId,
-        artifactId: baseArtifactId)
+artifacts {
+    tasks.named("assemble") {
+        javaArtifacts.each { name, t ->
+            archives t.jar
+            archives t.sourcesJar
+            archives t.outputJar
+            archives t.outputSourcesJar
+            archives t.outputJavadocJar
+        }
+        archives javadocJar
     }
 }
 
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-    archives outputJar
-    archives outputSourcesJar
-    archives outputJavadocJar
-}
-
-addTaskToCopyAllOutputs(outputSourcesJar)
-addTaskToCopyAllOutputs(outputJavadocJar)
-addTaskToCopyAllOutputs(outputJar)
-
-build.dependsOn outputSourcesJar
-build.dependsOn outputJavadocJar
-build.dependsOn outputJar
-
 libraryBuild.dependsOn build
-
 
 publishing {
     repositories {
         maven {
-
             url = releasesRepoUrl
         }
     }
-}
-
-model {
-    publishing {
-        def taskList = createComponentZipTasks($.components, ['YAGSL'], zipBaseName, Zip, project, includeStandardZipFormat)
-
-        publications {
-            cpp(MavenPublication) {
-                taskList.each {
-                    artifact it
-                }
-                artifact cppHeadersZip
-                artifact cppSourceZip
-
-                artifactId = "${baseArtifactId}-cpp"
-                groupId artifactGroupId
-                version pubVersion
-            }
-
-            java(MavenPublication) {
-                artifact jar
-                artifact sourcesJar
+    publications {
+        javaArtifactNames.each { name ->
+            def t = javaArtifacts[name]
+            "$name"(MavenPublication) {
+                artifact t.jar
+                artifact t.sourcesJar
                 artifact javadocJar
 
-                artifactId = "${baseArtifactId}-java"
-                groupId artifactGroupId
-                version pubVersion
+                artifactId = "${baseArtifactId}-${name}"
+                groupId = artifactGroupId
+                version = pubVersion
+            }
+
+            // Only non-core variants ship their own vendordep JSON.
+            if (name != 'core') {
+                "${name}Vendordep"(MavenPublication) {
+                    artifact tasks.named("${name}VendordepJsonZip").get()
+
+                    artifactId = "${baseArtifactId}-${name}-vendordep"
+                    groupId = artifactGroupId
+                    version = pubVersion
+                }
             }
         }
     }

@@ -1,5 +1,16 @@
 name: YAGSL CI
-on: [push, pull_request]
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - "examples/**"
+      - "yagsl/**"
+      - "vendordep/**"
+  pull_request:
+    paths:
+      - "examples/**"
+      - "yagsl/**"
+      - "vendordep/**"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,11 +25,8 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 25
       - run: chmod +x gradlew
-        working-directory: ${{ env.workingDirectory }}
-      - name: Install roboRio toolchain
-        run: ./gradlew installRoboRioToolchain
         working-directory: ${{ env.workingDirectory }}
       - name: Build vendordep
         run: ./gradlew build
@@ -33,3 +41,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.workingDirectory }}/build/maven/
+      - name: Check both vendordep JSONs were published
+        run: test -f build/maven/yagsl_commands2.json && test -f build/maven/yagsl_commands3.json
+        working-directory: ${{ env.workingDirectory }}

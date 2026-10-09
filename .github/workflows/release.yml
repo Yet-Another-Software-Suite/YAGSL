@@ -6,130 +6,311 @@ on:
         description: "Release version number"
         type: string
         required: true
-      publishToWpilib:
-        description: "Publish to WPILib vendor JSON repo (full release). Uncheck for pre-release only."
+      publish:
         type: boolean
-        required: false
+        description: "Publish to WPILib"
         default: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Mirrors YAMS's release workflow. YAGSL is Java only, so there are no per-platform native builds:
+# a single Linux job publishes the core, commands2, and commands3 jars plus both vendordep JSONs.
 jobs:
-  build:
+  build-examples:
+    name: Release - Examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Generate YAGSL vendordep JSONs
+        run: |
+          chmod +x gradlew
+          ./gradlew vendordepJsonCommands2 vendordepJsonCommands3
+        working-directory: vendordep
+        env:
+          releaseVersion: ${{ inputs.releaseVersion }}
+      # Build and test each example against the YAGSL sources being released before it is zipped.
+      - name: Build examples
+        run: |
+          for example in commands2 commands3; do
+            (cd "examples/$example" && chmod +x gradlew && ./gradlew build) || exit 1
+          done
+      - name: Strip testing-only fixups from the examples
+        run: |
+          for example in commands2 commands3; do
+            # The YAGSL_TESTING fixup compiles against yagsl/java directly so the example build
+            # doesn't depend on a published vendordep. The released example instead consumes the
+            # generated vendordep JSON like a real robot project would.
+            sed -i '/\/\/ YAGSL_TESTING/,/\/\/ END_YAGSL_TESTING/d' "examples/$example/build.gradle"
+            cp "vendordep/build/maven/yagsl_$example.json" "examples/$example/vendordeps/yagsl_$example.json"
+          done
+      - name: Zip examples
+        run: |
+          mkdir -p ${{ github.workspace }}/example-artifacts
+          cd examples
+          for example in commands2 commands3; do
+            zip -r "${{ github.workspace }}/example-artifacts/example-$example.zip" "$example" -x "$example/.gradle/*" -x "$example/build/*" -x "$example/bin/*"
+          done
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-examples
+          path: example-artifacts/
+
+  release:
+    name: Release - Linux (publish)
+    needs: [build-examples]
     runs-on: ubuntu-latest
     permissions:
       contents: write
       actions: read
-      pages: read
+      pages: write
       deployments: read
-      pull-requests: write
+      id-token: write
     env:
       releaseVersion: ${{ inputs.releaseVersion }}
-      workingDirectory: ${{github.workspace}}/vendordep
+      workingDirectory: ${{ github.workspace }}/vendordep
+    environment:
+      name: github-pages
     steps:
       - run: git config --global user.name "thenetworkgrinch" && git config --global user.email "thenetworkgrinch@noreply.users.github.com"
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
+
+      - uses: actions/checkout@v7
         with:
-          distribution: 'temurin'
-          java-version: 17
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+
       - run: chmod +x gradlew
         working-directory: ${{ env.workingDirectory }}
-      - name: Install roboRio toolchain
-        run: ./gradlew installRoboRioToolchain
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Create and push release tag
+        id: create_tag
+        run: |
+          TAG="v${{ inputs.releaseVersion }}"
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null 2>&1; then
+            echo "Tag $TAG already exists on origin, deleting it before re-creating."
+            git push origin ":refs/tags/$TAG"
+            echo "tag_existed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag_existed=false" >> "$GITHUB_OUTPUT"
+          fi
+          git tag -f "$TAG" ${{ github.sha }}
+          git push origin "$TAG"
+
+      # Pass 1: publish into a clean directory so the offline zip contains only
+      # the current version's artifacts with correctly stitched metadata.
+      - name: Build and publish (current version only)
+        run: ./gradlew publish
         working-directory: ${{ env.workingDirectory }}
-      - name: Build vendordep
-        run: ./gradlew build
-        working-directory: ${{ env.workingDirectory }}
+
+      - name: Download example artifacts
+        uses: actions/download-artifact@v7
+        with:
+          name: release-examples
+          path: release-artifacts/
+
+      # Laid out to be extracted straight into the WPILib home for the vendordep's wpilibYear
+      # (~/wpilib/<wpilibYear> or C:\Users\Public\wpilib\<wpilibYear>): maven/ is GradleRIO's local maven
+      # repo and vendordeps/ is where "Install new libraries (offline)" looks for vendordep JSONs.
+      - name: Zip current version maven for offline installation
+        run: |
+          offline="${{ github.workspace }}/offline"
+          mkdir -p "$offline/maven" "$offline/vendordeps"
+          cd ${{ env.workingDirectory }}/build/maven
+          cp -r releases/. "$offline/maven/"
+          cp yagsl_commands2.json yagsl_commands3.json "$offline/vendordeps/"
+          cd "$offline"
+          zip -r ${{ github.workspace }}/release-artifacts/${{ inputs.releaseVersion }}-YAGSL-Offline.zip maven/ vendordeps/
+
+      # Pass 2: rebuild on top of the full gh-pages history so the deployed
+      # maven metadata covers all versions, not just the current one.
+      - name: Clean maven directory for gh-pages checkout
+        run: rm -rf ${{ env.workingDirectory }}/build/maven/
+
       - name: Checkout gh-pages branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
           path: ${{ env.workingDirectory }}/build/maven/
-      - name: Publish vendordep
+
+      - name: Build and publish (fixes maven metadata for all versions)
         run: ./gradlew publish
         working-directory: ${{ env.workingDirectory }}
-      - name: Create new vendor JSON
-        run: cp ${{ env.workingDirectory }}/build/maven/yagsl.json ${{ env.workingDirectory }}/build/maven/yagsl-${{inputs.releaseVersion}}.json
-#      - name: Output Pages Tree
-#        run: find ${{ env.workingDirectory }}/build/maven/ -type f
-      - name: Upload pages
-        id: upload_pages
+
+      # Both vendordep JSONs (yagsl_commands2.json and yagsl_commands3.json) are generated by
+      # vendordepJson.gradle into build/maven, so they are deployed to gh-pages alongside the
+      # maven repo. Also keep a versioned copy of each and attach them to the GitHub release.
+      - name: Create versioned vendordep JSONs
         run: |
-          git add .
-          git commit -m "Automatically add YAGSL version ${{inputs.releaseVersion}}"
-          git push
-          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          cd ${{ env.workingDirectory }}/build/maven
+          for variant in commands2 commands3; do
+            cp "yagsl_${variant}.json" "yagsl_${variant}-${{ inputs.releaseVersion }}.json"
+            cp "yagsl_${variant}.json" "${{ github.workspace }}/release-artifacts/yagsl_${variant}.json"
+          done
+
+      - name: Push to gh-pages
+        run: git add . && git commit -m "Automatically add YAGSL version ${{ inputs.releaseVersion }}" && git push
         working-directory: ${{ env.workingDirectory }}/build/maven/
-      # The vendor JSON repo PR validates the published jsonUrl/maven artifacts over HTTPS, so the gh-pages push
-      # above has to actually be served by Pages before the PR is opened.
-      - name: Wait for GitHub Pages deployment
-        id: wait_pages
-        if: inputs.publishToWpilib
-        continue-on-error: true
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          name: github-pages
+          retention-days: '90'
+          path: ${{ env.workingDirectory }}/build/maven/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Output Pages Tree
+        run: find ${{ env.workingDirectory }}/build/maven/ -type f
+
+      # Builds the release description: a "What's new" list of every commit since the previous
+      # full (non-prerelease, non-draft) release, followed by installation instructions. GitHub's
+      # generated notes (merged PRs, new contributors, full changelog link) are appended after this
+      # by --generate-notes.
+      - name: Write release notes
         env:
           GH_TOKEN: ${{ github.token }}
-          PAGES_COMMIT: ${{ steps.upload_pages.outputs.commit }}
         run: |
-          for _ in $(seq 1 60); do
-            build=$(gh api "repos/${{ github.repository }}/pages/builds/latest" --jq '"\(.status) \(.commit)"')
-            status=${build%% *}
-            commit=${build##* }
-            echo "Latest Pages build: $status ($commit), waiting for $PAGES_COMMIT"
-            if [ "$commit" = "$PAGES_COMMIT" ]; then
-              if [ "$status" = "built" ]; then
-                exit 0
-              fi
-              if [ "$status" = "errored" ]; then
-                echo "GitHub Pages build errored"
-                exit 1
-              fi
+          TAG="v${{ inputs.releaseVersion }}"
+          REPO_URL="${{ github.server_url }}/${{ github.repository }}"
+          # GradleRIO resolves the WPILib home as wpilib/<wpilibYear>, so the vendordep's wpilibYear
+          # names the exact folder the offline zip goes into.
+          WPILIB_YEAR=$(jq -r .wpilibYear ${{ env.workingDirectory }}/build/maven/yagsl_commands2.json)
+          if [ -z "$WPILIB_YEAR" ] || [ "$WPILIB_YEAR" = "null" ]; then
+            echo "Could not read wpilibYear from yagsl_commands2.json" >&2
+            exit 1
+          fi
+          # Newest full release other than this one (it may still exist when re-running a release).
+          PREVIOUS_TAG=$(gh release list --exclude-pre-releases --exclude-drafts --limit 100 \
+            --json tagName --jq '.[].tagName' | grep -vxF "$TAG" | head -n 1 || true)
+          if [ -n "$PREVIOUS_TAG" ]; then
+            RANGE="$PREVIOUS_TAG..$TAG"
+            SINCE="since $PREVIOUS_TAG"
+          else
+            RANGE="$TAG"
+            SINCE=""
+          fi
+
+          {
+            echo "## What's new"
+            echo
+            if [ -n "$SINCE" ]; then
+              echo "Commits $SINCE:"
+              echo
             fi
-            sleep 15
-          done
-          echo "Timed out waiting for GitHub Pages to publish $PAGES_COMMIT"
-          exit 1
-      - name: Create Vendor JSON Repo PR
-        id: publish_wpilib
-        if: inputs.publishToWpilib && steps.wait_pages.outcome == 'success'
+            git log --no-merges --format="- %s ([%h]($REPO_URL/commit/%H))" "$RANGE"
+            echo
+            # Quoted heredoc so backslashes and backticks stay literal; @WPILIB_YEAR@ is filled in below.
+            cat <<'EOF'
+          ## Installation
+
+          Pick the vendordep for the command framework your robot uses. Only install one of them. Each one requires the matching YAMS vendordep (and REVLib, Phoenix6, and ReduxLib), which VS Code will offer to install.
+
+          ### Online
+
+          In VS Code, run **WPILib: Manage Vendor Libraries > Install new libraries (online)** and paste one of these URLs:
+
+          | Command framework | Vendordep URL |
+          | --- | --- |
+          | Commands v2 | `https://yet-another-software-suite.github.io/YAGSL/yagsl_commands2.json` |
+          | Commands v3 | `https://yet-another-software-suite.github.io/YAGSL/yagsl_commands3.json` |
+
+          Pinned to this release: `https://yet-another-software-suite.github.io/YAGSL/yagsl_commands2-${{ inputs.releaseVersion }}.json` and `https://yet-another-software-suite.github.io/YAGSL/yagsl_commands3-${{ inputs.releaseVersion }}.json`.
+
+          ### Offline
+
+          Download `${{ inputs.releaseVersion }}-YAGSL-Offline.zip` from the assets below. It contains a `maven` folder and a `vendordeps` folder that merge into your **@WPILIB_YEAR@** WPILib home folder. The `@WPILIB_YEAR@` folder is created by the matching WPILib installer, so install that first.
+
+          **Windows:** extract into `C:\Users\Public\wpilib\@WPILIB_YEAR@`. In File Explorer, right click the zip, choose **Extract All...**, and enter that folder. Or in PowerShell:
+
+          ```powershell
+          Expand-Archive -Path "$HOME\Downloads\${{ inputs.releaseVersion }}-YAGSL-Offline.zip" -DestinationPath "C:\Users\Public\wpilib\@WPILIB_YEAR@" -Force
+          ```
+
+          **macOS:** extract into `~/wpilib/@WPILIB_YEAR@`. Finder's double click extracts next to the zip instead, so use Terminal:
+
+          ```bash
+          unzip -o ~/Downloads/${{ inputs.releaseVersion }}-YAGSL-Offline.zip -d ~/wpilib/@WPILIB_YEAR@
+          ```
+
+          **Linux:** extract into `~/wpilib/@WPILIB_YEAR@`:
+
+          ```bash
+          unzip -o ~/Downloads/${{ inputs.releaseVersion }}-YAGSL-Offline.zip -d ~/wpilib/@WPILIB_YEAR@
+          ```
+
+          Afterwards you should have `wpilib/@WPILIB_YEAR@/maven/swervelib/...` and `wpilib/@WPILIB_YEAR@/vendordeps/yagsl_commands2.json` / `yagsl_commands3.json`. Then, in VS Code, run **WPILib: Manage Vendor Libraries > Install new libraries (offline)** and pick **YAGSL (Commands v2)** or **(Commands v3)**.
+
+          Example robot projects for both command frameworks (`example-commands2.zip` and `example-commands3.zip`) are also attached below.
+          EOF
+            echo
+          } > release-notes.md
+          sed -i "s/@WPILIB_YEAR@/$WPILIB_YEAR/g" release-notes.md
+          cat release-notes.md
+
+      - name: Create GitHub Release
+        id: create_release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v${{ inputs.releaseVersion }}"
+          if [ "${{ inputs.publish }}" = "true" ]; then
+            RELEASE_FLAGS="--latest"
+          else
+            RELEASE_FLAGS="--prerelease"
+          fi
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Release $TAG already exists, deleting it before re-creating."
+            gh release delete "$TAG" --yes
+            echo "release_existed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "release_existed=false" >> "$GITHUB_OUTPUT"
+          fi
+          gh release create "$TAG" \
+            --title "YAGSL v${{ inputs.releaseVersion }}" \
+            --notes-file release-notes.md \
+            --generate-notes \
+            $RELEASE_FLAGS \
+            release-artifacts/*
+
+      # Skip re-publishing to the WPILib vendor-json-repo when this run is overwriting an
+      # existing tag/release for the same version, e.g. a re-run after a failure. That repo's PR
+      # represents "this version now exists"; re-filing it for a version that already went out
+      # would just create a duplicate/no-op PR against vendor-json-repo.
+      - name: Create Vendor JSON Repo PR (Commands v2)
+        if: ${{ inputs.publish == true && steps.create_tag.outputs.tag_existed == 'false' && steps.create_release.outputs.release_existed == 'false' }}
         uses: wpilibsuite/vendor-json-repo/.github/actions/add_vendordep@main
         with:
           repo: Yet-Another-Software-Suite/vendor-json-repo
           token: ${{ secrets.PUBLISH_VENDOR_JSON_TOKEN }}
-          vendordep_file: ${{ env.workingDirectory }}/build/maven/yagsl-${{inputs.releaseVersion}}.json
-          pr_title: "Automatically add YAGSL version ${{inputs.releaseVersion}}"
-          pr_branch: "publish_yagsl_${{inputs.releaseVersion}}"
+          vendordep_file: ${{ env.workingDirectory }}/build/maven/yagsl_commands2-${{ inputs.releaseVersion }}.json
+          pr_title: "Automatically add YAGSL (Commands v2) version ${{ inputs.releaseVersion }}"
+          pr_branch: "publish_yagsl_commands2_${{ inputs.releaseVersion }}"
         continue-on-error: true
-      - name: Create GitHub Release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          PRERELEASE_FLAG=""
-          if [ "${{ steps.publish_wpilib.outcome }}" != "success" ]; then
-            PRERELEASE_FLAG="--prerelease"
-          fi
-          gh release create "${{ inputs.releaseVersion }}" \
-            --title "YAGSL ${{ inputs.releaseVersion }}" \
-            --generate-notes \
-            $PRERELEASE_FLAG
-#      - name: Setup Pages
-#        id: pages
-#        uses: actions/configure-pages@v5
-#      - name: Upload vendordep json, maven repository, and javadocs
-#        uses: actions/upload-pages-artifact@v4
-#        with:
-#          name: 'github-pages'
-#          retention-days: '90'
-#          path: ${{ env.workingDirectory }}/build/maven/
-#
-#  deploy:
-#    permissions:
-#      contents: write
-#      pages: write
-#      id-token: write
-#    environment:
-#      name: github-pages
-#      url: ${{steps.deployment.outputs.page_url}}
-#    runs-on: ubuntu-latest
-#    needs: build
-#    steps:
-#      - name: Deploy to GitHub Pages
-#        id: deployment
-#        uses: actions/deploy-pages@v4
+
+      - name: Create Vendor JSON Repo PR (Commands v3)
+        if: ${{ inputs.publish == true && steps.create_tag.outputs.tag_existed == 'false' && steps.create_release.outputs.release_existed == 'false' }}
+        uses: wpilibsuite/vendor-json-repo/.github/actions/add_vendordep@main
+        with:
+          repo: Yet-Another-Software-Suite/vendor-json-repo
+          token: ${{ secrets.PUBLISH_VENDOR_JSON_TOKEN }}
+          vendordep_file: ${{ env.workingDirectory }}/build/maven/yagsl_commands3-${{ inputs.releaseVersion }}.json
+          pr_title: "Automatically add YAGSL (Commands v3) version ${{ inputs.releaseVersion }}"
+          pr_branch: "publish_yagsl_commands3_${{ inputs.releaseVersion }}"
+        continue-on-error: true
