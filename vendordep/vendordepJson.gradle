@@ -66,12 +66,6 @@ def vendordepVariants = [
         javaArtifactSuffix: 'commands2',
         requires          : [
             [
-                uuid           : '111e20f7-815e-48f8-9dd6-e675ce75b266',
-                errorMessage   : 'Commands V2 is required! Install it from the WPILib vendor libraries.',
-                offlineFileName: 'CommandsV2.json',
-                onlineUrl      : '',
-            ],
-            [
                 uuid           : 'a1051e86-a979-4880-a28b-a0d5362d1d96',
                 errorMessage   : 'YAMS (Commands v2) is required!',
                 offlineFileName: 'yams_commands2.json',
@@ -87,12 +81,6 @@ def vendordepVariants = [
         uuid              : 'e2b4dc30-23dc-4981-89ef-d2bb52b08928',
         javaArtifactSuffix: 'commands3',
         requires          : [
-            [
-                uuid           : '4decdc05-a056-46cf-9561-39449bbb0130',
-                errorMessage   : 'Commands v3 is required! Install it from the WPILib vendor libraries.',
-                offlineFileName: 'CommandsV3.json',
-                onlineUrl      : '',
-            ],
             [
                 uuid           : '9eadd383-6bdc-4107-957a-b50cd3146f17',
                 errorMessage   : 'YAMS (Commands v3) is required!',
