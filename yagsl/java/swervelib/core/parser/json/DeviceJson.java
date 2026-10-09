@@ -6,6 +6,8 @@ import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.util.Pair;
 import org.wpilib.math.system.DCMotor;
 import org.wpilib.units.measure.Angle;
+import org.wpilib.hardware.imu.OnboardIMU;
+import org.wpilib.hardware.imu.OnboardIMU.MountOrientation;
 import org.wpilib.hardware.rotation.AnalogEncoder;
 import org.wpilib.hardware.rotation.DutyCycleEncoder;
 import swervelib.core.parser.deserializer.ReflectionsManager.AbsoluteEncoder;
@@ -104,8 +106,15 @@ public class DeviceJson
             case "canandgyro":
               return Gyro.CANANDGYRO.getGyro(id, canbus);
           }
+          break;
         case "internal":
-          throw new IllegalArgumentException("Internal gyro not supported yet!");
+          if ("systemcore".equals(vendorType))
+          {
+            // The Systemcore IMU is part of WPILib, so no vendordep reflection is needed.
+            var gyro = new OnboardIMU(MountOrientation.FLAT);
+            return Pair.of(gyro::getRotation3d, gyro);
+          }
+          break;
       }
     }
     throw new IllegalArgumentException("Invalid gyro type: " + type);

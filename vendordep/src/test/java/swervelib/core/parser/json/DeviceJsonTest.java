@@ -1,6 +1,7 @@
 package swervelib.core.parser.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -8,6 +9,8 @@ import io.avaje.jsonb.Jsonb;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.wpilib.hardware.hal.HAL;
+import org.wpilib.hardware.imu.OnboardIMU;
 import org.wpilib.math.system.DCMotor;
 import swervelib.core.parser.deserializer.ReflectionsManager.VendorMotorController;
 import swervelib.core.parser.json.DeviceJson.VENDOR;
@@ -180,6 +183,22 @@ class DeviceJsonTest {
   void getGyro_customTypeCaseInsensitive_returnsNull() {
     DeviceJson d = deviceWithType("CUSTOM");
     assertEquals(null, d.getGyro());
+  }
+
+  @Test
+  void getGyro_systemcoreInternal_returnsOnboardIMU() {
+    HAL.initialize();
+    var gyro = deviceWithType("systemcore_internal").getGyro();
+    assertNotNull(gyro);
+    assertInstanceOf(OnboardIMU.class, gyro.getSecond());
+    assertNotNull(gyro.getFirst().get());
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"unknown_can", "unknown_internal", "systemcore", "pigeon2_dio"})
+  void getGyro_invalidType_throwsInvalidGyroType(String type) {
+    var e = assertThrows(IllegalArgumentException.class, () -> deviceWithType(type).getGyro());
+    assertEquals("Invalid gyro type: " + type, e.getMessage());
   }
 
   // ---------------------------------------------------------------------------
