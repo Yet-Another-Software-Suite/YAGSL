@@ -14,13 +14,13 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.util.CANPorts;
 import org.wpilib.util.Pair;
 import org.wpilib.math.system.DCMotor;
 import org.wpilib.units.measure.Angle;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+import swervelib.core.parser.CANBuses;
 import org.wpilib.hardware.bus.CANPort;
 import yams.core.motorcontrollers.SmartMotorController;
 import yams.core.motorcontrollers.SmartMotorControllerConfig;
@@ -83,7 +83,7 @@ public class REVDevices
    * Get the {@link com.revrobotics.spark.SparkBase} as a {@link SmartMotorController}.
    *
    * @param canid               CAN ID of the {@link com.revrobotics.spark.SparkBase}
-   * @param canbus              CAN bus name of the {@link com.revrobotics.spark.SparkBase}
+   * @param canbus              CAN bus number of the {@link com.revrobotics.spark.SparkBase}, see {@link CANBuses}
    * @param config              {@link SmartMotorControllerConfig} to apply to the {@link SmartMotorController}
    * @param motor               {@link DCMotor} to use with the {@link SmartMotorController}
    * @param motorControllerType Motor controller type.
@@ -119,7 +119,7 @@ public class REVDevices
    * Get the {@link Angle} {@link Supplier} and the encoder object.
    *
    * @param canid    CAN ID of the encoder.
-   * @param canbus   CAN bus name for the encoder.
+   * @param canbus   CAN bus number of the encoder, see {@link CANBuses}
    * @param inverted Inversion of the encoder.
    * @return {@link Pair} of {@link Supplier} and {@link Object}
    * @implNote {@link Angle} is in the range of [0, 1) by default.
@@ -198,22 +198,13 @@ public class REVDevices
   }
 
   /**
-   * Get the {@link CANPort} for the CAN bus name given in the JSON configuration.
+   * Get the {@link CANPort} for the CAN bus given in the JSON configuration.
    *
-   * @param canbus CAN bus name. Empty for the default bus, a raw bus ID (e.g. {@code "1"}), or a {@link CANPort} name
-   *               (e.g. {@code "CAN_S1"}).
+   * @param canbus CAN bus number, see {@link CANBuses}. Empty for can_s0, {@code "1"} for can_s1, and so on.
    * @return {@link CANPort} for the CAN bus.
    */
   private static CANPort getCANPort(String canbus)
   {
-    if (canbus == null || canbus.isBlank())
-    {
-      return CANPorts.fromBusId(0);
-    }
-    if (canbus.chars().allMatch(Character::isDigit))
-    {
-      return CANPorts.fromBusId(Integer.parseInt(canbus));
-    }
-    return CANPort.valueOf(canbus.toUpperCase());
+    return CANBuses.requireCANPort(canbus, "REV");
   }
 }

@@ -23,7 +23,7 @@
         },
         "canbus": {
           "type": "string",
-          "description": "Name of the CAN bus that the Gyroscope is connected to. \"\" for the default CAN bus."
+          "description": "CAN bus the gyroscope is on: \"\" for the Systemcore CAN bus can_s0, or the bus number, such as \"1\" for can_s1 or \"2\" for can_s2. CTRE devices also take a CANivore's name."
         }
       },
       "required": [

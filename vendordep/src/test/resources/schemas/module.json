@@ -45,7 +45,7 @@
         },
         "canbus": {
           "type": "string",
-          "description": "Name of the CAN bus that the motor controller is connected to. Default is \"\". Thrifty Novas take the CAN bus number instead, such as \"1\"."
+          "description": "CAN bus the motor controller is on: \"\" for the Systemcore CAN bus can_s0, or the bus number, such as \"1\" for can_s1 or \"2\" for can_s2. CTRE devices also take a CANivore's name."
         }
       },
       "required": [
@@ -98,7 +98,7 @@
         },
         "canbus": {
           "type": "string",
-          "description": "Name of the CAN Bus the Motor Controller is on. Default is \"\". Thrifty Novas take the CAN bus number instead, such as \"1\"."
+          "description": "CAN bus the motor controller is on: \"\" for the Systemcore CAN bus can_s0, or the bus number, such as \"1\" for can_s1 or \"2\" for can_s2. CTRE devices also take a CANivore's name."
         }
       },
       "required": [
@@ -182,7 +182,7 @@
         },
         "canbus": {
           "type": "string",
-          "description": "Name of the CAN bus that the absolute encoder is connected to. Default is \"\""
+          "description": "CAN bus the absolute encoder is on: \"\" for the Systemcore CAN bus can_s0, or the bus number, such as \"1\" for can_s1 or \"2\" for can_s2. CTRE devices also take a CANivore's name."
         }
       },
       "required": [

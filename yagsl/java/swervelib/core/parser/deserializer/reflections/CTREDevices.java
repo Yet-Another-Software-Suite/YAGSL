@@ -13,6 +13,7 @@ import org.wpilib.util.Pair;
 import org.wpilib.math.system.DCMotor;
 import org.wpilib.units.measure.Angle;
 import java.util.function.Supplier;
+import swervelib.core.parser.CANBuses;
 import yams.core.motorcontrollers.SmartMotorController;
 import yams.core.motorcontrollers.SmartMotorControllerConfig;
 import yams.core.motorcontrollers.remote.TalonFXSWrapper;
@@ -43,7 +44,7 @@ public class CTREDevices
    * Get the {@link MotorControllerType} as a {@link SmartMotorController}.
    *
    * @param canid               CAN ID of the {@link MotorControllerType}
-   * @param canbus              CAN bus name of the {@link MotorControllerType}
+   * @param canbus              CAN bus of the {@link MotorControllerType}, see {@link CANBuses}
    * @param config              {@link SmartMotorControllerConfig} to apply to the {@link SmartMotorController}
    * @param motor               {@link DCMotor} to use with the {@link SmartMotorController}
    * @param motorControllerType Motor controller type.
@@ -58,12 +59,12 @@ public class CTREDevices
     {
       case TALONFX ->
       {
-        var motorController = new TalonFX(canid, new CANBus(canbus));
+        var motorController = new TalonFX(canid, getCANBus(canbus));
         return new TalonFXWrapper(motorController, motor, config);
       }
       case TALONFXS ->
       {
-        var motorController = new TalonFXS(canid, new CANBus(canbus));
+        var motorController = new TalonFXS(canid, getCANBus(canbus));
         return new TalonFXSWrapper(motorController, motor, config);
       }
     }
@@ -75,12 +76,12 @@ public class CTREDevices
    * Get the gyroscope attitude supplier and gyroscope object.
    *
    * @param canid  CAN ID of the gyroscope.
-   * @param canbus CAN bus name of the gyroscope.
+   * @param canbus CAN bus of the gyroscope, see {@link CANBuses}
    * @return {@link Pair} of the attitude {@link Supplier} and the gyroscope {@link Object}
    */
   public static Pair<Supplier<Rotation3d>, Object> getGyro(int canid, String canbus)
   {
-    var gyro = new Pigeon2(canid, new CANBus(canbus));
+    var gyro = new Pigeon2(canid, getCANBus(canbus));
     return Pair.of(gyro::getRotation3d, gyro);
   }
 
@@ -88,13 +89,13 @@ public class CTREDevices
    * Get the {@link com.ctre.phoenix6.hardware.CANcoder} angle.
    *
    * @param canid    CAN ID of the encoder.
-   * @param canbus   CAN bus name of the encoder.
+   * @param canbus   CAN bus of the encoder, see {@link CANBuses}
    * @param inverted Inverted encoder readings.
    * @return {@link Supplier} of {@link Angle} and {@link com.ctre.phoenix6.hardware.CANcoder}
    */
   public static Pair<Supplier<Angle>, Object> getAbsoluteEncoder(int canid, String canbus, boolean inverted)
   {
-    var                   encoder      = new CANcoder(canid, new CANBus(canbus));
+    var                   encoder      = new CANcoder(canid, getCANBus(canbus));
     CANcoderConfiguration cfg          = new CANcoderConfiguration();
     CANcoderConfigurator  configurator = encoder.getConfigurator();
     configurator.refresh(cfg);
@@ -102,5 +103,16 @@ public class CTREDevices
         inverted ? SensorDirectionValue.Clockwise_Positive : SensorDirectionValue.CounterClockwise_Positive);
     configurator.apply(cfg);
     return Pair.of(() -> encoder.getPosition().getValue(), encoder);
+  }
+
+  /**
+   * Get the Phoenix 6 {@link CANBus} for the CAN bus given in the JSON configuration.
+   *
+   * @param canbus CAN bus, see {@link CANBuses}. A CANivore's name or serial number is used as is.
+   * @return {@link CANBus} for the CAN bus.
+   */
+  private static CANBus getCANBus(String canbus)
+  {
+    return CANBuses.getCANPort(canbus).map(CANBus::new).orElseGet(() -> new CANBus(canbus.trim()));
   }
 }

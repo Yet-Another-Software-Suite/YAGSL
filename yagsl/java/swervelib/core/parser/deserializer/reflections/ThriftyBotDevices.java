@@ -14,6 +14,7 @@ import org.wpilib.util.Pair;
 import org.wpilib.math.system.DCMotor;
 import org.wpilib.units.measure.Angle;
 import java.util.function.Supplier;
+import swervelib.core.parser.CANBuses;
 import yams.core.motorcontrollers.SmartMotorController;
 import yams.core.motorcontrollers.SmartMotorControllerConfig;
 import yams.core.motorcontrollers.local.NovaWrapper;
@@ -39,8 +40,7 @@ public class ThriftyBotDevices
    * Get the {@link Nova} as a {@link SmartMotorController}.
    *
    * @param canid               CAN ID of the {@link Nova}
-   * @param canbus              CAN bus of the {@link Nova}. Empty for the default bus, or a raw bus ID (e.g.
-   *                            {@code "1"}).
+   * @param canbus              CAN bus number of the {@link Nova}, see {@link CANBuses}
    * @param config              {@link SmartMotorControllerConfig} to apply to the {@link SmartMotorController}
    * @param motor               {@link DCMotor} to use with the {@link SmartMotorController}
    * @param motorControllerType Motor controller type.
@@ -57,7 +57,7 @@ public class ThriftyBotDevices
    * Get the Thrifty CAN Encoder angle.
    *
    * @param canid    CAN ID of the encoder.
-   * @param canbus   CAN bus of the encoder. Empty for the default bus, or a raw bus ID (e.g. {@code "1"}).
+   * @param canbus   CAN bus number of the encoder, see {@link CANBuses}
    * @param inverted Inversion of the encoder.
    * @return {@link Supplier} of {@link Angle} and {@link CanEncoder}
    */
@@ -191,15 +191,11 @@ public class ThriftyBotDevices
   /**
    * Get the ThriftyLib CAN bus ID for the CAN bus given in the JSON configuration.
    *
-   * @param canbus CAN bus. Empty for the default bus, or a raw bus ID (e.g. {@code "1"}).
-   * @return CAN bus ID.
+   * @param canbus CAN bus number, see {@link CANBuses}. Empty for can_s0, {@code "1"} for can_s1, and so on.
+   * @return CAN bus ID, which ThriftyLib numbers like {@link org.wpilib.hardware.bus.CANPort}.
    */
   private static int getCANBus(String canbus)
   {
-    if (canbus == null || canbus.isBlank())
-    {
-      return 0;
-    }
-    return Integer.parseInt(canbus);
+    return CANBuses.requireCANPort(canbus, "Thrifty Bot").value;
   }
 }
