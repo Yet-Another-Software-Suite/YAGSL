@@ -5,9 +5,9 @@
   "wpilibYear": "2027_alpha7",
   "uuid": "${uuid}",
   "mavenUrls": [
-    "https://yet-another-software-suite.github.io/YAGSL/releases/"
+    "https://cdn.yassrobotics.com/"
   ],
-  "jsonUrl": "https://yet-another-software-suite.github.io/YAGSL/yagsl.json",
+  "jsonUrl": "https://cdn.yassrobotics.com/yagsl.json",
   "javaDependencies": [
     {
       "groupId": "${groupId}",
