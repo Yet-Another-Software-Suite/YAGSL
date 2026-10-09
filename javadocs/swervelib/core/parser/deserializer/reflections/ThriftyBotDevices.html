@@ -204,8 +204,7 @@ type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>canid</code> - CAN ID of the <code>Nova</code></dd>
-<dd><code>canbus</code> - CAN bus of the <code>Nova</code>. Empty for the default bus, or a raw bus ID (e.g.
-                           <code>"1"</code>).</dd>
+<dd><code>canbus</code> - CAN bus number of the <code>Nova</code>, see <a href="../../CANBuses.html" title="class in swervelib.core.parser"><code>CANBuses</code></a></dd>
 <dd><code>config</code> - <a href="https://yet-another-software-suite.github.io/YAMS/javadocs/yams/core/motorcontrollers/SmartMotorControllerConfig.html" title="class or interface in yams.core.motorcontrollers" class="external-link"><code>SmartMotorControllerConfig</code></a> to apply to the <a href="https://yet-another-software-suite.github.io/YAMS/javadocs/yams/core/motorcontrollers/SmartMotorController.html" title="class or interface in yams.core.motorcontrollers" class="external-link"><code>SmartMotorController</code></a></dd>
 <dd><code>motor</code> - <code>DCMotor</code> to use with the <a href="https://yet-another-software-suite.github.io/YAMS/javadocs/yams/core/motorcontrollers/SmartMotorController.html" title="class or interface in yams.core.motorcontrollers" class="external-link"><code>SmartMotorController</code></a></dd>
 <dd><code>motorControllerType</code> - Motor controller type.</dd>
@@ -226,7 +225,7 @@ type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>canid</code> - CAN ID of the encoder.</dd>
-<dd><code>canbus</code> - CAN bus of the encoder. Empty for the default bus, or a raw bus ID (e.g. <code>"1"</code>).</dd>
+<dd><code>canbus</code> - CAN bus number of the encoder, see <a href="../../CANBuses.html" title="class in swervelib.core.parser"><code>CANBuses</code></a></dd>
 <dd><code>inverted</code> - Inversion of the encoder.</dd>
 <dt>Returns:</dt>
 <dd><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> of <code>Angle</code> and <code>CanEncoder</code></dd>

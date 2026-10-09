@@ -129,7 +129,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#canbus" class="member-name-link">canbus</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The CAN bus name which the device resides on if using CAN.</div>
+<div class="block">The CAN bus the device is on if using CAN: empty for can_s0, or the bus number, such as <code>"1"</code> for can_s1.</div>
 </div>
 <div class="col-first odd-row-color"><code>int</code></div>
 <div class="col-second odd-row-color"><code><a href="#channel" class="member-name-link">channel</a></code></div>
@@ -255,7 +255,8 @@ loadScripts(document, 'script');</script>
 <h3>canbus</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">canbus</span></div>
-<div class="block">The CAN bus name which the device resides on if using CAN.</div>
+<div class="block">The CAN bus the device is on if using CAN: empty for can_s0, or the bus number, such as <code>"1"</code> for can_s1.
+CTRE devices also take a CANivore's name. See <a href="../CANBuses.html" title="class in swervelib.core.parser"><code>CANBuses</code></a>.</div>
 </div>
 </section>
 </li>

@@ -166,7 +166,8 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>canid</code> - CAN ID of the gyroscope.</dd>
-<dd><code>canbus</code> - CAN bus name of the gyroscope.</dd>
+<dd><code>canbus</code> - CAN bus of the gyroscope, see <a href="../../CANBuses.html" title="class in swervelib.core.parser"><code>CANBuses</code></a>. Anything other than a bus number is used as a
+              ReduxLib bus string, such as <code>"socketcan:can_s1"</code>.</dd>
 <dt>Returns:</dt>
 <dd><code>Pair</code> of the attitude <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> and the gyroscope <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a></dd>
 </dl>
@@ -184,7 +185,8 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>canid</code> - CAN ID of the encoder.</dd>
-<dd><code>canbus</code> - CAN bus name of the encoder.</dd>
+<dd><code>canbus</code> - CAN bus of the encoder, see <a href="../../CANBuses.html" title="class in swervelib.core.parser"><code>CANBuses</code></a>. Anything other than a bus number is used as a
+                ReduxLib bus string, such as <code>"socketcan:can_s1"</code>.</dd>
 <dd><code>inverted</code> - Inverted encoder readings.</dd>
 <dt>Returns:</dt>
 <dd><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> of <code>Angle</code> and <code>Canandmag</code></dd>

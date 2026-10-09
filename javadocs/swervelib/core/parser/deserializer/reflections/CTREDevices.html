@@ -197,7 +197,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>canid</code> - CAN ID of the <a href="CTREDevices.MotorControllerType.html" title="enum class in swervelib.core.parser.deserializer.reflections"><code>CTREDevices.MotorControllerType</code></a></dd>
-<dd><code>canbus</code> - CAN bus name of the <a href="CTREDevices.MotorControllerType.html" title="enum class in swervelib.core.parser.deserializer.reflections"><code>CTREDevices.MotorControllerType</code></a></dd>
+<dd><code>canbus</code> - CAN bus of the <a href="CTREDevices.MotorControllerType.html" title="enum class in swervelib.core.parser.deserializer.reflections"><code>CTREDevices.MotorControllerType</code></a>, see <a href="../../CANBuses.html" title="class in swervelib.core.parser"><code>CANBuses</code></a></dd>
 <dd><code>config</code> - <a href="https://yet-another-software-suite.github.io/YAMS/javadocs/yams/core/motorcontrollers/SmartMotorControllerConfig.html" title="class or interface in yams.core.motorcontrollers" class="external-link"><code>SmartMotorControllerConfig</code></a> to apply to the <a href="https://yet-another-software-suite.github.io/YAMS/javadocs/yams/core/motorcontrollers/SmartMotorController.html" title="class or interface in yams.core.motorcontrollers" class="external-link"><code>SmartMotorController</code></a></dd>
 <dd><code>motor</code> - <code>DCMotor</code> to use with the <a href="https://yet-another-software-suite.github.io/YAMS/javadocs/yams/core/motorcontrollers/SmartMotorController.html" title="class or interface in yams.core.motorcontrollers" class="external-link"><code>SmartMotorController</code></a></dd>
 <dd><code>motorControllerType</code> - Motor controller type.</dd>
@@ -217,7 +217,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>canid</code> - CAN ID of the gyroscope.</dd>
-<dd><code>canbus</code> - CAN bus name of the gyroscope.</dd>
+<dd><code>canbus</code> - CAN bus of the gyroscope, see <a href="../../CANBuses.html" title="class in swervelib.core.parser"><code>CANBuses</code></a></dd>
 <dt>Returns:</dt>
 <dd><code>Pair</code> of the attitude <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> and the gyroscope <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a></dd>
 </dl>
@@ -235,7 +235,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>canid</code> - CAN ID of the encoder.</dd>
-<dd><code>canbus</code> - CAN bus name of the encoder.</dd>
+<dd><code>canbus</code> - CAN bus of the encoder, see <a href="../../CANBuses.html" title="class in swervelib.core.parser"><code>CANBuses</code></a></dd>
 <dd><code>inverted</code> - Inverted encoder readings.</dd>
 <dt>Returns:</dt>
 <dd><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> of <code>Angle</code> and <a href="https://api.ctr-electronics.com/phoenix6/stable/java/com/ctre/phoenix6/hardware/CANcoder.html" title="class or interface in com.ctre.phoenix6.hardware" class="external-link"><code>CANcoder</code></a></dd>

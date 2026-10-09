@@ -173,7 +173,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="swervelib/core/parser/json/DeviceJson.html#canbus" class="member-name-link">canbus</a> - Variable in class swervelib.core.parser.json.<a href="swervelib/core/parser/json/DeviceJson.html" title="class in swervelib.core.parser.json">DeviceJson</a></dt>
 <dd>
-<div class="block">The CAN bus name which the device resides on if using CAN.</div>
+<div class="block">The CAN bus the device is on if using CAN: empty for can_s0, or the bus number, such as <code>"1"</code> for can_s1.</div>
+</dd>
+<dt><a href="swervelib/core/parser/CANBuses.html" class="type-name-link" title="class in swervelib.core.parser">CANBuses</a> - Class in <a href="swervelib/core/parser/package-summary.html">swervelib.core.parser</a></dt>
+<dd>
+<div class="block">Turns the <code>canbus</code> of a device in the JSON configuration into a CAN bus, the same way for every vendor.</div>
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/ReflectionsManager.AbsoluteEncoder.html#CANCODER" class="member-name-link">CANCODER</a> - Enum constant in enum class swervelib.core.parser.deserializer.<a href="swervelib/core/parser/deserializer/ReflectionsManager.AbsoluteEncoder.html" title="enum class in swervelib.core.parser.deserializer">ReflectionsManager.AbsoluteEncoder</a></dt>
 <dd>
@@ -229,6 +233,10 @@ along the way (drive/azimuth motor controllers, absolute encoders, and the gyro)
 <dt><a href="swervelib/core/parser/PIDFConfig.html#d" class="member-name-link">d</a> - Variable in class swervelib.core.parser.<a href="swervelib/core/parser/PIDFConfig.html" title="class in swervelib.core.parser">PIDFConfig</a></dt>
 <dd>
 <div class="block">Derivative Gain for PID.</div>
+</dd>
+<dt><a href="swervelib/core/parser/CANBuses.html#DEFAULT" class="member-name-link">DEFAULT</a> - Static variable in class swervelib.core.parser.<a href="swervelib/core/parser/CANBuses.html" title="class in swervelib.core.parser">CANBuses</a></dt>
+<dd>
+<div class="block">CAN bus used when a device leaves <code>canbus</code> empty.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#desiredChassisSpeeds" class="member-name-link">desiredChassisSpeeds</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
@@ -412,6 +420,10 @@ along the way (drive/azimuth motor controllers, absolute encoders, and the gyro)
 <dt><a href="swervelib/core/parser/deserializer/reflections/ThriftyBotDevices.html#getAttachedAbsoluteEncoder(java.lang.String,java.lang.Object,boolean)" class="member-name-link">getAttachedAbsoluteEncoder(String, Object, boolean)</a> - Static method in class swervelib.core.parser.deserializer.reflections.<a href="swervelib/core/parser/deserializer/reflections/ThriftyBotDevices.html" title="class in swervelib.core.parser.deserializer.reflections">ThriftyBotDevices</a></dt>
 <dd>
 <div class="block">Get the absolute encoder attached to the <code>Nova</code>'s data port.</div>
+</dd>
+<dt><a href="swervelib/core/parser/CANBuses.html#getCANPort(java.lang.String)" class="member-name-link">getCANPort(String)</a> - Static method in class swervelib.core.parser.<a href="swervelib/core/parser/CANBuses.html" title="class in swervelib.core.parser">CANBuses</a></dt>
+<dd>
+<div class="block">Get the <code>CANPort</code> for the <code>canbus</code> of a device.</div>
 </dd>
 <dt><a href="swervelib/core/parser/json/DeviceJson.html#getDCMotor(java.lang.String)" class="member-name-link">getDCMotor(String)</a> - Static method in class swervelib.core.parser.json.<a href="swervelib/core/parser/json/DeviceJson.html" title="class in swervelib.core.parser.json">DeviceJson</a></dt>
 <dd>
@@ -759,6 +771,11 @@ containing the parsed configuration.</div>
 <dt><a href="swervelib/core/parser/deserializer/ReflectionsManager.VendorMotorController.html" class="type-name-link" title="enum class in swervelib.core.parser.deserializer">ReflectionsManager.VendorMotorController</a> - Enum Class in <a href="swervelib/core/parser/deserializer/package-summary.html">swervelib.core.parser.deserializer</a></dt>
 <dd>
 <div class="block"><a href="https://yet-another-software-suite.github.io/YAMS/javadocs/yams/core/motorcontrollers/SmartMotorController.html" title="class or interface in yams.core.motorcontrollers" class="external-link"><code>SmartMotorController</code></a> vendor classes.</div>
+</dd>
+<dt><a href="swervelib/core/parser/CANBuses.html#requireCANPort(java.lang.String,java.lang.String)" class="member-name-link">requireCANPort(String, String)</a> - Static method in class swervelib.core.parser.<a href="swervelib/core/parser/CANBuses.html" title="class in swervelib.core.parser">CANBuses</a></dt>
+<dd>
+<div class="block">Get the <code>CANPort</code> for the <code>canbus</code> of a device from a vendor that only uses the Systemcore and
+Motioncore CAN buses.</div>
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/ReflectionsManager.VENDOR.html#REV" class="member-name-link">REV</a> - Enum constant in enum class swervelib.core.parser.deserializer.<a href="swervelib/core/parser/deserializer/ReflectionsManager.VENDOR.html" title="enum class in swervelib.core.parser.deserializer">ReflectionsManager.VENDOR</a></dt>
 <dd>
