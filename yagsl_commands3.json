@@ -24,12 +24,6 @@
     "jniDependencies": [],
     "requires": [
         {
-            "uuid": "4decdc05-a056-46cf-9561-39449bbb0130",
-            "errorMessage": "Commands v3 is required! Install it from the WPILib vendor libraries.",
-            "offlineFileName": "CommandsV3.json",
-            "onlineUrl": ""
-        },
-        {
             "uuid": "9eadd383-6bdc-4107-957a-b50cd3146f17",
             "errorMessage": "YAMS (Commands v3) is required!",
             "offlineFileName": "yams_commands3.json",
