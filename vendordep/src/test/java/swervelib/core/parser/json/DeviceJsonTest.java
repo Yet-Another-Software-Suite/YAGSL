@@ -173,13 +173,13 @@ class DeviceJsonTest {
   @Test
   void getGyro_customType_returnsNull() {
     DeviceJson d = deviceWithType("custom");
-    assertEquals(null, d.getGyro(SwerveDriveJson.GyroAxis.YAW));
+    assertEquals(null, d.getGyro());
   }
 
   @Test
   void getGyro_customTypeCaseInsensitive_returnsNull() {
     DeviceJson d = deviceWithType("CUSTOM");
-    assertEquals(null, d.getGyro(SwerveDriveJson.GyroAxis.YAW));
+    assertEquals(null, d.getGyro());
   }
 
   // ---------------------------------------------------------------------------

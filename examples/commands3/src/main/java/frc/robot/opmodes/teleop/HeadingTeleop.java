@@ -37,13 +37,13 @@ public class HeadingTeleop implements OpMode
   public HeadingTeleop(Robot robot)
   {
     XboxController hid = driverXbox.getController();
-    driveStream = new SwerveInputStream(robot.swerve.getDrive(), () -> -hid.getLeftY(), () -> -hid.getLeftX())
+    driveStream = SwerveInputStream.of(robot.swerve.getDrive(), () -> -hid.getLeftY(), () -> -hid.getLeftX())
         .withDeadband(0.05)
         .withScaleTranslation(DriverButtons.NORMAL_SPEED_SCALE)
         .withScaleRotation(DriverButtons.NORMAL_SPEED_SCALE)
-        .setAllianceRelativeControl(true)
+        .withAllianceRelativeControl()
         .withControllerHeadingAxis(() -> -hid.getRightX(), () -> -hid.getRightY())
-        .setHeadingControl(true);
+        .withHeadingControl(() -> true);
 
     Command driveCommand = robot.swerve.run(coroutine -> {
       while (true)

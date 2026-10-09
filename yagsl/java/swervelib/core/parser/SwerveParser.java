@@ -28,12 +28,12 @@ import swervelib.core.parser.json.ModuleJson;
 import swervelib.core.parser.json.PIDFPropertiesJson;
 import swervelib.core.parser.json.PhysicalPropertiesJson;
 import swervelib.core.parser.json.SwerveDriveJson;
-import swervelib.core.parser.json.SwerveDriveJson.GyroAxis;
 import swervelib.core.parser.json.modules.AngleGearingJson;
 import swervelib.core.parser.json.modules.DriveGearingJson;
 import yams.core.gearing.GearBox;
 import yams.core.mechanisms.config.SwerveDriveConfig;
 import yams.core.mechanisms.config.SwerveModuleConfig;
+import yams.core.mechanisms.config.enums.GyroAxis;
 import yams.core.mechanisms.swerve.SwerveDrive;
 import yams.core.mechanisms.swerve.SwerveModule;
 import yams.core.motorcontrollers.SmartMotorController;
@@ -432,11 +432,12 @@ public class SwerveParser {
       return null;
     }
 
-    // YAMS inverts the heading itself (withGyroInverted), so the gyro attitude is passed through un-inverted.
-    Pair<Supplier<Rotation3d>, Object> gyro = swerveDriveJson.gyro.getGyro(
-        GyroAxis.valueOf(swerveDriveJson.gyroAxis.toUpperCase()));
+    // YAMS rotates the raw gyro attitude into the robot's frame (withGyroHeadingAxis) and inverts the heading
+    // (withGyroInverted) itself, so the gyro attitude is passed through untouched.
+    Pair<Supplier<Rotation3d>, Object> gyro = swerveDriveJson.gyro.getGyro();
     config
         .withGyro(gyro.getFirst())
+        .withGyroHeadingAxis(GyroAxis.valueOf(swerveDriveJson.gyroAxis.toUpperCase()))
         .withGyroInverted(swerveDriveJson.gyroInvert);
     return gyro.getSecond();
   }

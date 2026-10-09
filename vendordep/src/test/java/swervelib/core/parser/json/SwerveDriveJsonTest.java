@@ -4,73 +4,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import io.avaje.jsonb.Jsonb;
 import org.junit.jupiter.api.Test;
-import org.wpilib.math.geometry.Rotation3d;
-import swervelib.core.parser.json.SwerveDriveJson.GyroAxis;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import yams.core.mechanisms.config.enums.GyroAxis;
 
 class SwerveDriveJsonTest {
 
   private final Jsonb mapper = Jsonb.builder().build();
 
-  // -- GyroAxis enum tests --------------------------------------------------
+  // -- gyroAxis -> YAMS GyroAxis ---------------------------------------------
 
-  @Test
-  void testGyroAxisYawExists() {
-    assertEquals("YAW", GyroAxis.YAW.name());
+  // SwerveParser hands gyroAxis to SwerveDriveConfig#withGyroHeadingAxis via
+  // GyroAxis.valueOf(gyroAxis.toUpperCase()), so every documented value must map onto YAMS's enum.
+  @ParameterizedTest
+  @CsvSource({"yaw, YAW", "pitch, PITCH", "roll, ROLL"})
+  void testGyroAxisMapsToYamsGyroAxis(String json, GyroAxis expected) {
+    assertEquals(expected, GyroAxis.valueOf(json.toUpperCase()));
   }
 
   @Test
-  void testGyroAxisPitchExists() {
-    assertEquals("PITCH", GyroAxis.PITCH.name());
-  }
-
-  @Test
-  void testGyroAxisRollExists() {
-    assertEquals("ROLL", GyroAxis.ROLL.name());
-  }
-
-  // -- GyroAxis.toRobotAttitude tests ---------------------------------------
-
-  private static final Rotation3d GYRO_ATTITUDE = new Rotation3d(0.1, 0.2, 0.3);
-
-  @Test
-  void testYawAxisPassesThroughFullAttitude() {
-    Rotation3d attitude = GyroAxis.YAW.toRobotAttitude(() -> GYRO_ATTITUDE).get();
-    assertEquals(GYRO_ATTITUDE.getX(), attitude.getX(), 1e-9);
-    assertEquals(GYRO_ATTITUDE.getY(), attitude.getY(), 1e-9);
-    assertEquals(GYRO_ATTITUDE.getZ(), attitude.getZ(), 1e-9);
-  }
-
-  @Test
-  void testPitchAxisBecomesHeading() {
-    Rotation3d attitude = GyroAxis.PITCH.toRobotAttitude(() -> GYRO_ATTITUDE).get();
-    assertEquals(0.0, attitude.getX(), 1e-9);
-    assertEquals(0.0, attitude.getY(), 1e-9);
-    assertEquals(GYRO_ATTITUDE.getY(), attitude.getZ(), 1e-9);
-  }
-
-  @Test
-  void testRollAxisBecomesHeading() {
-    Rotation3d attitude = GyroAxis.ROLL.toRobotAttitude(() -> GYRO_ATTITUDE).get();
-    assertEquals(0.0, attitude.getX(), 1e-9);
-    assertEquals(0.0, attitude.getY(), 1e-9);
-    assertEquals(GYRO_ATTITUDE.getX(), attitude.getZ(), 1e-9);
-  }
-
-  @Test
-  void testAttitudeIsReadOnEveryCall() {
-    Rotation3d[] gyro = {new Rotation3d(0, 0, 0.5)};
-    var attitude = GyroAxis.YAW.toRobotAttitude(() -> gyro[0]);
-    gyro[0] = new Rotation3d(0, 0, 1.0);
-    assertEquals(1.0, attitude.get().getZ(), 1e-9);
-  }
-
-  @Test
-  void testGyroAxisValueOfYaw() {
-    assertEquals(GyroAxis.YAW, GyroAxis.valueOf("YAW"));
-  }
-
-  @Test
-  void testGyroAxisValuesLength() {
+  void testYamsGyroAxisHasNoUndocumentedValues() {
     assertEquals(3, GyroAxis.values().length);
   }
 

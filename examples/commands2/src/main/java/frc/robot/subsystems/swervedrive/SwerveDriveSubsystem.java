@@ -145,7 +145,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
 
   public SwerveInputStream getAngularVelocityStream(DoubleSupplier x, DoubleSupplier y, DoubleSupplier rot)
   {
-    return new SwerveInputStream(drive, x, y, rot);
+    return SwerveInputStream.of(drive, x, y, rot);
   }
 
   /**
@@ -155,16 +155,16 @@ public class SwerveDriveSubsystem extends SubsystemBase
    */
   public Rotation2d getHeading()
   {
-    return new Rotation2d(drive.getGyroAngle());
+    return drive.getGyroRotation3d().toRotation2d();
   }
 
   /**
    * Get the gyro's full 3 axis orientation (roll, pitch, and yaw) as a {@link Rotation3d}.
    * <p>
-   * {@link SwerveDrive} itself only tracks a single yaw {@link org.wpilib.units.measure.Angle} (see
-   * {@link SwerveDrive#getGyroAngle()}), since yaw is the only axis MegaTag2 pose estimation actually requires. This
-   * subsystem grabs the raw {@link Canandgyro} device instead (via {@link SwerveParser#createSwerveDriveDevices}, see
-   * "How to access raw hardware devices" in the docs) so it can report the IMU's real roll and pitch too. That's a
+   * {@link SwerveDrive#getGyroRotation3d()} already reports the robot's attitude, but yaw is the only axis MegaTag2
+   * pose estimation actually requires. This subsystem reads the raw {@link Canandgyro} device (via
+   * {@link SwerveParser#createSwerveDriveDevices}, see "How to access raw hardware devices" in the docs) to show how
+   * to get at the IMU directly, e.g. for its roll and pitch rates. That's a
    * nice to have here, not a requirement. Any gyro that only reports yaw (NavX, ADIS16470, ADXRS450, or otherwise)
    * still works fine for MegaTag2, and feeding it real roll and pitch could help or hurt the resulting pose
    * depending on your camera mount and how noisy that data is, so don't treat it as free accuracy.

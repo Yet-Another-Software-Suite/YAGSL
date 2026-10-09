@@ -11,7 +11,6 @@ import org.wpilib.hardware.rotation.DutyCycleEncoder;
 import swervelib.core.parser.deserializer.ReflectionsManager.AbsoluteEncoder;
 import swervelib.core.parser.deserializer.ReflectionsManager.Gyro;
 import swervelib.core.parser.deserializer.ReflectionsManager.VendorMotorController;
-import swervelib.core.parser.json.SwerveDriveJson.GyroAxis;
 import yams.core.motorcontrollers.SmartMotorController;
 import yams.core.motorcontrollers.SmartMotorControllerConfig;
 
@@ -79,11 +78,10 @@ public class DeviceJson
   /**
    * Get the gyro attitude supplier.
    *
-   * @param axis Gyro axis used as the robot's heading.
-   * @return {@link Pair} of the robot attitude {@link Supplier} and the vendor gyroscope {@link Object}, or
+   * @return {@link Pair} of the gyroscope attitude {@link Supplier} and the vendor gyroscope {@link Object}, or
    * {@code null} if the gyro type is {@code "custom"} and the user is expected to configure the gyro themselves.
    */
-  public Pair<Supplier<Rotation3d>, Object> getGyro(GyroAxis axis)
+  public Pair<Supplier<Rotation3d>, Object> getGyro()
   {
     if ("custom".equalsIgnoreCase(type))
     {
@@ -100,29 +98,17 @@ public class DeviceJson
           switch (vendorType)
           {
             case "navx3":
-              return withAxis(Gyro.NAVX3.getGyro(id, canbus), axis);
+              return Gyro.NAVX3.getGyro(id, canbus);
             case "pigeon2":
-              return withAxis(Gyro.PIGEON2.getGyro(id, canbus), axis);
+              return Gyro.PIGEON2.getGyro(id, canbus);
             case "canandgyro":
-              return withAxis(Gyro.CANANDGYRO.getGyro(id, canbus), axis);
+              return Gyro.CANANDGYRO.getGyro(id, canbus);
           }
         case "internal":
           throw new IllegalArgumentException("Internal gyro not supported yet!");
       }
     }
     throw new IllegalArgumentException("Invalid gyro type: " + type);
-  }
-
-  /**
-   * Apply the heading axis to a vendor gyroscope's attitude.
-   *
-   * @param gyro {@link Pair} of the gyroscope attitude {@link Supplier} and the vendor gyroscope {@link Object}.
-   * @param axis Gyro axis used as the robot's heading.
-   * @return {@link Pair} of the robot attitude {@link Supplier} and the vendor gyroscope {@link Object}.
-   */
-  private static Pair<Supplier<Rotation3d>, Object> withAxis(Pair<Supplier<Rotation3d>, Object> gyro, GyroAxis axis)
-  {
-    return Pair.of(axis.toRobotAttitude(gyro.getFirst()), gyro.getSecond());
   }
 
   /**

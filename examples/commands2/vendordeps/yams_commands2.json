@@ -1,7 +1,7 @@
 {
     "fileName": "yams_commands2.json",
     "name": "Yet Another Mechanism System (Commands v2)",
-    "version": "2026.10.03",
+    "version": "2026.10.05",
     "wpilibYear": "2027_alpha7",
     "uuid": "a1051e86-a979-4880-a28b-a0d5362d1d96",
     "mavenUrls": [
@@ -12,19 +12,19 @@
         {
             "groupId": "yams",
             "artifactId": "YAMS-core",
-            "version": "2026.10.03"
+            "version": "2026.10.05"
         },
         {
             "groupId": "yams",
             "artifactId": "YAMS-commands2",
-            "version": "2026.10.03"
+            "version": "2026.10.05"
         }
     ],
     "cppDependencies": [
         {
             "groupId": "yams",
             "artifactId": "YAMS-cpp",
-            "version": "2026.10.03",
+            "version": "2026.10.05",
             "libName": "YAMS",
             "headerClassifier": "headers",
             "sharedLibrary": true,
@@ -39,5 +39,19 @@
         }
     ],
     "jniDependencies": [],
-    "requires": []
+    "requires": [
+        {
+            "uuid": "111e20f7-815e-48f8-9dd6-e675ce75b266",
+            "errorMessage": "Commands V2 is required! Install it from the WPILib vendor libraries.",
+            "offlineFileName": "CommandsV2.json",
+            "onlineUrl": ""
+        }
+    ],
+    "conflictsWith": [
+        {
+            "uuid": "9eadd383-6bdc-4107-957a-b50cd3146f17",
+            "errorMessage": "Yet Another Mechanism System (Commands v2) cannot be used with Yet Another Mechanism System (Commands v3). Remove one of them.",
+            "offlineFileName": "yams_commands3.json"
+        }
+    ]
 }
