@@ -69,7 +69,8 @@ public class ThriftyBotDevices
   }
 
   /**
-   * Absolute encoder types.
+   * Absolute encoder types on the {@link Nova}'s data port, named after the encoder in the JSON {@code <encoder>_attached}
+   * type.
    */
   public enum AbsoluteEncoder
   {
@@ -78,13 +79,17 @@ public class ThriftyBotDevices
      */
     CANANDMAG(AbsoluteEncoderType.REDUX_ENCODER),
     /**
-     * 10 pin encoder.
+     * Thrifty 10 pin absolute encoder.
      */
-    THRIFTY10PIN(AbsoluteEncoderType.THRIFTY_10_PIN_ENCODER),
+    THRIFTY(AbsoluteEncoderType.THRIFTY_10_PIN_ENCODER),
     /**
-     * Through bore encoder.
+     * REV Through Bore encoder.
      */
-    THROUGHBORE(AbsoluteEncoderType.REV_ENCODER),
+    REVTHROUGHBORE(AbsoluteEncoderType.REV_ENCODER),
+    /**
+     * AndyMark hex bore encoder, read as a duty cycle encoder.
+     */
+    ANDYMARKHEXBORE(AbsoluteEncoderType.REV_ENCODER),
     /**
      * SRX Mag encoder.
      */
@@ -126,8 +131,15 @@ public class ThriftyBotDevices
   public static Pair<Supplier<Angle>, Object> getAttachedAbsoluteEncoder(String attachType, Object motorController,
                                                                          boolean inverted)
   {
-    // Will throw an error if invalid encoder type is given.
-    var encoderType = AbsoluteEncoder.valueOf(attachType.toUpperCase()).encoder;
+    AbsoluteEncoder absoluteEncoder;
+    try
+    {
+      absoluteEncoder = AbsoluteEncoder.valueOf(attachType.toUpperCase());
+    } catch (IllegalArgumentException e)
+    {
+      throw new IllegalArgumentException("Invalid encoder type for a Thrifty Nova: " + attachType, e);
+    }
+    var encoderType = absoluteEncoder.encoder;
     var nova        = (Nova) motorController;
     nova.configure(NovaConfig.absoluteEncoderType(encoderType), NovaConfig.absoluteDirection(getDirection(inverted)));
     return Pair.of(() -> Rotations.of(nova.status().getAbsPosition()), FeedbackSensorType.ABS);

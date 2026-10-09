@@ -23,13 +23,17 @@ import yams.core.mechanisms.swerve.SwerveModule;
 
 /**
  * Builds a whole swerve drive from a JSON config whose drive motors are NEOs and azimuth motors are Minions on Thrifty
- * Novas, with absolute encoders attached to the azimuth Novas, through the same reflection path a robot uses.
+ * Novas, with a different data port absolute encoder attached to each azimuth Nova, through the same reflection path a
+ * robot uses.
  */
 class SwerveParserNovaTest {
 
   @TempDir static Path configDir;
 
   private static final String[] MODULES = {"fl", "fr", "bl", "br"};
+  /** Absolute encoders wired to each azimuth Nova's data port, one per data port encoder type. */
+  private static final String[] ENCODERS = {
+      "revthroughbore_attached", "thrifty_attached", "srxmag_attached", "canandmag_attached"};
 
   @BeforeAll
   static void writeConfig() throws IOException {
@@ -54,7 +58,7 @@ class SwerveParserNovaTest {
           modules.resolve(MODULES[i] + ".json"),
           "{\"drive\":{\"type\":\"nova_neo\",\"id\":" + (50 + i * 2) + ",\"canbus\":\"\"},"
               + "\"angle\":{\"type\":\"nova_minion\",\"id\":" + (51 + i * 2) + ",\"canbus\":\"\"},"
-              + "\"absoluteEncoder\":{\"type\":\"revthroughbore_attached\",\"id\":0,\"canbus\":\"\"},"
+              + "\"absoluteEncoder\":{\"type\":\"" + ENCODERS[i] + "\",\"id\":0,\"canbus\":\"\"},"
               + "\"inverted\":{\"drive\":false,\"angle\":false},"
               + "\"absoluteEncoderOffset\":0,\"absoluteEncoderInverted\":false,"
               + "\"location\":{\"front\":" + front + ",\"left\":" + left + "}}");

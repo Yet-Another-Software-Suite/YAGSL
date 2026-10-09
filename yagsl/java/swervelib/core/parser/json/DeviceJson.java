@@ -292,6 +292,11 @@ public class DeviceJson
         return Pair.of(() -> Rotations.of(dutyCycleEncoder.get()), dutyCycleEncoder);
       }
       case "attached":
+        if (angleMotorVendor == VendorMotorController.NOVA)
+        {
+          // The Nova decodes each data port encoder differently, so it needs the specific encoder type.
+          return angleMotorVendor.getAbsoluteEncoder(vendorType, angleMotorController, inverted);
+        }
         switch (vendorType)
         {
           case "andymarkhexbore":

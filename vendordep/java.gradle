@@ -29,7 +29,8 @@ dependencies {
     annotationProcessor wpi.java.deps.wpilibAnnotations()
     implementation wpi.java.deps.wpilib()
     // YAMS (yams_commands2.json + yams_commands3.json), Phoenix6, REVLib, ReduxLib, ThriftyLib and the WPILib
-    // command frameworks all come in through the vendordeps/ folder.
+    // command frameworks all come in through the vendordeps/ folder. ThriftyLib is only needed here to build and test
+    // ThriftyBotDevices; robots load it reflectively, so the published vendordeps do not require it.
     implementation wpi.java.vendor.java()
 
     implementation "org.wpilib.cscore:cscore-java:$wpilibVersion"

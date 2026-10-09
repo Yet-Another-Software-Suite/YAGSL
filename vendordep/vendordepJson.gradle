@@ -36,12 +36,8 @@ def sharedRequires = [
         offlineFileName: 'ReduxLib-2027.0.0-alpha-7p1.json',
         onlineUrl      : 'https://frcsdk.reduxrobotics.com/ReduxLib_2027.json',
     ],
-    [
-        uuid           : '60b2694b-9e6e-4026-81ee-6f167946f4b0',
-        errorMessage   : 'ThriftyLib is required!',
-        offlineFileName: 'ThriftyLib.json',
-        onlineUrl      : 'https://software.thethriftybot.com/frcvendor/ThriftyLib-2027.json',
-    ],
+    // ThriftyLib is optional: YAGSL only loads ThriftyBotDevices through reflection when a JSON config asks for a
+    // Nova, so it is only in vendordeps/ to build and test against locally.
     // TODO: Re-enable once StudicaLib and AmLib publish 2027_alpha7 vendordeps.
     // [
     //     uuid           : '963ef341-8abd-4981-a969-c8ae3f592e82',

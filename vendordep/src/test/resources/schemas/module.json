@@ -45,7 +45,7 @@
         },
         "canbus": {
           "type": "string",
-          "description": "Name of the CAN bus that the motor controller is connected to. Default is \"\""
+          "description": "Name of the CAN bus that the motor controller is connected to. Default is \"\". Thrifty Novas take the CAN bus number instead, such as \"1\"."
         }
       },
       "required": [
@@ -98,7 +98,7 @@
         },
         "canbus": {
           "type": "string",
-          "description": "Name of the CAN Bus the Motor Controller is on. Default is \"\""
+          "description": "Name of the CAN Bus the Motor Controller is on. Default is \"\". Thrifty Novas take the CAN bus number instead, such as \"1\"."
         }
       },
       "required": [
@@ -163,12 +163,14 @@
             "andymarkhexbore_dio",
             "andymarkhexbore_analog",
             "andymarkhexbore_can",
+            "thrifty_attached",
+            "thrifty_analog",
             "analog5v_attached",
             "analog_attached",
             "dutycycle_attached"
           ],
           "type": "string",
-          "description": "Type of absolute encoder"
+          "description": "Type of absolute encoder. _attached encoders are wired to the angle motor controller. thrifty_attached needs a Thrifty Nova angle motor, and a Thrifty Nova does not support analog5v_attached."
         },
         "id": {
           "type": "number",
