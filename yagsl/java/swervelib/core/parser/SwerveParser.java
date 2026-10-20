@@ -246,7 +246,12 @@ public class SwerveParser {
             SmartMotorControllerTelemetry.DoubleTelemetryField.StatorCurrent,
             SmartMotorControllerTelemetry.DoubleTelemetryField.SupplyCurrent,
             SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementPosition,
-            SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementVelocity
+            SmartMotorControllerTelemetry.DoubleTelemetryField.MeasurementVelocity,
+            // For the config generator's Auto gains: the wheel's rotations per second, which the gains are
+            // per, how often the closed loop runs, and how late the velocity is measured.
+            SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismVelocity,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.ClosedLoopPeriod,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.VelocityMeasurementDelay
         }, true);
     swerveDriveConfig.getSwerveDriveTelemetryConfig()
                      .flatMap(SwerveDriveTelemetryConfig::getDataLogName)
@@ -286,7 +291,11 @@ public class SwerveParser {
             SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismPosition,
             SmartMotorControllerTelemetry.DoubleTelemetryField.MechanismVelocity,
             SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderPosition,
-            SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderVelocity
+            SmartMotorControllerTelemetry.DoubleTelemetryField.ExternalEncoderVelocity,
+            // For the config generator's Auto gains: how often the closed loop runs, and how late the
+            // velocity is measured.
+            SmartMotorControllerTelemetry.DoubleTelemetryField.ClosedLoopPeriod,
+            SmartMotorControllerTelemetry.DoubleTelemetryField.VelocityMeasurementDelay
         }, true);
     swerveDriveConfig.getSwerveDriveTelemetryConfig()
                      .flatMap(SwerveDriveTelemetryConfig::getDataLogName)
