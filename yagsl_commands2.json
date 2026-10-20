@@ -1,7 +1,7 @@
 {
     "fileName": "yagsl_commands2.json",
     "name": "YAGSL (Commands v2)",
-    "version": "2026.10.09",
+    "version": "2026.10.19",
     "wpilibYear": "2027_alpha7",
     "uuid": "1ccce5a4-acd2-4d18-bca3-4b8047188400",
     "mavenUrls": [
@@ -12,12 +12,12 @@
         {
             "groupId": "swervelib",
             "artifactId": "YAGSL-core",
-            "version": "2026.10.09"
+            "version": "2026.10.19"
         },
         {
             "groupId": "swervelib",
             "artifactId": "YAGSL-commands2",
-            "version": "2026.10.09"
+            "version": "2026.10.19"
         }
     ],
     "cppDependencies": [],

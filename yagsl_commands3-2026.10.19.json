@@ -1,0 +1,40 @@
+{
+    "fileName": "yagsl_commands3.json",
+    "name": "YAGSL (Commands v3)",
+    "version": "2026.10.19",
+    "wpilibYear": "2027_alpha7",
+    "uuid": "e2b4dc30-23dc-4981-89ef-d2bb52b08928",
+    "mavenUrls": [
+        "https://cdn.yassrobotics.com/"
+    ],
+    "jsonUrl": "https://cdn.yassrobotics.com/yagsl_commands3.json",
+    "javaDependencies": [
+        {
+            "groupId": "swervelib",
+            "artifactId": "YAGSL-core",
+            "version": "2026.10.19"
+        },
+        {
+            "groupId": "swervelib",
+            "artifactId": "YAGSL-commands3",
+            "version": "2026.10.19"
+        }
+    ],
+    "cppDependencies": [],
+    "jniDependencies": [],
+    "requires": [
+        {
+            "uuid": "9eadd383-6bdc-4107-957a-b50cd3146f17",
+            "errorMessage": "YAMS (Commands v3) is required!",
+            "offlineFileName": "yams_commands3.json",
+            "onlineUrl": "https://cdn.yassrobotics.com/yams_commands3.json"
+        }
+    ],
+    "conflictsWith": [
+        {
+            "uuid": "1ccce5a4-acd2-4d18-bca3-4b8047188400",
+            "errorMessage": "YAGSL (Commands v3) cannot be used with YAGSL (Commands v2). Remove one of them.",
+            "offlineFileName": "yagsl_commands2.json"
+        }
+    ]
+}
