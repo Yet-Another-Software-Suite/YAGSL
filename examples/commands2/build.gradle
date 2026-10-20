@@ -16,10 +16,12 @@ sourceSets {
             srcDirs 'src/main/java'
             // YAGSL_TESTING
             // Compile YAGSL straight from the repository's yagsl/java so the example builds against
-            // the local sources instead of a published vendordep. Released examples have this block
-            // stripped and use yagsl_commands2.json instead.
+            // the local sources instead of a published vendordep, and YAMS from its yams/java: a YAMS
+            // checkout beside this repository, or inside it in CI. Released examples have this block
+            // stripped and use yagsl_commands2.json and yams_commands2.json instead.
             srcDirs '../../yagsl/java'
             srcDirs '../../../YAMS/yams/java'
+            srcDirs '../../YAMS/yams/java'
             // Commands v2 examples only build YAGSL core and the commands2 layer.
             exclude 'swervelib/commands3/**'
             exclude 'yams/commands3/**'

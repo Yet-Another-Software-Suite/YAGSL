@@ -25,13 +25,18 @@ jobs:
         example: [commands2, commands3]
     steps:
       - uses: actions/checkout@v4
+      # The examples compile YAMS from its yams/java, checked out inside this repository.
+      - uses: actions/checkout@v4
+        with:
+          repository: Yet-Another-Software-Suite/YAMS
+          path: YAMS
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 25
       - uses: gradle/actions/setup-gradle@v4
-      # Builds the example against the local yagsl/java sources (its YAGSL_TESTING block) and runs its
-      # simulation smoke test.
+      # Builds the example against the local yagsl/java and YAMS yams/java sources (its YAGSL_TESTING
+      # block) and runs its simulation smoke test.
       - name: Build and test
         run: chmod +x gradlew && ./gradlew build
         working-directory: examples/${{ matrix.example }}

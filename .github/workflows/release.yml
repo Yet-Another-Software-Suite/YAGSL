@@ -22,6 +22,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      # The examples compile YAMS from its yams/java, checked out inside this repository.
+      - uses: actions/checkout@v7
+        with:
+          repository: Yet-Another-Software-Suite/YAMS
+          path: YAMS
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
@@ -43,11 +48,14 @@ jobs:
       - name: Strip testing-only fixups from the examples
         run: |
           for example in commands2 commands3; do
-            # The YAGSL_TESTING fixup compiles against yagsl/java directly so the example build
-            # doesn't depend on a published vendordep. The released example instead consumes the
-            # generated vendordep JSON like a real robot project would.
+            # The YAGSL_TESTING fixup compiles against yagsl/java and YAMS's yams/java directly so the
+            # example build doesn't depend on a published vendordep. The released example instead
+            # consumes the generated YAGSL and published YAMS vendordep JSONs like a real robot project
+            # would.
             sed -i '/\/\/ YAGSL_TESTING/,/\/\/ END_YAGSL_TESTING/d' "examples/$example/build.gradle"
             cp "vendordep/build/maven/yagsl_$example.json" "examples/$example/vendordeps/yagsl_$example.json"
+            # And the published YAMS vendordep, in place of the YAMS sources.
+            curl -fsSL "https://yet-another-software-suite.github.io/YAMS/yams_$example.json" -o "examples/$example/vendordeps/yams_$example.json"
           done
       - name: Zip examples
         run: |
