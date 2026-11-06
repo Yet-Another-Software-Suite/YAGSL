@@ -9,8 +9,6 @@ import static org.wpilib.units.Units.Radians;
 import static org.wpilib.units.Units.RadiansPerSecond;
 import static org.wpilib.units.Units.Rotations;
 import static org.wpilib.units.Units.RotationsPerSecond;
-import static org.wpilib.units.Units.RotationsPerSecondPerSecond;
-import static org.wpilib.units.Units.Second;
 
 import org.wpilib.util.Pair;
 import org.wpilib.math.controller.SimpleMotorFeedforward;
@@ -60,14 +58,6 @@ public class SwerveParser {
    * Module number mapped to the JSON name.
    */
   private static final HashMap<String, Integer> moduleConfigs = new HashMap<>();
-  /**
-   * Acceleration of a Thrifty Nova drive motor's velocity profile, in wheel rotations per second squared. High enough
-   * that it never limits the drive; the profile is only there so YAMS runs the drive's closed loop and feedforward on
-   * the SystemCore, since the Nova applies a feedforward only with a position profile.
-   */
-  private static final double NOVA_DRIVE_PROFILE_ACCELERATION = 1000;
-  /** Jerk of a Thrifty Nova drive motor's velocity profile, in wheel rotations per second cubed. */
-  private static final double NOVA_DRIVE_PROFILE_JERK = 1e6;
   /**
    * JSON reader. Uses the adapters avaje-jsonb generates for the {@code @Json} classes at compile time.
    */
@@ -268,7 +258,7 @@ public class SwerveParser {
                      .ifPresent(driveDataLogName -> driveTelemetryConfig.withDataLogName(
                          driveDataLogName + "/modules/" + getModuleName(moduleIndex) + "/drive"));
 
-    C config = motorConfig
+    return motorConfig
         .withMotorInverted(moduleJson.inverted.drive)
         .withControlMode(ControlMode.CLOSED_LOOP)
         .withWheelDiameter(Inches.of(driveGearing.diameter))
@@ -285,14 +275,6 @@ public class SwerveParser {
         .withStatorCurrentLimit(
             Amps.of(physicalPropertiesJson.statorCurrentLimit.drive))
         .withTelemetry("drive", driveTelemetryConfig);
-    if (moduleJson.drive.getVendor(VENDOR.UNKNOWN) == VENDOR.THRIFTYBOT) {
-      // The Nova applies a feedforward only with a position profile, so a velocity profile keeps the drive's closed
-      // loop, with its kV, on the SystemCore.
-      config.withTrapezoidalProfile(
-          RotationsPerSecondPerSecond.of(NOVA_DRIVE_PROFILE_ACCELERATION),
-          RotationsPerSecondPerSecond.per(Second).of(NOVA_DRIVE_PROFILE_JERK));
-    }
-    return config;
   }
 
   private static <C extends SmartMotorControllerConfig<C>> C createAzimuthMotorConfig(
@@ -320,7 +302,7 @@ public class SwerveParser {
                      .ifPresent(driveDataLogName -> azimuthTelemetryConfig.withDataLogName(
                          driveDataLogName + "/modules/" + getModuleName(moduleIndex) + "/azimuth"));
 
-    C config = motorConfig
+    return motorConfig
         .withMotorInverted(moduleJson.inverted.angle)
         .withControlMode(ControlMode.CLOSED_LOOP)
         .withGearing(azimuthGearing.gearRatio)
@@ -328,28 +310,17 @@ public class SwerveParser {
             pidfPropertiesJson.angle.p,
             pidfPropertiesJson.angle.i,
             pidfPropertiesJson.angle.d)
-        .withZeroPower(MotorMode.BRAKE)
-        .withStatorCurrentLimit(
-            Amps.of(physicalPropertiesJson.statorCurrentLimit.angle))
-        .withTelemetry("azimuth", azimuthTelemetryConfig);
-    if (moduleJson.angle.getVendor(VENDOR.UNKNOWN) == VENDOR.THRIFTYBOT) {
-      // The Nova runs the azimuth's closed loop itself. It applies a feedforward only with a motion profile, and wraps
-      // continuously only over [0, 1) of the absolute encoder on its data port, which createModuleHardware adds.
-      if (pidfPropertiesJson.angle.s != 0 || pidfPropertiesJson.angle.v != 0 || pidfPropertiesJson.angle.a != 0) {
-        throw new IllegalArgumentException(
-            "A Thrifty Nova azimuth motor (CAN ID " + moduleJson.angle.id + ") can't use an angle feedforward. Set "
-            + "angle s, v and a to 0 in pidfproperties.json.");
-      }
-      return config;
-    }
-    return config
         .withFeedforward(new SimpleMotorFeedforward(
             pidfPropertiesJson.angle.s,
             pidfPropertiesJson.angle.v,
             pidfPropertiesJson.angle.a))
         .withContinuousWrapping(
             Rotations.of(-0.5),
-            Rotations.of(0.5));
+            Rotations.of(0.5))
+        .withZeroPower(MotorMode.BRAKE)
+        .withStatorCurrentLimit(
+            Amps.of(physicalPropertiesJson.statorCurrentLimit.angle))
+        .withTelemetry("azimuth", azimuthTelemetryConfig);
   }
 
   private static ModuleHardware createModuleHardware(
@@ -359,15 +330,6 @@ public class SwerveParser {
     var azimuthMotorVendor = moduleJson.angle.getVendor(VENDOR.UNKNOWN);
 
     var absoluteEncoderVendor = moduleJson.absoluteEncoder.getVendor(azimuthMotorVendor);
-
-    // A Nova wraps the azimuth continuously only with the absolute encoder on its own data port closing the loop.
-    boolean novaAzimuth = azimuthMotorVendor == VENDOR.THRIFTYBOT;
-    if (novaAzimuth && !(absoluteEncoderVendor == azimuthMotorVendor && swerveDriveConfig.useExternalFeedbackSensor())) {
-      throw new IllegalArgumentException(
-          "A Thrifty Nova azimuth motor (CAN ID " + moduleJson.angle.id + ") needs its absolute encoder plugged into "
-          + "the Nova's data port, such as \"thrifty_attached\" or \"revthroughbore_attached\", and the external "
-          + "feedback sensor in use. A " + moduleJson.absoluteEncoder.type + " can't be used with it.");
-    }
 
     // Create the azimuth motor controller exactly once: an attached absolute encoder is read through its vendor
     // device, and YAMS wrappers register Alerts keyed by CAN ID, so a second wrapper for the same device would throw
@@ -385,9 +347,6 @@ public class SwerveParser {
           .withExternalEncoder(absoluteEncoder.getSecond())
           .withExternalEncoderZeroOffset(Degrees.of(moduleJson.absoluteEncoderOffset))
           .withUseExternalFeedbackEncoder(true);
-      if (novaAzimuth) {
-        azimuthConfig.withContinuousWrapping(Rotations.of(0), Rotations.of(1));
-      }
       if (!azimuthMotorController.applyConfig(azimuthConfig)) {
         System.err.println("Failed to apply the external encoder configuration to the azimuth motor controller of "
                            + moduleJson.angle.type + " (CAN ID " + moduleJson.angle.id + ")");
