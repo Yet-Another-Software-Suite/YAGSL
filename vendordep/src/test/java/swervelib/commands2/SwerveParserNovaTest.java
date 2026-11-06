@@ -3,8 +3,6 @@ package swervelib.commands2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.thrifty.nova.Nova;
 import java.io.File;
@@ -90,11 +88,11 @@ class SwerveParserNovaTest {
   }
 
   /**
-   * A Nova closes its azimuth loop on the encoder on its data port, so a CANcoder is rejected with a message saying
-   * what to use instead, before any device is made.
+   * A Nova azimuth can be seeded from a CANcoder, like any other azimuth motor: the Nova wraps its own encoder, sent each
+   * target the short way round.
    */
   @Test
-  void novaAzimuthWithCANcoderIsRejected(@TempDir Path cancoderDir) throws IOException {
+  void novaAzimuthWithCANcoderBuilds(@TempDir Path cancoderDir) throws IOException {
     Path modules = Files.createDirectories(cancoderDir.resolve("modules"));
     Files.copy(configDir.resolve("swervedrive.json"), cancoderDir.resolve("swervedrive.json"));
     Files.copy(
@@ -113,7 +111,7 @@ class SwerveParserNovaTest {
               + "\"angle\":{\"type\":\"nova_minion\",\"id\":"
               + (61 + i * 3)
               + ",\"canbus\":\"\"},"
-              + "\"absoluteEncoder\":{\"type\":\"cancoder\",\"id\":"
+              + "\"absoluteEncoder\":{\"type\":\"cancoder_can\",\"id\":"
               + (62 + i * 3)
               + ",\"canbus\":\"\"},"
               + "\"inverted\":{\"drive\":false,\"angle\":false},"
@@ -127,12 +125,11 @@ class SwerveParserNovaTest {
 
     SwerveParser.parse(cancoderDir.toFile());
     SubsystemBase subsystem = new SubsystemBase() {};
-    var e =
-        assertThrows(
-            IllegalArgumentException.class,
-            () ->
-                SwerveParser.createSwerveDriveDevices(
-                    new SwerveDriveConfig().withSubsystem(subsystem)));
-    assertTrue(e.getMessage().contains("Nova's data port"), e.getMessage());
+    SwerveDriveDevices<SwerveDrive> devices =
+        SwerveParser.createSwerveDriveDevices(new SwerveDriveConfig().withSubsystem(subsystem));
+    assertNotNull(devices.swerveDrive());
+    for (SwerveModuleDevices module : devices.modules()) {
+      assertInstanceOf(Nova.class, module.azimuth());
+    }
   }
 }
