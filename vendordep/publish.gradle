@@ -63,6 +63,8 @@ def javaArtifacts = [:]
 
 javaArtifactNames.each { name ->
     def filterPackages = { spec ->
+        // YAMS ships in its own vendordep, even when YAGSL is built against its source.
+        spec.exclude 'yams/**'
         if (name == 'core') {
             commandVariantNames.each { variant -> spec.exclude "swervelib/${variant}/**" }
         } else {

@@ -17,8 +17,18 @@ env:
 # Mirrors YAMS's release workflow. YAGSL is Java only, so there are no per-platform native builds:
 # a single Linux job publishes the core, commands2, and commands3 jars plus both vendordep JSONs.
 jobs:
+  # A release is never built on an out of date vendordep.
+  vendordeps:
+    name: Release - Vendordeps are the latest version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check every vendordep is the latest version
+        run: python3 .github/scripts/check_vendordeps.py
+
   build-examples:
     name: Release - Examples
+    needs: [vendordeps]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -71,7 +81,7 @@ jobs:
 
   release:
     name: Release - Linux (publish)
-    needs: [build-examples]
+    needs: [vendordeps, build-examples]
     runs-on: ubuntu-latest
     permissions:
       contents: write
