@@ -108,9 +108,9 @@ in NetworkTables, **no dedicated Live Tuning OpMode is needed**.
 ### Tuning Commands in YAMS
 
 - **Swerve Drive-to-Pose / Module Tuning Command**:
-  Published under `/Mechanisms/<driveName>/tuning` (named `"<driveName> DriveToPoseTuning"`, e.g.,
-  `"swerve DriveToPoseTuning"` in Commands v3). When active, it continuously applies tuning values from `/Tuning/<driveName>/`
-  to the drive and module controllers.
+  Published under `/Tuning/<driveName>/Live Tuning` (named `"Live Tuning"`), like every other mechanism's. When
+  active, it continuously applies tuning values from `/Tuning/<driveName>/` to the drive and module controllers. It
+  requires the drive, so the default drive command pauses while it runs.
 - **Smart Motor Controller Live Tuning Command**:
   For custom mechanisms using `SmartMotorControllerConfig.setupLiveTuning()`, YAMS registers a shared `"Live Tuning"`
   command on the mechanism published under `/Tuning/<MechanismName>/Live Tuning`.
@@ -122,7 +122,7 @@ Tuning is available because `SwerveDriveMechanism` names the drive `"swerve"` an
 controllers set. With a different name, replace `swerve` in the keys below.
 
 1. **Start in simulation**, or with the robot elevated on blocks. Tuning moves the robot.
-2. **Start the tuning command** at `/Mechanisms/swerve/tuning` (set its `running` entry to `true`, or
+2. **Start the tuning command** at `/Tuning/swerve/Live Tuning` (set its `running` entry to `true`, or
    click it in your dashboard). Values under `/Tuning/swerve/` only take effect while it runs.
 3. **Turn on one tuning mode** below and adjust its parameters. Only one mode drives at a time; if you enable more than
    one, auto-align wins over drive tuning, and drive tuning wins over azimuth tuning (the losers switch themselves
