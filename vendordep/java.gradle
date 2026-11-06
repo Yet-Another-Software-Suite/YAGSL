@@ -10,6 +10,12 @@ sourceSets {
             // "library not found" error at runtime if a JSON config asks for one of these devices.
             exclude "swervelib/core/parser/deserializer/reflections/StudicaLibDevices.java"
             exclude "swervelib/core/parser/deserializer/reflections/AndymarkDevices.java"
+            // With -PyamsSource=<path to a YAMS checkout's yams/java>, as the YAMS source CI check
+            // builds, YAGSL is compiled and tested against YAMS's source in place of the published
+            // YAMS vendordep. YAMS's classes are left out of YAGSL's jars and javadoc.
+            if (project.hasProperty('yamsSource')) {
+                srcDir project.file(project.property('yamsSource'))
+            }
         }
     }
     test {
@@ -92,8 +98,15 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+// YAMS ships in its own vendordep, even when YAGSL is built against its source.
+jar {
+    exclude 'yams/**'
+}
+
 javadoc {
     title = "Yet Another Generic Swerve Library API"
+    // YAMS is documented on its own, even when YAGSL is built against its source.
+    exclude 'yams/**'
     destinationDir = file("$releasePath/javadocs")
     options {
         encoding = 'UTF-8'

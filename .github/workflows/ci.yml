@@ -1,46 +1,47 @@
 name: YAGSL CI
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
       - "examples/**"
       - "yagsl/**"
       - "vendordep/**"
+      - ".github/**"
   pull_request:
     paths:
       - "examples/**"
       - "yagsl/**"
       - "vendordep/**"
+      - ".github/**"
 jobs:
-  build:
+  # Builds and tests YAGSL against the latest YAMS source, YAMS's master branch, in place of the
+  # published YAMS vendordep, so a YAMS change that breaks YAGSL shows up before it is released.
+  yams-source:
+    name: build against YAMS source
     runs-on: ubuntu-latest
     permissions:
       contents: read
     env:
-      releaseVersion: ${{ inputs.releaseVersion }}
-      releaseName: ${{ github.event.release.name }}
       workingDirectory: ${{github.workspace}}/vendordep
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: Yet-Another-Software-Suite/YAMS
+          path: YAMS
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: 25
       - run: chmod +x gradlew
         working-directory: ${{ env.workingDirectory }}
-      - name: Build vendordep
-        run: ./gradlew build
+      # Without the YAMS vendordeps, YAMS comes only from its source.
+      - name: Use the YAMS source in place of the YAMS vendordeps
+        run: rm vendordeps/yams_commands2.json vendordeps/yams_commands3.json
         working-directory: ${{ env.workingDirectory }}
-      - name: Unit tests
-        run: ./gradlew test
+      - name: Build against YAMS source
+        run: ./gradlew build -PyamsSource=../YAMS/yams/java
         working-directory: ${{ env.workingDirectory }}
-      - name: Publish vendordep
-        run: ./gradlew publish
-        working-directory: ${{ env.workingDirectory }}
-      - name: Upload vendordep json, maven repository, and javadocs
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ${{ env.workingDirectory }}/build/maven/
-      - name: Check both vendordep JSONs were published
-        run: test -f build/maven/yagsl_commands2.json && test -f build/maven/yagsl_commands3.json
+      - name: Unit tests against YAMS source
+        run: ./gradlew test -PyamsSource=../YAMS/yams/java
         working-directory: ${{ env.workingDirectory }}

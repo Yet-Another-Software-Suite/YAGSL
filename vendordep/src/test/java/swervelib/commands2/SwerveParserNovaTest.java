@@ -106,13 +106,13 @@ class SwerveParserNovaTest {
       Files.writeString(
           modules.resolve(MODULES[i] + ".json"),
           "{\"drive\":{\"type\":\"nova_neo\",\"id\":"
-              + (60 + i * 3)
+              + (20 + i * 3)
               + ",\"canbus\":\"\"},"
               + "\"angle\":{\"type\":\"nova_minion\",\"id\":"
-              + (61 + i * 3)
+              + (21 + i * 3)
               + ",\"canbus\":\"\"},"
               + "\"absoluteEncoder\":{\"type\":\"cancoder_can\",\"id\":"
-              + (62 + i * 3)
+              + (22 + i * 3)
               + ",\"canbus\":\"\"},"
               + "\"inverted\":{\"drive\":false,\"angle\":false},"
               + "\"absoluteEncoderOffset\":0,\"absoluteEncoderInverted\":false,"
