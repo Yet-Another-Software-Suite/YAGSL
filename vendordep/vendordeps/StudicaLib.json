@@ -1,0 +1,68 @@
+{
+    "fileName": "StudicaLib.json",
+    "name": "StudicaLib",
+    "version": "2027.0.0-alpha-1",
+    "wpilibYear": "2027_alpha7",
+    "uuid": "963ef341-8abd-4981-a969-c8ae3f592e82",
+    "mavenUrls": [
+        "https://dev.studica.com/maven/release/2027/"
+    ],
+    "jsonUrl": "https://dev.studica.com/maven/release/2027/json/StudicaLib.json",
+    "javaDependencies": [
+        {
+            "groupId": "com.studica.frc",
+            "artifactId": "StudicaLib-java",
+            "version": "2027.0.0-alpha-1"
+        }
+    ],
+    "jniDependencies": [
+        {
+            "groupId": "com.studica.frc",
+            "artifactId": "StudicaLib-driver",
+            "version": "2027.0.0-alpha-1",
+            "skipInvalidPlatforms": true,
+            "isJar": false,
+            "validPlatforms": [
+                "windowsx86-64",
+                "linuxarm64",
+                "linuxx86-64",
+                "linuxsystemcore",
+                "osxuniversal"
+            ]
+        }
+    ],
+    "cppDependencies": [
+        {
+            "groupId": "com.studica.frc",
+            "artifactId": "StudicaLib-cpp",
+            "version": "2027.0.0-alpha-1",
+            "libName": "StudicaLib",
+            "headerClassifier": "headers",
+            "sharedLibrary": false,
+            "skipInvalidPlatforms": true,
+            "binaryPlatforms": [
+                "windowsx86-64",
+                "linuxarm64",
+                "linuxx86-64",
+                "linuxsystemcore",
+                "osxuniversal"
+            ]
+        },
+        {
+            "groupId": "com.studica.frc",
+            "artifactId": "StudicaLib-driver",
+            "version": "2027.0.0-alpha-1",
+            "libName": "StudicaLibDriver",
+            "headerClassifier": "headers",
+            "sharedLibrary": false,
+            "skipInvalidPlatforms": true,
+            "binaryPlatforms": [
+                "windowsx86-64",
+                "linuxarm64",
+                "linuxx86-64",
+                "linuxsystemcore",
+                "osxuniversal"
+            ]
+        }
+    ]
+}

@@ -5,10 +5,9 @@ sourceSets {
     main {
         java {
             srcDir "$rootDir/../yagsl/java/"
-            // StudicaLib and AmLib have not published 2027_alpha7 vendordeps yet, so their device
-            // reflection classes are left out of the build until they do. ReflectionsManager throws a
-            // "library not found" error at runtime if a JSON config asks for one of these devices.
-            exclude "swervelib/core/parser/deserializer/reflections/StudicaLibDevices.java"
+            // AmLib has not published a 2027_alpha7 vendordep yet, so its device
+            // reflection class is left out of the build until it does. ReflectionsManager throws a
+            // "library not found" error at runtime if a JSON config asks for one of its devices.
             exclude "swervelib/core/parser/deserializer/reflections/AndymarkDevices.java"
             // With -PyamsSource=<path to a YAMS checkout's yams/java>, as the YAMS source CI check
             // builds, YAGSL is compiled and tested against YAMS's source in place of the published
