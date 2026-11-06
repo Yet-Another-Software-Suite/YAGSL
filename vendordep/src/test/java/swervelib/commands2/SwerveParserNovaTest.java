@@ -3,6 +3,8 @@ package swervelib.commands2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.thrifty.nova.Nova;
 import java.io.File;
@@ -85,5 +87,52 @@ class SwerveParserNovaTest {
       assertEquals(neo.freeSpeed, module.getDriveMotorController().getDCMotor().freeSpeed, 1e-9);
       assertEquals(minion.freeSpeed, module.getAzimuthMotorController().getDCMotor().freeSpeed, 1e-9);
     }
+  }
+
+  /**
+   * A Nova closes its azimuth loop on the encoder on its data port, so a CANcoder is rejected with a message saying
+   * what to use instead, before any device is made.
+   */
+  @Test
+  void novaAzimuthWithCANcoderIsRejected(@TempDir Path cancoderDir) throws IOException {
+    Path modules = Files.createDirectories(cancoderDir.resolve("modules"));
+    Files.copy(configDir.resolve("swervedrive.json"), cancoderDir.resolve("swervedrive.json"));
+    Files.copy(
+        configDir.resolve("modules/pidfproperties.json"), modules.resolve("pidfproperties.json"));
+    Files.copy(
+        configDir.resolve("modules/physicalproperties.json"),
+        modules.resolve("physicalproperties.json"));
+    for (int i = 0; i < MODULES.length; i++) {
+      double front = i < 2 ? 12 : -12;
+      double left = i % 2 == 0 ? 12 : -12;
+      Files.writeString(
+          modules.resolve(MODULES[i] + ".json"),
+          "{\"drive\":{\"type\":\"nova_neo\",\"id\":"
+              + (60 + i * 3)
+              + ",\"canbus\":\"\"},"
+              + "\"angle\":{\"type\":\"nova_minion\",\"id\":"
+              + (61 + i * 3)
+              + ",\"canbus\":\"\"},"
+              + "\"absoluteEncoder\":{\"type\":\"cancoder\",\"id\":"
+              + (62 + i * 3)
+              + ",\"canbus\":\"\"},"
+              + "\"inverted\":{\"drive\":false,\"angle\":false},"
+              + "\"absoluteEncoderOffset\":0,\"absoluteEncoderInverted\":false,"
+              + "\"location\":{\"front\":"
+              + front
+              + ",\"left\":"
+              + left
+              + "}}");
+    }
+
+    SwerveParser.parse(cancoderDir.toFile());
+    SubsystemBase subsystem = new SubsystemBase() {};
+    var e =
+        assertThrows(
+            IllegalArgumentException.class,
+            () ->
+                SwerveParser.createSwerveDriveDevices(
+                    new SwerveDriveConfig().withSubsystem(subsystem)));
+    assertTrue(e.getMessage().contains("Nova's data port"), e.getMessage());
   }
 }
