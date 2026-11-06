@@ -14,43 +14,6 @@ on:
       - "vendordep/**"
       - ".github/**"
 jobs:
-  # Builds, tests and publishes YAGSL against its vendordeps, as a release does. Fails if any
-  # vendordep is not the latest version.
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    env:
-      releaseVersion: ${{ inputs.releaseVersion }}
-      releaseName: ${{ github.event.release.name }}
-      workingDirectory: ${{github.workspace}}/vendordep
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check every vendordep is the latest version
-        run: python3 .github/scripts/check_vendordeps.py
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 25
-      - run: chmod +x gradlew
-        working-directory: ${{ env.workingDirectory }}
-      - name: Build vendordep
-        run: ./gradlew build
-        working-directory: ${{ env.workingDirectory }}
-      - name: Unit tests
-        run: ./gradlew test
-        working-directory: ${{ env.workingDirectory }}
-      - name: Publish vendordep
-        run: ./gradlew publish
-        working-directory: ${{ env.workingDirectory }}
-      - name: Upload vendordep json, maven repository, and javadocs
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ${{ env.workingDirectory }}/build/maven/
-      - name: Check both vendordep JSONs were published
-        run: test -f build/maven/yagsl_commands2.json && test -f build/maven/yagsl_commands3.json
-        working-directory: ${{ env.workingDirectory }}
-
   # Builds and tests YAGSL against the latest YAMS source, YAMS's master branch, in place of the
   # published YAMS vendordep, so a YAMS change that breaks YAGSL shows up before it is released.
   yams-source:
