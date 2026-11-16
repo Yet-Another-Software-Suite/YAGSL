@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.avaje.jsonb.Jsonb;
 import org.junit.jupiter.api.Test;
@@ -236,6 +237,20 @@ class DeviceJsonTest {
   @Test
   void getVendor_navx3Can_returnsStudica() {
     assertEquals(VENDOR.STUDICA, deviceWithType("navx3_can").getVendor(VENDOR.UNKNOWN));
+  }
+
+  @Test
+  void getVendor_navx3Usb_returnsStudica() {
+    assertEquals(VENDOR.STUDICA, deviceWithType("navx3_usb").getVendor(VENDOR.UNKNOWN));
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = {-1, 4})
+  void getGyro_navx3UsbOnAPortThatDoesNotExist_throws(int port) {
+    DeviceJson gyro = deviceWithType("navx3_usb");
+    gyro.channel = port;
+    IllegalArgumentException e = assertThrows(IllegalArgumentException.class, gyro::getGyro);
+    assertTrue(e.getMessage().contains("USB port " + port), e.getMessage());
   }
 
   @Test

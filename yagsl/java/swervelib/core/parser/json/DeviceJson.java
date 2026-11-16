@@ -37,7 +37,7 @@ public class DeviceJson
    */
   public int    id;
   /**
-   * SmartIO Channel.
+   * SmartIO channel, or for a USB gyroscope the Systemcore USB port number (0 for USB0).
    */
   public int    channel = 0;
   /**
@@ -108,6 +108,13 @@ public class DeviceJson
               return Gyro.PIGEON2.getGyro(id, canbus);
             case "canandgyro":
               return Gyro.CANANDGYRO.getGyro(id, canbus);
+          }
+          break;
+        case "usb":
+          if ("navx3".equals(vendorType))
+          {
+            // The gyro's channel is the Systemcore USB port it's plugged into.
+            return Gyro.NAVX3.getUsbGyro(channel);
           }
           break;
         case "internal":

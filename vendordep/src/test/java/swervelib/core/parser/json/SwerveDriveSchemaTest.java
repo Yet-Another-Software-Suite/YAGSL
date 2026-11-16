@@ -105,6 +105,22 @@ class SwerveDriveSchemaTest {
     assertFalse(errors.isEmpty(), "expected validation errors for missing 'gyro' field");
   }
 
+  @Test
+  void swervedriveSchema_acceptsNavx3OnAUsbPort() throws IOException {
+    ObjectNode instance = (ObjectNode) getInstance("swervedrive.json");
+    ((ObjectNode) instance.get("gyro")).put("type", "navx3_usb").put("channel", 2);
+    Set<ValidationMessage> errors = getSchema("swervedrive.json").validate(instance);
+    assertTrue(errors.isEmpty(), () -> "expected navx3_usb on USB2 to be valid, got " + errors);
+  }
+
+  @Test
+  void swervedriveSchema_rejectsAUsbPortThatDoesNotExist() throws IOException {
+    ObjectNode instance = (ObjectNode) getInstance("swervedrive.json");
+    ((ObjectNode) instance.get("gyro")).put("type", "navx3_usb").put("channel", 4);
+    Set<ValidationMessage> errors = getSchema("swervedrive.json").validate(instance);
+    assertFalse(errors.isEmpty(), "expected USB port 4 to be rejected");
+  }
+
   @ParameterizedTest
   @ValueSource(strings = {"talonfx_falcon", "talonfx_falcon500"})
   void moduleSchema_acceptsFalconMotors(String type) throws IOException {

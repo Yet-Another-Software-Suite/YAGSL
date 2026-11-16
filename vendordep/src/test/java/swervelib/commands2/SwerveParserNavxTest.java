@@ -28,11 +28,22 @@ class SwerveParserNavxTest {
 
   @BeforeAll
   static void writeConfig() throws IOException {
+    writeConfig(configDir, "{\"type\":\"navx3_can\",\"id\":42,\"canbus\":\"1\"}");
+  }
+
+  /**
+   * Write a swerve drive config with this gyro to the directory.
+   *
+   * @param configDir Directory to write the config to.
+   * @param gyro      The swervedrive.json's gyro object.
+   * @throws IOException If a file can't be written.
+   */
+  static void writeConfig(Path configDir, String gyro) throws IOException {
     HAL.initialize();
     Path modules = Files.createDirectories(configDir.resolve("modules"));
     Files.writeString(
         configDir.resolve("swervedrive.json"),
-        "{\"gyro\":{\"type\":\"navx3_can\",\"id\":42,\"canbus\":\"1\"},"
+        "{\"gyro\":" + gyro + ","
             + "\"gyroAxis\":\"yaw\",\"gyroInvert\":false,"
             + "\"modules\":[\"fl.json\",\"fr.json\",\"bl.json\",\"br.json\"]}");
     Files.writeString(
