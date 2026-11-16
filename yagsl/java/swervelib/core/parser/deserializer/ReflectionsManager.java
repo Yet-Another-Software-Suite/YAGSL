@@ -300,6 +300,29 @@ public class ReflectionsManager
         throw new RuntimeException(e);
       }
     }
+
+    /**
+     * Get the attitude {@link Supplier} and the vendor gyroscope object of a gyroscope plugged into a Systemcore USB
+     * port. Only the {@link #NAVX3} connects over USB.
+     *
+     * @param port USB port number, 0 for USB0.
+     * @return {@link Pair} of the gyroscope attitude {@link Supplier} and the vendor gyroscope {@link Object}.
+     */
+    public Pair<Supplier<Rotation3d>, Object> getUsbGyro(int port)
+    {
+      try
+      {
+        Class<?> wrapper = Class.forName(className);
+        return (Pair<Supplier<Rotation3d>, Object>) wrapper.getMethod("getUsbGyro", int.class).invoke(null, port);
+      } catch (InvocationTargetException e)
+      {
+        // Pass on the vendor class's own exception, such as a USB port that doesn't exist.
+        throw e.getCause() instanceof RuntimeException cause ? cause : new RuntimeException(e.getCause());
+      } catch (Exception e)
+      {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
 
