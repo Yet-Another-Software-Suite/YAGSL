@@ -226,8 +226,9 @@ jobs:
       - name: Output Pages Tree
         run: find ${{ env.workingDirectory }}/build/maven/ -type f
 
-      # Builds the release description: a "What's new" list of every commit since the previous
-      # full (non-prerelease, non-draft) release, followed by installation instructions. GitHub's
+      # Builds the release description: a table of the example projects attached to the release, a
+      # "What's new" list of every commit since the previous full (non-prerelease, non-draft)
+      # release, and installation instructions. GitHub's
       # generated notes (merged PRs, new contributors, full changelog link) are appended after this
       # by --generate-notes.
       - name: Write release notes
@@ -254,7 +255,24 @@ jobs:
             SINCE=""
           fi
 
+          DOWNLOAD="$REPO_URL/releases/download/$TAG"
+          # Each example project attached to this release, with a quick description of what's in it.
+          example_row() {
+            local zip="example-$1.zip"
+            [ -f "release-artifacts/$zip" ] && echo "| $2 | [$zip]($DOWNLOAD/$zip) | $3 |"
+            return 0
+          }
+
           {
+            echo "## Examples"
+            echo
+            echo "Complete swerve robot projects built with YAGSL, attached to this release. Download the zip for your command framework, extract it, and open the folder in WPILib VS Code. Each one already includes this release's YAGSL and YAMS vendordeps, and runs in simulation with **WPILib: Simulate Robot Code**. To set one up for your robot, generate your swerve configuration at [config.yagsl.com](https://config.yagsl.com) and follow its Quick Start Guide."
+            echo
+            echo "| Command framework | Example | What's in it |"
+            echo "| --- | --- | --- |"
+            example_row commands2 "Commands v2" "A Command-based robot with PathPlanner autonomous and on-the-fly pathfinding."
+            example_row commands3 "Commands v3" "An \`OpModeRobot\` with three ways to drive in teleop and three autonomous routines."
+            echo
             echo "## What's new"
             echo
             if [ -n "$SINCE" ]; then
@@ -303,8 +321,6 @@ jobs:
           ```
 
           Afterwards you should have `wpilib/@WPILIB_YEAR@/maven/swervelib/...` and `wpilib/@WPILIB_YEAR@/vendordeps/yagsl_commands2.json` / `yagsl_commands3.json`. Then, in VS Code, run **WPILib: Manage Vendor Libraries > Install new libraries (offline)** and pick **YAGSL (Commands v2)** or **(Commands v3)**.
-
-          Example robot projects for both command frameworks (`example-commands2.zip` and `example-commands3.zip`) are also attached below.
           EOF
             echo
           } > release-notes.md
