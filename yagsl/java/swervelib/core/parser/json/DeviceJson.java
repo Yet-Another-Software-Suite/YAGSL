@@ -5,6 +5,7 @@ import io.avaje.jsonb.Json;
 import org.wpilib.math.geometry.Rotation3d;
 import org.wpilib.util.Pair;
 import org.wpilib.math.system.DCMotor;
+import yams.core.motorcontrollers.YMotors;
 import org.wpilib.units.measure.Angle;
 import org.wpilib.hardware.imu.OnboardIMU;
 import org.wpilib.hardware.imu.OnboardIMU.MountOrientation;
@@ -72,7 +73,8 @@ public class DeviceJson
       case "falcon500":
         return DCMotor.getFalcon500(1);
       case "pulsar":
-        return new DCMotor(12, 3.1, 189, 1, 7500, 1);
+        // YAMS's own model, so a Talon FXS recognizes the Pulsar.
+        return YMotors.getThriftyPulsar(1);
       default:
         throw new IllegalArgumentException("Invalid motor type: " + motorType);
     }

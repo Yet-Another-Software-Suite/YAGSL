@@ -92,12 +92,15 @@ class DeviceJsonTest {
   @Test
   void getDCMotor_pulsar_returns7500RpmFreeSpeed() {
     DCMotor result = DeviceJson.getDCMotor("pulsar");
-    assertNotNull(result);
-    // Constructor: new DCMotor(12, 3.1, 189, 1, 7500, 1) — last arg is numMotors,
-    // second-to-last is free speed in RPM (converted internally to rad/s).
-    // Just verify it is positive and non-trivially large.
-    assert result.freeSpeed > 0;
-    assert result.stallTorque > 0;
+    // DCMotor takes its free speed in radians per second.
+    assertEquals(7500 * 2 * Math.PI / 60, result.freeSpeed, 1e-9);
+    assertEquals(3.1, result.stallTorque, 1e-9);
+    // YAMS recognizes a Talon FXS's Pulsar by comparing against its own model.
+    DCMotor pulsar = yams.core.motorcontrollers.YMotors.getThriftyPulsar(1);
+    assertEquals(pulsar.freeSpeed, result.freeSpeed, 0);
+    assertEquals(pulsar.stallTorque, result.stallTorque, 0);
+    assertEquals(pulsar.stallCurrent, result.stallCurrent, 0);
+    assertEquals(pulsar.freeCurrent, result.freeCurrent, 0);
   }
 
   // ---------------------------------------------------------------------------

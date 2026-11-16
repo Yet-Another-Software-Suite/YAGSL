@@ -73,6 +73,9 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+    // A fresh JVM per test class: vendor simulations keep every device a JVM creates, and each SimGains*Test class
+    // uses most of the CAN IDs for its simulated drives.
+    forkEvery = 1
     testLogging {
         events "failed"
         exceptionFormat = "full"
