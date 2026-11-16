@@ -3,7 +3,6 @@ package frc.robot;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.wpilib.command2.CommandScheduler;
@@ -27,18 +26,7 @@ class RobotContainerTest
   @Test
   void robotContainerBuildsAndRuns()
   {
-    RobotContainer container;
-    try
-    {
-      container = new RobotContainer();
-    } catch (RuntimeException e)
-    {
-      // ReduxLib 2027 opens devices through Linux socketcan, so a Redux device (like this example's Canandgyro)
-      // can't be created where there is no CAN bus to open: desktop simulation on Windows/macOS, or a Linux machine
-      // without a can_s0 interface (like CI). Skip instead of failing there.
-      Assumptions.assumeFalse(isReduxBusError(e), "ReduxLib can't open a CAN bus here: " + rootCause(e).getMessage());
-      throw e;
-    }
+    RobotContainer container = new RobotContainer();
     assertNotNull(container.getAutonomousCommand());
     assertDoesNotThrow(() -> {
       for (int i = 0; i < 50; i++)
@@ -47,20 +35,5 @@ class RobotContainerTest
         SimHooks.stepTiming(0.02);
       }
     });
-  }
-
-  private static boolean isReduxBusError(Throwable e)
-  {
-    // ReduxJNIException is what ReduxLib throws when it can't open the bus.
-    return rootCause(e).getClass().getName().startsWith("com.reduxrobotics.canand.ReduxJNI");
-  }
-
-  private static Throwable rootCause(Throwable e)
-  {
-    while (e.getCause() != null)
-    {
-      e = e.getCause();
-    }
-    return e;
   }
 }

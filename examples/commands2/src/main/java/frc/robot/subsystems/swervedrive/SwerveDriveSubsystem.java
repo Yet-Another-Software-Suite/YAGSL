@@ -9,12 +9,12 @@ import static org.wpilib.units.Units.Second;
 import static org.wpilib.units.Units.Seconds;
 import static org.wpilib.units.Units.Volts;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
-import com.reduxrobotics.canandgyro.Canandgyro;
 import java.io.File;
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
@@ -55,7 +55,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
       DegreesPerSecond.of(540), DegreesPerSecondPerSecond.of(720));
 
   private SwerveDrive                   drive;
-  private Canandgyro                    gyro;
+  private Pigeon2                       gyro;
 
 
   public SwerveDriveSubsystem()
@@ -73,7 +73,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
     SwerveParser.parse(new File(Filesystem.getDeployDirectory(), "swerve/base"));
     SwerveDriveDevices<SwerveDrive> devices = SwerveParser.createSwerveDriveDevices(cfg);
     drive = devices.swerveDrive();
-    gyro = (Canandgyro) devices.gyro();
+    gyro = (Pigeon2) devices.gyro();
     // You can also create the SwerveDrive without the ability to retrieve the devices like this.
     // drive = SwerveParser.createSwerveDrive(cfg);
 
@@ -162,7 +162,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
    * Get the gyro's full 3 axis orientation (roll, pitch, and yaw) as a {@link Rotation3d}.
    * <p>
    * {@link SwerveDrive#getGyroRotation3d()} already reports the robot's attitude, but yaw is the only axis MegaTag2
-   * pose estimation actually requires. This subsystem reads the raw {@link Canandgyro} device (via
+   * pose estimation actually requires. This subsystem reads the raw {@link Pigeon2} device (via
    * {@link SwerveParser#createSwerveDriveDevices}, see "How to access raw hardware devices" in the docs) to show how
    * to get at the IMU directly, e.g. for its roll and pitch rates. That's a
    * nice to have here, not a requirement. Any gyro that only reports yaw (NavX, ADIS16470, ADXRS450, or otherwise)
@@ -185,7 +185,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
   // vendordep yet, so it is commented out until it does.
 //  /**
 //   * Get the robot's full 3 axis angular velocity (roll, pitch, and yaw rates), read directly off the raw
-//   * {@link Canandgyro} device obtained via {@link SwerveParser#createSwerveDriveDevices}. As with
+//   * {@link Pigeon2} device obtained via {@link SwerveParser#createSwerveDriveDevices}. As with
 //   * {@link #getGyroRotation3d()}, only the yaw rate is required for MegaTag2. The roll and pitch rates are extra
 //   * accuracy this subsystem happens to have available because it grabbed the raw gyro, not something every robot
 //   * needs to supply.
@@ -197,9 +197,9 @@ public class SwerveDriveSubsystem extends SubsystemBase
 //    // Only required if you cant simulate the angular velocity of the gyro.
 //    if (RobotBase.isSimulation())
 //      return new AngularVelocity3d(RotationsPerSecond.zero(), RotationsPerSecond.zero(), RotationsPerSecond.zero());
-//    return new AngularVelocity3d(RotationsPerSecond.of(gyro.getAngularVelocityRoll()),
-//                                 RotationsPerSecond.of(gyro.getAngularVelocityPitch()),
-//                                 RotationsPerSecond.of(gyro.getAngularVelocityYaw()));
+//    return new AngularVelocity3d(gyro.getAngularVelocityXWorld().getValue(),
+//                                 gyro.getAngularVelocityYWorld().getValue(),
+//                                 gyro.getAngularVelocityZWorld().getValue());
 //  }
 
   /**

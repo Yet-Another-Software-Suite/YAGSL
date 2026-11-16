@@ -76,15 +76,14 @@ None of these are tuned for your robot. They're placeholders so the project buil
   controllers are used by heading control and `driveToPoseYAMS`. YAMS stops any module asked for less than
   0.1 m/s (its module velocity deadband), so a rotation gain that's too low leaves the robot a few degrees short of
   the heading you asked for. Tune these with [live tuning](#live-tuning).
-- **The gyro cast in `SwerveDriveSubsystem`.** It casts `devices.gyro()` to a Redux `Canandgyro`, the gyro in the
+- **The gyro cast in `SwerveDriveSubsystem`.** It casts `devices.gyro()` to a CTRE `Pigeon2`, the gyro in the
   example config, to read its full roll/pitch/yaw. If your `swervedrive.json` gyro is different, change the cast to
-  match (a `Pigeon2` for `pigeon2_can`), or use `SwerveParser.createSwerveDrive(cfg)` and skip the raw device. See
-  [How to access raw hardware devices](https://docs.yagsl.com/how-to/access-raw-hardware-devices).
+  match (a Redux `Canandgyro` for `canandgyro_can`), or use `SwerveParser.createSwerveDrive(cfg)` and skip the raw
+  device. See [How to access raw hardware devices](https://docs.yagsl.com/how-to/access-raw-hardware-devices).
 
-> **Simulating on Windows or macOS?** ReduxLib 2027 only reaches its devices through Linux socketcan, so the
-> example's Canandgyro can't be created in desktop simulation there, and the `RobotContainerTest` smoke test skips
-> itself. Switch `swervedrive.json` (and the cast above) to `pigeon2_can` to simulate, or use the
-> [Commands v3 example](../commands3), which uses a Pigeon2.
+> **Using a Redux Canandgyro?** ReduxLib 2027 only reaches its devices through Linux socketcan, so a Canandgyro
+> can't be created in desktop simulation on Windows or macOS. That's why this example uses a Pigeon2: it runs in
+> simulation everywhere.
 
 ---
 
