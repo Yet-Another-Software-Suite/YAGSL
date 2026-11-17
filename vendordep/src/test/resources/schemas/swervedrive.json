@@ -24,7 +24,7 @@
         },
         "canbus": {
           "type": "string",
-          "description": "CAN bus the gyroscope is on: \"\" for the Systemcore CAN bus can_s0, \"1\" to \"4\" for can_s1 to can_s4, or \"5\" to \"24\" for the Motioncore CAN buses can_d0 to can_d19. CTRE devices also take a CANivore's name. Ignored when type is \"custom\"."
+          "description": "CAN bus the gyroscope is on: \"\" for the Systemcore CAN bus can_s0, \"1\" to \"4\" for can_s1 to can_s4, or \"5\" to \"24\" for the Motioncore CAN buses can_d0 to can_d19, or the CANPort name instead of the number, such as \"CAN_S1\". CTRE devices also take a CANivore's name. Ignored when type is \"custom\"."
         },
         "channel": {
           "type": "integer",

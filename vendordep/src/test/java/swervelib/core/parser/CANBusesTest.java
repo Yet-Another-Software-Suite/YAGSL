@@ -27,6 +27,13 @@ class CANBusesTest {
   }
 
   @ParameterizedTest
+  @CsvSource({"CAN_S0, CAN_S0", "CAN_S1, CAN_S1", "CAN_S4, CAN_S4", "CAN_D0, CAN_D0", "CAN_D19, CAN_D19", "' CAN_S2 ', CAN_S2"})
+  void canPortNameIsThatCanPort(String canbus, CANPort expected) {
+    assertEquals(Optional.of(expected), CANBuses.getCANPort(canbus));
+    assertEquals(expected, CANBuses.requireCANPort(canbus, "REV"));
+  }
+
+  @ParameterizedTest
   @ValueSource(strings = {"25", "99", "123456789012345678901234567890"})
   void unknownBusNumberThrows(String canbus) {
     var e = assertThrows(IllegalArgumentException.class, () -> CANBuses.getCANPort(canbus));
@@ -44,6 +51,6 @@ class CANBusesTest {
     assertEquals(CANPort.CAN_S2, CANBuses.requireCANPort("2", "REV"));
     var e = assertThrows(IllegalArgumentException.class, () -> CANBuses.requireCANPort("canivore", "Thrifty Bot"));
     assertTrue(e.getMessage().startsWith("Thrifty Bot devices only use"), e.getMessage());
-    assertTrue(e.getMessage().contains("\"1\" for can_s1"), e.getMessage());
+    assertTrue(e.getMessage().contains("\"CAN_S1\" for can_s1"), e.getMessage());
   }
 }
