@@ -45,7 +45,7 @@
         },
         "canbus": {
           "type": "string",
-          "description": "CAN bus the motor controller is on: \"\" for the Systemcore CAN bus can_s0, or the bus number, such as \"1\" for can_s1 or \"2\" for can_s2. CTRE devices also take a CANivore's name."
+          "description": "CAN bus the motor controller is on: \"\" for the Systemcore CAN bus can_s0, \"1\" to \"4\" for can_s1 to can_s4, or \"5\" to \"24\" for the Motioncore CAN buses can_d0 to can_d19. CTRE devices also take a CANivore's name."
         }
       },
       "required": [
@@ -98,7 +98,7 @@
         },
         "canbus": {
           "type": "string",
-          "description": "CAN bus the motor controller is on: \"\" for the Systemcore CAN bus can_s0, or the bus number, such as \"1\" for can_s1 or \"2\" for can_s2. CTRE devices also take a CANivore's name."
+          "description": "CAN bus the motor controller is on: \"\" for the Systemcore CAN bus can_s0, \"1\" to \"4\" for can_s1 to can_s4, or \"5\" to \"24\" for the Motioncore CAN buses can_d0 to can_d19. CTRE devices also take a CANivore's name."
         }
       },
       "required": [
@@ -182,7 +182,7 @@
         },
         "canbus": {
           "type": "string",
-          "description": "CAN bus the absolute encoder is on: \"\" for the Systemcore CAN bus can_s0, or the bus number, such as \"1\" for can_s1 or \"2\" for can_s2. CTRE devices also take a CANivore's name."
+          "description": "CAN bus the absolute encoder is on: \"\" for the Systemcore CAN bus can_s0, \"1\" to \"4\" for can_s1 to can_s4, or \"5\" to \"24\" for the Motioncore CAN buses can_d0 to can_d19. CTRE devices also take a CANivore's name."
         }
       },
       "required": [
