@@ -11,6 +11,9 @@ import org.wpilib.hardware.bus.CANPort;
  *   <li>A bus number: {@code "0"} to {@code "4"} are the Systemcore CAN buses {@code can_s0} to {@code can_s4},
  *   so {@code "1"} is {@code can_s1}. {@code "5"} to {@code "24"} are the Motioncore CAN buses {@code can_d0} to
  *   {@code can_d19}, following {@link CANPort}.</li>
+ *   <li>A {@link CANPort} name, written exactly as the enum names it: {@code "CAN_S0"} to {@code "CAN_S4"} and
+ *   {@code "CAN_D0"} to {@code "CAN_D19"}, so {@code "CAN_S1"} is {@code can_s1}. Other spellings, such as
+ *   {@code "can_s1"}, are left to the vendor.</li>
  *   <li>Anything else is a vendor specific CAN bus, such as the name of a CANivore for CTRE devices. Vendors that
  *   only use the Systemcore and Motioncore CAN buses reject it.</li>
  * </ul>
@@ -41,6 +44,13 @@ public final class CANBuses
       return Optional.of(DEFAULT);
     }
     String number = canbus.trim();
+    for (CANPort port : CANPort.values())
+    {
+      if (port.name().equals(number))
+      {
+        return Optional.of(port);
+      }
+    }
     if (!number.chars().allMatch(Character::isDigit))
     {
       return Optional.empty();
@@ -54,7 +64,7 @@ public final class CANBuses
     }
     throw new IllegalArgumentException(
         "CAN bus " + number + " does not exist. Use 0 to 4 for the Systemcore CAN buses (can_s0 to can_s4) or 5 to "
-        + "24 for the Motioncore CAN buses (can_d0 to can_d19).");
+        + "24 for the Motioncore CAN buses (can_d0 to can_d19), or their CANPort names, such as CAN_S1.");
   }
 
   /**
@@ -70,6 +80,6 @@ public final class CANBuses
   {
     return getCANPort(canbus).orElseThrow(() -> new IllegalArgumentException(
         vendor + " devices only use the Systemcore and Motioncore CAN buses, but canbus is \"" + canbus
-        + "\". Use \"\" for can_s0, or the bus number, such as \"1\" for can_s1."));
+        + "\". Use \"\" for can_s0, or the bus number or CANPort name, such as \"1\" or \"CAN_S1\" for can_s1."));
   }
 }
