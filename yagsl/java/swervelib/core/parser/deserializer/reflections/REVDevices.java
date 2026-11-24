@@ -57,11 +57,11 @@ public class REVDevices
      */
     SPLINEENCODER,
     /**
-     * Analog input {@link com.revrobotics.spark.FeedbackSensor#kAnalogSensor}
+     * Analog encoder on the SPARK's analog input, read by the module. One rotation is 0 to 3.3 V.
      */
     ANALOG,
     /**
-     * Analog input {@link com.revrobotics.spark.FeedbackSensor#kAnalogSensor}
+     * Analog encoder on the SPARK's analog input, read by the module. One rotation is 0 to 5 V.
      */
     ANALOG5V,
     /**
@@ -136,6 +136,21 @@ public class REVDevices
     return encoders.get(canid);
   }
 
+
+  /**
+   * Convert an analog encoder's voltage to its angle.
+   *
+   * @param volts             Voltage the encoder outputs.
+   * @param voltsPerRotation  Voltage of one full rotation: 3.3 for analog_attached, 5 for analog5v_attached.
+   * @param inverted          Whether the encoder is inverted.
+   * @return Angle in rotations, from 0 to 1 within the voltage range.
+   */
+  public static double analogRotations(double volts, double voltsPerRotation, boolean inverted)
+  {
+    double rotations = volts / voltsPerRotation;
+    return inverted ? 1 - rotations : rotations;
+  }
+
   /**
    * Get the attached absolute encoder.
    *
@@ -159,24 +174,22 @@ public class REVDevices
         {
           SparkBase spark =
               (motorController instanceof SparkMax) ? (SparkMax) motorController : (SparkFlex) motorController;
-          double baseVoltage = (encoderType == AbsoluteEncoder.ANALOG) ? 3.3 : 5.0;
-          // Configure Analog Encoders
+          // The module reads an analog encoder, so the SPARK's closed loop keeps the motor's own encoder as its
+          // feedback sensor: YAMS can't use a SPARK's analog input as feedback.
           SparkBaseConfig cfg = (motorController instanceof SparkMax) ? new SparkMaxConfig() : new SparkFlexConfig();
-          cfg.closedLoop.feedbackSensor(FeedbackSensor.kAnalogSensor);
-          // Enable CAN frames
           cfg.signals
-              .analogVelocityAlwaysOn(true)
               .analogVoltageAlwaysOn(true)
-              .analogPositionAlwaysOn(true)
-              .analogVoltagePeriodMs(20)
-              .analogPositionPeriodMs(20)
-              .analogVelocityPeriodMs(20);
-          cfg.analogSensor.inverted(inverted);
+              .analogVoltagePeriodMs(20);
           spark.configure(cfg, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
           var analogSensor = spark.getAnalog();
-          // REVLib 2027 removed conversion factors, so scale the raw voltage to Rotations here.
-          return Pair.of(() -> Rotations.of(analogSensor.getVoltage().get() / baseVoltage), analogSensor);
+          // One rotation is 3.3 V for analog_attached and 5 V for analog5v_attached, as in YAGSL 2026. The raw
+          // voltage ignores the SPARK's analog inversion setting, so the inversion is applied here.
+          double voltsPerRotation = (encoderType == AbsoluteEncoder.ANALOG) ? 3.3 : 5.0;
+          return Pair.of(() -> Rotations.of(analogRotations(analogSensor.getVoltage().get(), voltsPerRotation, inverted)),
+                         analogSensor);
         }
+        throw new UnsupportedOperationException("Analog encoders attach to a SPARK MAX or SPARK Flex, not a "
+                                                + motorController.getClass().getSimpleName());
       case DUTYCYCLE:
         if (motorController instanceof SparkMax || motorController instanceof SparkFlex)
         {
@@ -189,6 +202,12 @@ public class REVDevices
               .absoluteEncoderPositionPeriodMs(20);
           // REVLib 2027 reports absolute encoder position in Rotations natively.
           cfg.absoluteEncoder.inverted(inverted);
+          if (motorController instanceof SparkMax)
+          {
+            // A SPARK MAX's data port also takes an alternate encoder or limit switches, so set it to the absolute
+            // encoder.
+            cfg.absoluteEncoder.setSparkMaxDataPortConfig();
+          }
           spark.configure(cfg, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
           var encoder = spark.getAbsoluteEncoder();
           return Pair.of(() -> Rotations.of(encoder.getPosition().get()), encoder);
