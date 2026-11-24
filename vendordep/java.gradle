@@ -35,7 +35,9 @@ dependencies {
     implementation wpi.java.deps.wpilib()
     // YAMS (yams_commands2.json + yams_commands3.json), Phoenix6, REVLib, ReduxLib, ThriftyLib and the WPILib
     // command frameworks all come in through the vendordeps/ folder. ThriftyLib is only needed here to build and test
-    // ThriftyBotDevices; robots load it reflectively, so the published vendordeps do not require it.
+    // ThriftyBotDevices; robots load it reflectively, so the published vendordeps do not require it. The published YAMS
+    // vendordeps conflict with each other, as a robot uses one of them, but YAGSL builds against both, so the copies here
+    // leave out their conflictsWith.
     implementation wpi.java.vendor.java()
 
     implementation "org.wpilib.cscore:cscore-java:$wpilibVersion"
