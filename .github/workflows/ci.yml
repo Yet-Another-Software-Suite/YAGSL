@@ -13,39 +13,100 @@ on:
       - "yagsl/**"
       - "vendordep/**"
       - ".github/**"
+
+# A new push to a pull request cancels that pull request's older runs of this workflow. Pushes to
+# main never cancel each other, so every main commit gets its own result.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  # Builds and tests YAGSL against the latest YAMS source, YAMS's master branch, in place of the
-  # published YAMS vendordep, so a YAMS change that breaks YAGSL shows up before it is released.
+  # Builds YAGSL against the latest YAMS source, YAMS's master branch, in place of the published
+  # YAMS vendordep, so a YAMS change that breaks YAGSL shows up before it is released.
   yams-source:
     name: build against YAMS source
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      workingDirectory: ${{github.workspace}}/vendordep
+    defaults:
+      run:
+        working-directory: vendordep
     steps:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
           repository: Yet-Another-Software-Suite/YAMS
           path: YAMS
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 25
       - run: chmod +x gradlew
-        working-directory: ${{ env.workingDirectory }}
       # Without the YAMS vendordeps, YAMS comes only from its source.
       - name: Use the YAMS source in place of the YAMS vendordeps
         run: rm vendordeps/yams_commands2.json vendordeps/yams_commands3.json
-        working-directory: ${{ env.workingDirectory }}
       - name: Build against YAMS source
         run: ./gradlew build -PyamsSource=../YAMS/yams/java
-        working-directory: ${{ env.workingDirectory }}
-      - name: Unit tests against YAMS source
-        run: ./gradlew test -PyamsSource=../YAMS/yams/java
-        working-directory: ${{ env.workingDirectory }}
+
+  # A pull request runs the unit test groups its changes can affect, and a push to main runs them
+  # all. The groups, and which changes run which, are in .github/scripts/select_test_groups.py.
+  select-tests:
+    name: Select unit test groups
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      java: ${{ steps.select.outputs.java }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select unit test groups
+        id: select
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          set -o pipefail
+          if [ "$EVENT" = "pull_request" ]; then
+            # A renamed file counts under both of its names.
+            gh api --paginate "repos/${{ github.repository }}/pulls/$PR/files" \
+              --jq '.[] | .filename, (.previous_filename // empty)' \
+              | python3 .github/scripts/select_test_groups.py | tee -a "$GITHUB_OUTPUT"
+          else
+            python3 .github/scripts/select_test_groups.py --all | tee -a "$GITHUB_OUTPUT"
+          fi
+
+  test-java:
+    name: Unit tests against YAMS source - ${{ matrix.group }}
+    needs: [select-tests]
+    if: needs.select-tests.outputs.java != '[]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: vendordep
+    strategy:
+      fail-fast: false
+      matrix:
+        # Each group with the --tests filters of the classes it runs; see select_test_groups.py.
+        include: ${{ fromJson(needs.select-tests.outputs.java) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: Yet-Another-Software-Suite/YAMS
+          path: YAMS
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 25
+      - run: chmod +x gradlew
+      - name: Use the YAMS source in place of the YAMS vendordeps
+        run: rm vendordeps/yams_commands2.json vendordeps/yams_commands3.json
+      - name: Unit tests - ${{ matrix.group }}
+        run: ./gradlew test -PyamsSource=../YAMS/yams/java ${{ matrix.test-filter }}
       - name: Test summary
         if: always()
-        run: python3 ../.github/scripts/test_summary.py "Unit tests against YAMS source" build/test-results/test
-        working-directory: ${{ env.workingDirectory }}
+        run: python3 ../.github/scripts/test_summary.py "Unit tests against YAMS source - ${{ matrix.group }}" build/test-results/test
