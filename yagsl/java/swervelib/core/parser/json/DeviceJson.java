@@ -293,23 +293,33 @@ public class DeviceJson
       case "attached":
         if (angleMotorVendor == VendorMotorController.NOVA)
         {
+          if (vendorType.equals("analog5v"))
+          {
+            throw new IllegalArgumentException(
+                "analog5v_attached is for a SPARK MAX or SPARK Flex angle motor controller. On a Thrifty Nova, use "
+                + "analog_attached.");
+          }
           // The Nova decodes each data port encoder differently, so it needs the specific encoder type.
           return angleMotorVendor.getAbsoluteEncoder(vendorType, angleMotorController, inverted);
         }
-        switch (vendorType)
+        if (angleMotorVendor != VendorMotorController.SPARKMAX && angleMotorVendor != VendorMotorController.SPARKFLEX)
         {
-          case "andymarkhexbore":
-          case "canandmag":
-          case "revthroughbore":
-          case "srxmag":
-          case "dutycycle":
-            return angleMotorVendor.getAbsoluteEncoder("dutycycle", angleMotorController, inverted);
-          case "analog":
-            return angleMotorVendor.getAbsoluteEncoder("analog", angleMotorController, inverted);
-          case "analog5v":
-            return angleMotorVendor.getAbsoluteEncoder("analog5v", angleMotorController, inverted);
-          default: throw new IllegalArgumentException("Invalid encoder type: " + vendorType);
+          throw new IllegalArgumentException(
+              type + " plugs into the angle motor controller's data port, which only a SPARK MAX, SPARK Flex or "
+              + "Thrifty Nova angle motor controller supports. With a " + angleMotorVendor + " angle motor controller, "
+              + "use a CAN absolute encoder such as cancoder_can, or one on a SystemCore SmartIO port (_dio or "
+              + "_analog).");
         }
+        return switch (vendorType)
+        {
+          case "andymarkhexbore", "canandmag", "revthroughbore", "srxmag", "dutycycle" ->
+              angleMotorVendor.getAbsoluteEncoder("dutycycle", angleMotorController, inverted);
+          case "analog", "analog5v" -> angleMotorVendor.getAbsoluteEncoder(vendorType, angleMotorController, inverted);
+          case "thrifty" -> throw new IllegalArgumentException(
+              "thrifty_attached is for a Thrifty Nova angle motor controller. With a SPARK MAX or SPARK Flex, plug the "
+              + "Thrifty encoder into a SystemCore SmartIO port and use thrifty_analog.");
+          default -> throw new IllegalArgumentException("Invalid attached encoder type: " + type);
+        };
       case "can":
         switch (vendorType)
         {
