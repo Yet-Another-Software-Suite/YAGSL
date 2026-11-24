@@ -161,9 +161,9 @@ swerve/
 | `useCosineCompensator` | Removed | Cosine compensation is always on. See [Behavior changes](#behavior-changes). |
 
 > [!WARNING]
-> A module's `gearing.drive` now replaces the shared drive gearing as a whole when its `gearRatio`
-> isn't `0`. If you set `gearRatio` in a module file, set `diameter` there too, or the module's
-> wheel diameter is `0`. The old `conversionFactors` override fell back to the shared diameter.
+> A module's `gearing.drive` replaces the shared drive gearing when its `gearRatio` isn't `0`. A
+> module that sets only `gearRatio` keeps the shared wheel diameter, as the old `conversionFactors`
+> override did.
 
 ```json
 {
@@ -529,7 +529,8 @@ The [examples](examples) show both: `examples/commands2` and `examples/commands3
 - **Idle modes.** Drive motors coast and angle motors brake.
 - **Absolute encoder feedback.** An absolute encoder attached to the angle motor controller, or a
   CANcoder with a TalonFX or TalonFXS angle motor, becomes the motor controller's feedback sensor.
-  Other encoders are read by the module.
+  The exception is `analog_attached` or `analog5v_attached` on a SPARK, which YAMS can't use as
+  feedback. Other encoders are read by the module.
 - **Gyro.** YAMS applies `gyroAxis` and `gyroInvert` to the gyro's full 3D attitude. Check that the
   heading increases counterclockwise before driving.
 - **Telemetry.** The drive publishes to NetworkTables under `Mechanisms/<telemetry name>` and logs

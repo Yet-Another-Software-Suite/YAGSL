@@ -285,7 +285,7 @@ jobs:
             cat <<'EOF'
           ## Installation
 
-          Pick the vendordep for the command framework your robot uses. Only install one of them. Each one requires the matching YAMS vendordep (and REVLib, Phoenix6, and ReduxLib), which VS Code will offer to install.
+          Pick the vendordep for the command framework your robot uses. Only install one of them. Each one requires only the matching YAMS vendordep, which VS Code will offer to install. Install the 2027 vendordeps for the hardware in your configuration too, such as Phoenix 6 or REVLib.
 
           ### Online
 

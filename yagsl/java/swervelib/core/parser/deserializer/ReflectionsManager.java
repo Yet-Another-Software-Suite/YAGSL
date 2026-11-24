@@ -202,7 +202,7 @@ public class ReflectionsManager
     /**
      * AM CAN Encoder
      */
-    ANDYMARK("AndyMarkDevices"),
+    ANDYMARK("AndymarkDevices"),
     /**
      * ThriftyBot CAN encoder
      */

@@ -230,6 +230,12 @@
       "type": "boolean",
       "description": "Inversion of the absolute encoder"
     },
+    "absoluteEncoderGearRatio": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "default": 1,
+      "description": "Reduction between the absolute encoder and the module, X where X:1. Used when the module reads the absolute encoder itself rather than through the angle motor controller."
+    },
     "location": {
       "type": "object",
       "description": "Location of the module from the center of the robot to the center of the wheel",

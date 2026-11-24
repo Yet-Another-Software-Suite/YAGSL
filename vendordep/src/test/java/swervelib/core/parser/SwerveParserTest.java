@@ -413,4 +413,44 @@ class SwerveParserTest {
     SwerveParser.parse(testResourceDir());
     assertEquals(7, SwerveParser.moduleJsons[3].drive.id);
   }
+
+  // -- Module gearing override ----------------------------------------------
+
+  @Test
+  void testModuleGearRatioOverrideKeepsSharedDiameter() throws IOException {
+    SwerveParser.parse(createTestConfigDir());
+    var module = SwerveParser.moduleJsons[0];
+    module.gearing.drive.gearRatio = 5.9;
+
+    var gearings = SwerveParser.resolveGearings(module);
+
+    assertEquals(5.9, gearings.drive().gearRatio, 0.001);
+    assertEquals(4.0, gearings.drive().diameter, 0.001);
+    // The shared gearing is left alone for the other modules.
+    assertEquals(6.75, SwerveParser.physicalPropertiesJson.gearing.drive.gearRatio, 0.001);
+  }
+
+  @Test
+  void testModuleGearingOverrideWithDiameterReplacesBoth() throws IOException {
+    SwerveParser.parse(createTestConfigDir());
+    var module = SwerveParser.moduleJsons[0];
+    module.gearing.drive.gearRatio = 5.9;
+    module.gearing.drive.diameter = 3.5;
+
+    var gearings = SwerveParser.resolveGearings(module);
+
+    assertEquals(5.9, gearings.drive().gearRatio, 0.001);
+    assertEquals(3.5, gearings.drive().diameter, 0.001);
+  }
+
+  @Test
+  void testModuleWithoutGearingUsesSharedGearing() throws IOException {
+    SwerveParser.parse(createTestConfigDir());
+
+    var gearings = SwerveParser.resolveGearings(SwerveParser.moduleJsons[0]);
+
+    assertEquals(6.75, gearings.drive().gearRatio, 0.001);
+    assertEquals(4.0, gearings.drive().diameter, 0.001);
+    assertEquals(12.8, gearings.azimuth().gearRatio, 0.001);
+  }
 }

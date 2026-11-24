@@ -187,57 +187,46 @@ public class DeviceJson
       String[] vendorData           = type.split("_");
       String   vendorType           = vendorData[0];
       String   vendorConnectionType = vendorData[1];
-      switch (vendorType)
+      if (vendorConnectionType.equals("attached"))
       {
-        case "systemcore":
-          return VENDOR.LIMELIGHT;
-        case "navx3":
-          return VENDOR.STUDICA;
-        case "talonfx":
-        case "talonfxs":
-        case "cancoder":
-        case "pigeon2":
-          return VENDOR.CTRE;
-        case "sparkmax":
-        case "sparkflex":
-          return VENDOR.REV;
-        case "revthroughbore":
-          switch (vendorConnectionType)
-          {
-            case "attached": return attachedType;
-            case "dio": return VENDOR.SMARTIO;
-          }
-        case "nova":
-          return VENDOR.THRIFTYBOT;
-        case "andymarkhexbore":
-          switch (vendorConnectionType)
-          {
-            case "attached": return attachedType;
-            case "dio":
-            case "analog": return VENDOR.SMARTIO;
-            case "can": return VENDOR.ANDYMARK;
-          }
-        case "canandgyro": return VENDOR.REDUX;
-        case "canandmag":
-          switch (vendorConnectionType)
-          {
-            case "attached": return attachedType;
-            case "dio": return VENDOR.SMARTIO;
-            case "can": return VENDOR.REDUX;
-          }
-        case "srxmag":
-          switch (vendorConnectionType)
-          {
-            case "attached": return attachedType;
-            case "analog": return VENDOR.SMARTIO;
-          }
-        case "thrifty":
-          switch (vendorConnectionType)
-          {
-            case "attached": return attachedType;
-            case "analog": return VENDOR.SMARTIO;
-          }
+        // An encoder on a motor controller's data port belongs to that motor controller's vendor, so it becomes the
+        // motor controller's feedback sensor. YAMS can't use a SPARK's analog input as its feedback sensor, so an
+        // analog encoder on a SPARK stays UNKNOWN and the module reads it instead.
+        if (attachedType == VENDOR.REV && (vendorType.equals("analog") || vendorType.equals("analog5v")))
+        {
+          return VENDOR.UNKNOWN;
+        }
+        return attachedType;
       }
+      return switch (vendorType)
+      {
+        case "systemcore" -> VENDOR.LIMELIGHT;
+        case "navx3" -> VENDOR.STUDICA;
+        case "talonfx", "talonfxs", "cancoder", "pigeon2" -> VENDOR.CTRE;
+        // A Spline Encoder is its own CAN device, so it stays UNKNOWN: the module reads it, and it never becomes a
+        // SPARK's feedback sensor.
+        case "sparkmax", "sparkflex" -> VENDOR.REV;
+        case "nova" -> VENDOR.THRIFTYBOT;
+        case "canandgyro" -> VENDOR.REDUX;
+        case "andymarkhexbore" -> switch (vendorConnectionType)
+        {
+          case "dio", "analog" -> VENDOR.SMARTIO;
+          case "can" -> VENDOR.ANDYMARK;
+          default -> VENDOR.UNKNOWN;
+        };
+        case "canandmag" -> switch (vendorConnectionType)
+        {
+          case "dio" -> VENDOR.SMARTIO;
+          case "can" -> VENDOR.REDUX;
+          default -> VENDOR.UNKNOWN;
+        };
+        case "revthroughbore", "srxmag", "thrifty" -> switch (vendorConnectionType)
+        {
+          case "dio", "analog" -> VENDOR.SMARTIO;
+          default -> VENDOR.UNKNOWN;
+        };
+        default -> VENDOR.UNKNOWN;
+      };
     }
     return VENDOR.UNKNOWN;
   }

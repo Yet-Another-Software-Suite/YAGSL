@@ -23,8 +23,9 @@ built from YAGSL's JSON configuration, with three ways to drive in teleop and th
 2. Open `build.gradle` and delete the block between `// YAGSL_TESTING` and `// END_YAGSL_TESTING`. It compiles
    YAGSL from this repository's source so the example can be tested here; your project uses the vendordep instead.
 3. Install YAGSL for Commands v3: **WPILib: Manage Vendor Libraries → Install new libraries (online)** with
-   `https://yet-another-software-suite.github.io/YAGSL/yagsl_commands3.json`. VS Code offers to install what it
-   requires (YAMS, REVLib, Phoenix6, ReduxLib).
+   `https://cdn.yassrobotics.com/yagsl_commands3.json`. VS Code offers to install the YAMS vendordep it
+   requires. The hardware vendordeps are already in `vendordeps/`; keep the ones for the devices in your
+   configuration.
 4. Set your team number (**WPILib: Set Team Number**, or edit `.wpilib/wpilib_preferences.json`).
 5. Replace `src/main/deploy/swerve` with the configuration you generated at
    [config.yagsl.com](https://config.yagsl.com). The example config uses a CTRE Pigeon2 gyro.
@@ -159,7 +160,7 @@ rotation gains into the `PIDController`s in `SwerveDriveMechanism`.
 
 ```text
 build.gradle                                     # YAGSL_TESTING block compiles YAGSL from ../../yagsl/java
-vendordeps/                                      # CommandsV3, YAMS, Phoenix6, REVLib, ReduxLib
+vendordeps/                                      # CommandsV3, Phoenix6, REVLib, ReduxLib, StudicaLib, ThriftyLib
 src/main/java/frc/robot/
 ├── Robot.java                                   # OpModeRobot: the swerve mechanism, battery sim
 ├── mechanisms/

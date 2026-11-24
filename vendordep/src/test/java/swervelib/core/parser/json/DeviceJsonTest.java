@@ -285,6 +285,53 @@ class DeviceJsonTest {
   }
 
   @Test
+  void getVendor_dutycycleAttached_passesThroughAttachedType() {
+    // A duty cycle encoder on the data port becomes the motor controller's feedback sensor, like a
+    // Through Bore.
+    assertEquals(VENDOR.REV, deviceWithType("dutycycle_attached").getVendor(VENDOR.REV));
+    assertEquals(
+        VENDOR.THRIFTYBOT, deviceWithType("dutycycle_attached").getVendor(VENDOR.THRIFTYBOT));
+  }
+
+  @Test
+  void getVendor_analogAttachedOnSpark_returnsUnknown() {
+    // YAMS can't use a SPARK's analog input as its feedback sensor, so the module reads it.
+    assertEquals(VENDOR.UNKNOWN, deviceWithType("analog_attached").getVendor(VENDOR.REV));
+    assertEquals(VENDOR.UNKNOWN, deviceWithType("analog5v_attached").getVendor(VENDOR.REV));
+  }
+
+  @Test
+  void getVendor_analogAttachedOnNova_passesThroughAttachedType() {
+    assertEquals(VENDOR.THRIFTYBOT, deviceWithType("analog_attached").getVendor(VENDOR.THRIFTYBOT));
+  }
+
+  @Test
+  void getVendor_splineencoderCan_returnsUnknown() {
+    // A Spline Encoder is its own CAN device, so the module reads it rather than a SPARK.
+    assertEquals(VENDOR.UNKNOWN, deviceWithType("splineencoder_can").getVendor(VENDOR.UNKNOWN));
+  }
+
+  @Test
+  void getVendor_doesNotFallThroughToTheNextVendor() {
+    // These used to fall through the switch into the next vendor's case.
+    assertEquals(VENDOR.UNKNOWN, deviceWithType("revthroughbore_can").getVendor(VENDOR.UNKNOWN));
+    assertEquals(VENDOR.UNKNOWN, deviceWithType("andymarkhexbore_usb").getVendor(VENDOR.UNKNOWN));
+    assertEquals(VENDOR.UNKNOWN, deviceWithType("canandmag_analog").getVendor(VENDOR.UNKNOWN));
+  }
+
+  @Test
+  void getVendor_smartIoAndCanEncoders() {
+    assertEquals(
+        VENDOR.SMARTIO, deviceWithType("andymarkhexbore_analog").getVendor(VENDOR.UNKNOWN));
+    assertEquals(VENDOR.SMARTIO, deviceWithType("canandmag_dio").getVendor(VENDOR.UNKNOWN));
+    assertEquals(VENDOR.REDUX, deviceWithType("canandmag_can").getVendor(VENDOR.UNKNOWN));
+    assertEquals(VENDOR.SMARTIO, deviceWithType("srxmag_analog").getVendor(VENDOR.UNKNOWN));
+    assertEquals(VENDOR.SMARTIO, deviceWithType("thrifty_analog").getVendor(VENDOR.UNKNOWN));
+    assertEquals(VENDOR.CTRE, deviceWithType("cancoder_can").getVendor(VENDOR.UNKNOWN));
+    assertEquals(VENDOR.STUDICA, deviceWithType("navx3_usb").getVendor(VENDOR.UNKNOWN));
+  }
+
+  @Test
   void getVendor_noUnderscore_returnsUnknown() {
     assertEquals(VENDOR.UNKNOWN, deviceWithType("nounderscore").getVendor(VENDOR.UNKNOWN));
   }
