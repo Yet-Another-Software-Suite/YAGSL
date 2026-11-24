@@ -15,6 +15,7 @@ documentation lives at [docs.yagsl.com](https://docs.yagsl.com).
 | Library Source          | [github.com/Yet-Another-Software-Suite/YAGSL](https://github.com/Yet-Another-Software-Suite/YAGSL/)                 |
 | Wiki / Docs             | [docs.yagsl.com](https://docs.yagsl.com)                                                                            |
 | Example Projects        | [examples/](examples/)                                                                                              |
+| Migrating from 2026.4.1 | [MIGRATION.md](MIGRATION.md)                                                                                        |
 
 ---
 
