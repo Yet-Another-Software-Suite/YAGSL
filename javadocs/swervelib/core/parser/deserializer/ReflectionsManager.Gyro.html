@@ -69,6 +69,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#values()" tabindex="0">values()</a></li>
 <li><a href="#valueOf(java.lang.String)" tabindex="0">valueOf(String)</a></li>
 <li><a href="#getGyro(int,java.lang.String)" tabindex="0">getGyro(int, String)</a></li>
+<li><a href="#getUsbGyro(int)" tabindex="0">getUsbGyro(int)</a></li>
 </ol>
 </li>
 </ol>
@@ -150,14 +151,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get the gyroscope's attitude as a <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> of <code>Rotation3d</code> and the vendor gyroscope object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ReflectionsManager.Gyro.html" title="enum class in swervelib.core.parser.deserializer">ReflectionsManager.Gyro</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.wpilib.util.Pair<wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;org.wpilib.math.geometry.Rotation3d&gt;, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsbGyro(int)" class="member-name-link">getUsbGyro</a><wbr>(int&nbsp;port)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Get the attitude <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> and the vendor gyroscope object of a gyroscope plugged into a Systemcore USB
+port.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ReflectionsManager.Gyro.html" title="enum class in swervelib.core.parser.deserializer">ReflectionsManager.Gyro</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ReflectionsManager.Gyro.html" title="enum class in swervelib.core.parser.deserializer">ReflectionsManager.Gyro</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ReflectionsManager.Gyro.html" title="enum class in swervelib.core.parser.deserializer">ReflectionsManager.Gyro</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -262,6 +269,22 @@ not permitted.)</div>
 <dt>Parameters:</dt>
 <dd><code>canid</code> - CAN ID of the gyroscope.</dd>
 <dd><code>canbus</code> - CAN bus name of the gyroscope.</dd>
+<dt>Returns:</dt>
+<dd><code>Pair</code> of the gyroscope attitude <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> and the vendor gyroscope <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a>.</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getUsbGyro(int)">
+<h3>getUsbGyro</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.wpilib.util.Pair&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;org.wpilib.math.geometry.Rotation3d&gt;, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getUsbGyro</span><wbr><span class="parameters">(int&nbsp;port)</span></div>
+<div class="block">Get the attitude <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> and the vendor gyroscope object of a gyroscope plugged into a Systemcore USB
+port. Only the <a href="#NAVX3"><code>NAVX3</code></a> connects over USB.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>port</code> - USB port number, 0 for USB0.</dd>
 <dt>Returns:</dt>
 <dd><code>Pair</code> of the gyroscope attitude <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> and the vendor gyroscope <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a>.</dd>
 </dl>

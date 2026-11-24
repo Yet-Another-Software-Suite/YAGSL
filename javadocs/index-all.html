@@ -189,7 +189,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="swervelib/core/parser/json/DeviceJson.html#channel" class="member-name-link">channel</a> - Variable in class swervelib.core.parser.json.<a href="swervelib/core/parser/json/DeviceJson.html" title="class in swervelib.core.parser.json">DeviceJson</a></dt>
 <dd>
-<div class="block">SmartIO Channel.</div>
+<div class="block">SmartIO channel, or for a USB gyroscope the Systemcore USB port number (0 for USB0).</div>
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/ReflectionsManager.html#create(swervelib.core.parser.deserializer.ReflectionsManager.VENDOR,java.lang.String,java.lang.Class%5B%5D,java.lang.Object%5B%5D)" class="member-name-link">create(ReflectionsManager.VENDOR, String, Class[], Object[])</a> - Static method in class swervelib.core.parser.deserializer.<a href="swervelib/core/parser/deserializer/ReflectionsManager.html" title="class in swervelib.core.parser.deserializer">ReflectionsManager</a></dt>
 <dd>
@@ -443,7 +443,7 @@ along the way (drive/azimuth motor controllers, absolute encoders, and the gyro)
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/reflections/StudicaLibDevices.html#getGyro(int,java.lang.String)" class="member-name-link">getGyro(int, String)</a> - Static method in class swervelib.core.parser.deserializer.reflections.<a href="swervelib/core/parser/deserializer/reflections/StudicaLibDevices.html" title="class in swervelib.core.parser.deserializer.reflections">StudicaLibDevices</a></dt>
 <dd>
-<div class="block">Get the gyroscope attitude supplier and gyroscope object.</div>
+<div class="block">Get the gyroscope attitude supplier and gyroscope object of a navX3 on CAN.</div>
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/ReflectionsManager.Gyro.html#getGyro(int,java.lang.String)" class="member-name-link">getGyro(int, String)</a> - Method in enum class swervelib.core.parser.deserializer.<a href="swervelib/core/parser/deserializer/ReflectionsManager.Gyro.html" title="enum class in swervelib.core.parser.deserializer">ReflectionsManager.Gyro</a></dt>
 <dd>
@@ -473,6 +473,15 @@ along the way (drive/azimuth motor controllers, absolute encoders, and the gyro)
 <dd>
 <div class="block">Get the <a href="https://yet-another-software-suite.github.io/YAMS/javadocs/yams/core/motorcontrollers/SmartMotorController.html" title="class or interface in yams.core.motorcontrollers" class="external-link"><code>SmartMotorController</code></a> from the <a href="swervelib/core/parser/json/DeviceJson.html" title="class in swervelib.core.parser.json"><code>DeviceJson</code></a> when given the
 <a href="https://yet-another-software-suite.github.io/YAMS/javadocs/yams/core/motorcontrollers/SmartMotorControllerConfig.html" title="class or interface in yams.core.motorcontrollers" class="external-link"><code>SmartMotorControllerConfig</code></a>.</div>
+</dd>
+<dt><a href="swervelib/core/parser/deserializer/reflections/StudicaLibDevices.html#getUsbGyro(int)" class="member-name-link">getUsbGyro(int)</a> - Static method in class swervelib.core.parser.deserializer.reflections.<a href="swervelib/core/parser/deserializer/reflections/StudicaLibDevices.html" title="class in swervelib.core.parser.deserializer.reflections">StudicaLibDevices</a></dt>
+<dd>
+<div class="block">Get the gyroscope attitude supplier and gyroscope object of a navX3 plugged into one of the Systemcore's USB ports.</div>
+</dd>
+<dt><a href="swervelib/core/parser/deserializer/ReflectionsManager.Gyro.html#getUsbGyro(int)" class="member-name-link">getUsbGyro(int)</a> - Method in enum class swervelib.core.parser.deserializer.<a href="swervelib/core/parser/deserializer/ReflectionsManager.Gyro.html" title="enum class in swervelib.core.parser.deserializer">ReflectionsManager.Gyro</a></dt>
+<dd>
+<div class="block">Get the attitude <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> and the vendor gyroscope object of a gyroscope plugged into a Systemcore USB
+port.</div>
 </dd>
 <dt><a href="swervelib/core/parser/Cache.html#getValue()" class="member-name-link">getValue()</a> - Method in class swervelib.core.parser.<a href="swervelib/core/parser/Cache.html" title="class in swervelib.core.parser">Cache</a></dt>
 <dd>

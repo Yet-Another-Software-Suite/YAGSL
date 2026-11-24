@@ -88,6 +88,9 @@ loadScripts(document, 'script');</script>
   <li>A bus number: <code>"0"</code> to <code>"4"</code> are the Systemcore CAN buses <code>can_s0</code> to <code>can_s4</code>,
   so <code>"1"</code> is <code>can_s1</code>. <code>"5"</code> to <code>"24"</code> are the Motioncore CAN buses <code>can_d0</code> to
   <code>can_d19</code>, following <code>CANPort</code>.</li>
+  <li>A <code>CANPort</code> name, written exactly as the enum names it: <code>"CAN_S0"</code> to <code>"CAN_S4"</code> and
+  <code>"CAN_D0"</code> to <code>"CAN_D19"</code>, so <code>"CAN_S1"</code> is <code>can_s1</code>. Other spellings, such as
+  <code>"can_s1"</code>, are left to the vendor.</li>
   <li>Anything else is a vendor specific CAN bus, such as the name of a CANivore for CTRE devices. Vendors that
   only use the Systemcore and Motioncore CAN buses reject it.</li>
 </ul></div>

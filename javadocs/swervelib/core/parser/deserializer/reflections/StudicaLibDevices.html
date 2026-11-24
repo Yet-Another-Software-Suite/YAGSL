@@ -63,6 +63,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#getGyro(int,java.lang.String)" tabindex="0">getGyro(int, String)</a></li>
+<li><a href="#getUsbGyro(int)" tabindex="0">getUsbGyro(int)</a></li>
 </ol>
 </li>
 </ol>
@@ -113,7 +114,12 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGyro(int,java.lang.String)" class="member-name-link">getGyro</a><wbr>(int&nbsp;canid,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;canbus)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Get the gyroscope attitude supplier and gyroscope object.</div>
+<div class="block">Get the gyroscope attitude supplier and gyroscope object of a navX3 on CAN.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static org.wpilib.util.Pair<wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;org.wpilib.math.geometry.Rotation3d&gt;, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUsbGyro(int)" class="member-name-link">getUsbGyro</a><wbr>(int&nbsp;port)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Get the gyroscope attitude supplier and gyroscope object of a navX3 plugged into one of the Systemcore's USB ports.</div>
 </div>
 </div>
 </div>
@@ -154,13 +160,30 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.wpilib.util.Pair&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;org.wpilib.math.geometry.Rotation3d&gt;, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getGyro</span><wbr><span class="parameters">(int&nbsp;canid,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;canbus)</span></div>
-<div class="block">Get the gyroscope attitude supplier and gyroscope object.</div>
+<div class="block">Get the gyroscope attitude supplier and gyroscope object of a navX3 on CAN.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>canid</code> - CAN ID of the gyroscope.</dd>
 <dd><code>canbus</code> - CAN bus of the gyroscope, a Systemcore CAN bus number.</dd>
 <dt>Returns:</dt>
 <dd><code>Pair</code> of the attitude <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> and the gyroscope <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getUsbGyro(int)">
+<h3>getUsbGyro</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">org.wpilib.util.Pair&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;org.wpilib.math.geometry.Rotation3d&gt;, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getUsbGyro</span><wbr><span class="parameters">(int&nbsp;port)</span></div>
+<div class="block">Get the gyroscope attitude supplier and gyroscope object of a navX3 plugged into one of the Systemcore's USB ports.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>port</code> - USB port number, 0 to 3 for <code>UsbPort.USB0</code> to <code>UsbPort.USB3</code>.</dd>
+<dt>Returns:</dt>
+<dd><code>Pair</code> of the attitude <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link"><code>Supplier</code></a> and the gyroscope <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a></dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the port is not a <code>UsbPort</code>.</dd>
 </dl>
 </div>
 </section>
