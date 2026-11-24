@@ -17,7 +17,11 @@ import org.wpilib.system.Timer;
 
 /**
  * Telemetry to describe the {@link yams.core.mechanisms.swerve.SwerveDrive} following frc-web-components. (Which follows AdvantageKit)
+ *
+ * @deprecated Nothing reads this class, so its settings do nothing. YAMS publishes the swerve drive's telemetry: set
+ * it with {@code SwerveDriveConfig.withTelemetry(name, new SwerveDriveTelemetryConfig(TelemetryVerbosity))}.
  */
+@Deprecated(forRemoval = true)
 public class SwerveDriveTelemetry
 {
 

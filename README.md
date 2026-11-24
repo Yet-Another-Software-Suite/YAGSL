@@ -1,8 +1,10 @@
 # Yet Another Generic Swerve Library (YAGSL)
 
-YAGSL is a plug-and-play swerve drive library for FRC robots. It handles all of the kinematics,
-odometry, and motor configuration so your team can focus on the rest of the robot. Full
-documentation lives at [docs.yagsl.com](https://docs.yagsl.com).
+YAGSL is a plug-and-play swerve drive library for FRC robots. It reads a JSON description of your
+swerve drive and builds a [YAMS](https://github.com/Yet-Another-Software-Suite/YAMS) `SwerveDrive`
+from it, which handles the kinematics, odometry and motor configuration so your team can focus on
+the rest of the robot. YAGSL targets WPILib `2027_alpha7` and the SystemCore. Full documentation
+lives at [docs.yagsl.com](https://docs.yagsl.com).
 
 ---
 
@@ -23,22 +25,26 @@ documentation lives at [docs.yagsl.com](https://docs.yagsl.com).
 
 ### 1. Create a new WPILib project
 
-Open the **WPILib VS Code** extension and create a new **Command-Based Robot (Java)** project using
-the template wizard. Teams may also use an existing project.
+Open **WPILib VS Code** `2027_alpha7` and create a new **Command-Based Robot (Java)** project using
+the template wizard. Teams may also use an existing 2027 project. Upgrading a 2026 project? Follow
+[MIGRATION.md](MIGRATION.md).
 
 ### 2. Add the vendor dependency
 
-YAGSL is listed in the **WPILib Vendordep Tab** — the easiest way to install it is to search for
-**YAGSL** there and click install.
+YAGSL has one vendordep for each WPILib command framework. Install the one your robot uses, and
+only one: they conflict with each other. Open **WPILib: Manage Vendor Libraries**, select
+**Install new libraries (online)**, and paste its URL:
 
-Alternatively, open the **Manage Vendor Libraries** menu, select **Install new library (online)**,
-and paste the URL manually:
+| Command framework | Vendordep URL                                       |
+|-------------------|-----------------------------------------------------|
+| Commands v2       | `https://cdn.yassrobotics.com/yagsl_commands2.json` |
+| Commands v3       | `https://cdn.yassrobotics.com/yagsl_commands3.json` |
 
-```
-https://yet-another-software-suite.github.io/YAGSL/yagsl.json
-```
+VS Code offers to install the matching YAMS vendordep, the only library YAGSL requires. Then
+install the 2027 vendordep for each hardware vendor in your configuration, such as Phoenix 6 for a
+TalonFX or REVLib for a SPARK MAX.
 
-Run a Gradle build to download the library before continuing.
+Run a Gradle build to download the libraries before continuing.
 
 ### 3. Generate your configuration
 
@@ -72,65 +78,66 @@ src/main/deploy
 
 ### SwerveDriveSubsystem
 
-Create a subsystem that wraps the `SwerveDrive` object built by `SwerveParser`:
+Create a subsystem that wraps the `SwerveDrive` built by `SwerveParser`. This uses Commands v2; the
+[examples](examples/) show both command frameworks.
 
 ```java
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.io.File;
 import java.util.function.DoubleSupplier;
-import swervelib.parser.SwerveParser;
-import yams.mechanisms.config.SwerveDriveConfig;
-import yams.mechanisms.swerve.SwerveDrive;
-import yams.mechanisms.swerve.utility.SwerveInputStream;
-import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
+import org.wpilib.command2.Command;
+import org.wpilib.command2.SubsystemBase;
+import org.wpilib.math.controller.PIDController;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.system.Filesystem;
+import swervelib.commands2.SwerveParser;
+import yams.commands2.config.SwerveDriveConfig;
+import yams.commands2.swerve.SwerveDrive;
+import yams.commands2.swerve.SwerveInputStream;
+import yams.core.telemetry.SwerveDriveTelemetryConfig;
+import yams.core.telemetry.enums.TelemetryVerbosity;
 
 public class SwerveDriveSubsystem extends SubsystemBase
 {
 
-  private SwerveDrive drive;
+  private final SwerveDrive drive;
 
   public SwerveDriveSubsystem()
   {
     var cfg = new SwerveDriveConfig()
-        .withStartingPose(new Pose2d(3, 3, Rotation2d.kZero))
+        .withStartingPose(new Pose2d(3, 3, Rotation2d.ZERO))
         .withSubsystem(this)
-        .withTelemetry(TelemetryVerbosity.HIGH);
-    try
-    {
-      drive = SwerveParser.parse(new File(Filesystem.getDeployDirectory(), "swerve/base"))
-          .createSwerveDrive(cfg);
-    } catch (Exception e)
-    {
-      throw new RuntimeException(e);
-    }
+        .withTranslationController(new PIDController(4, 0, 0))
+        .withRotationController(new PIDController(3, 0, 0))
+        .withTelemetry("swerve", new SwerveDriveTelemetryConfig(TelemetryVerbosity.HIGH));
+
+    // parse(...) and createSwerveDrive(...) are static, and are called one after the other.
+    SwerveParser.parse(new File(Filesystem.getDeployDirectory(), "swerve/base"));
+    drive = SwerveParser.createSwerveDrive(cfg);
   }
 
   public SwerveInputStream getAngularVelocityStream(DoubleSupplier x, DoubleSupplier y,
                                                     DoubleSupplier rot)
   {
-    return new SwerveInputStream(drive, x, y, rot);
+    return SwerveInputStream.of(drive, x, y, rot);
   }
 
-  public Command drive(SwerveInputStream stream)
+  /** Drive with a field relative {@link SwerveInputStream}. */
+  public Command driveFieldRelative(SwerveInputStream stream)
   {
-    return drive.drive(() -> ChassisSpeeds.fromFieldRelativeSpeeds(stream.get(),
-                                                                   new Rotation2d(drive.getGyroAngle())));
+    return run(() -> drive.setFieldRelativeChassisSpeeds(stream.get()));
   }
 
   /** Zero the gyro heading. Bind this to a button combo for field recovery. */
   public Command zeroGyro()
   {
-    return runOnce(() -> drive.zeroGyro());
+    return runOnce(drive::zeroGyro);
   }
 
   @Override
   public void periodic()
   {
+    // The pose only updates here, so this has to run every loop.
     drive.updateTelemetry();
   }
 
@@ -142,15 +149,19 @@ public class SwerveDriveSubsystem extends SubsystemBase
 }
 ```
 
+Without `withMaximumChassisSpeed(...)` on the `SwerveDriveConfig`, `SwerveInputStream` scales the
+joysticks to 4 m/s and 1 rotation per second. Set it to your robot's speed.
+
 ### RobotContainer — Binding Controls
 
-Wire up your driver controller in `RobotContainer`. The example below uses an Xbox controller with *
-*Start + Back** as the gyro-reset combo so drivers can recover field orientation if the gyro drifts:
+Wire up your driver controller in `RobotContainer`. The example below uses an Xbox controller with
+**Menu + View** (Start + Back) as the gyro-reset combo so drivers can recover field orientation if
+the gyro drifts:
 
 ```java
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.swervedrive.SwerveDriveSubsystem;
-import yams.mechanisms.swerve.utility.SwerveInputStream;
+import org.wpilib.command2.button.CommandXboxController;
+import yams.commands2.swerve.SwerveInputStream;
 
 public class RobotContainer
 {
@@ -161,9 +172,10 @@ public class RobotContainer
 
   private final SwerveInputStream driveAngularVelocity =
       swerve.getAngularVelocityStream(
-                driverXbox::getLeftY,
-                driverXbox::getLeftX,
-                () -> driverXbox.getRawAxis(2))
+                () -> -driverXbox.getLeftY(),
+                () -> -driverXbox.getLeftX(),
+                () -> -driverXbox.getRightX())
+            .withDeadband(0.05)
             .withAllianceRelativeControl();
 
   public RobotContainer()
@@ -174,15 +186,10 @@ public class RobotContainer
   private void configureBindings()
   {
     // Default drive command
-    swerve.setDefaultCommand(swerve.drive(driveAngularVelocity));
+    swerve.setDefaultCommand(swerve.driveFieldRelative(driveAngularVelocity));
 
-    // Zero the gyro with Start + Back — use this if the field-relative heading drifts
-    driverXbox.start().and(driverXbox.back()).onTrue(swerve.zeroGyro());
-  }
-
-  public Command getAutonomousCommand()
-  {
-    return autoChooser.getSelected();
+    // Zero the gyro with Menu + View — use this if the field-relative heading drifts
+    driverXbox.menu().and(driverXbox.view()).onTrue(swerve.zeroGyro());
   }
 }
 ```

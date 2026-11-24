@@ -219,12 +219,27 @@ public class SwerveParser {
     return new SwerveDriveHardware(gyroDevice, moduleDevices);
   }
 
-  private static ModuleGearings resolveGearings(ModuleJson moduleJson) {
+  /**
+   * Get a module's drive and azimuth gearing: the module's own gearing where it sets a gear ratio, otherwise the shared
+   * gearing from {@code physicalproperties.json}.
+   *
+   * @param moduleJson Module to get the gearing of.
+   * @return The module's drive and azimuth gearing.
+   */
+  static ModuleGearings resolveGearings(ModuleJson moduleJson) {
     var driveGearing = physicalPropertiesJson.gearing.drive;
     var azimuthGearing = physicalPropertiesJson.gearing.angle;
 
     if (moduleJson.gearing.drive.gearRatio != 0) {
-      driveGearing = moduleJson.gearing.drive;
+      if (moduleJson.gearing.drive.diameter != 0) {
+        driveGearing = moduleJson.gearing.drive;
+      } else {
+        // A module that only overrides the gear ratio keeps the shared wheel diameter.
+        var moduleDriveGearing = new DriveGearingJson();
+        moduleDriveGearing.gearRatio = moduleJson.gearing.drive.gearRatio;
+        moduleDriveGearing.diameter = physicalPropertiesJson.gearing.drive.diameter;
+        driveGearing = moduleDriveGearing;
+      }
     }
 
     if (moduleJson.gearing.angle.gearRatio != 0) {
@@ -451,7 +466,7 @@ public class SwerveParser {
     return gyro.getSecond();
   }
 
-  private static record ModuleGearings(
+  record ModuleGearings(
       DriveGearingJson drive,
       AngleGearingJson azimuth) {
   }
