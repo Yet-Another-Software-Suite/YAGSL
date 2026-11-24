@@ -23,8 +23,12 @@
           "description": "CAN ID of the Gyroscope. If no CAN ID is needed, set this to 0. Ignored when type is \"custom\"."
         },
         "canbus": {
-          "type": "string",
-          "description": "CAN bus the gyroscope is on: \"\" for the Systemcore CAN bus can_s0, \"1\" to \"4\" for can_s1 to can_s4, or \"5\" to \"24\" for the Motioncore CAN buses can_d0 to can_d19, or the CANPort name instead of the number, such as \"CAN_S1\". CTRE devices also take a CANivore's name. Ignored when type is \"custom\"."
+          "description": "CAN bus the gyroscope is on: \"\" for the Systemcore CAN bus can_s0, \"1\" to \"4\" for can_s1 to can_s4, or \"5\" to \"24\" for the Motioncore CAN buses can_d0 to can_d19, or the CANPort name instead of the number, such as \"CAN_S1\". CTRE devices also take a CANivore's name. Ignored when type is \"custom\".",
+          "allOf": [
+            {
+              "$ref": "#/definitions/canbus"
+            }
+          ]
         },
         "channel": {
           "type": "integer",
@@ -67,5 +71,222 @@
     "gyro",
     "gyroInvert",
     "modules"
-  ]
+  ],
+  "definitions": {
+    "canbus": {
+      "type": "string",
+      "description": "A Systemcore or Motioncore CAN bus, by number or CANPort name, or a CANivore's name",
+      "anyOf": [
+        {
+          "const": "",
+          "description": "can_s0, the Systemcore CAN bus (default)"
+        },
+        {
+          "const": "0",
+          "description": "can_s0, a Systemcore CAN bus"
+        },
+        {
+          "const": "1",
+          "description": "can_s1, a Systemcore CAN bus"
+        },
+        {
+          "const": "2",
+          "description": "can_s2, a Systemcore CAN bus"
+        },
+        {
+          "const": "3",
+          "description": "can_s3, a Systemcore CAN bus"
+        },
+        {
+          "const": "4",
+          "description": "can_s4, a Systemcore CAN bus"
+        },
+        {
+          "const": "5",
+          "description": "can_d0, a Motioncore CAN bus"
+        },
+        {
+          "const": "6",
+          "description": "can_d1, a Motioncore CAN bus"
+        },
+        {
+          "const": "7",
+          "description": "can_d2, a Motioncore CAN bus"
+        },
+        {
+          "const": "8",
+          "description": "can_d3, a Motioncore CAN bus"
+        },
+        {
+          "const": "9",
+          "description": "can_d4, a Motioncore CAN bus"
+        },
+        {
+          "const": "10",
+          "description": "can_d5, a Motioncore CAN bus"
+        },
+        {
+          "const": "11",
+          "description": "can_d6, a Motioncore CAN bus"
+        },
+        {
+          "const": "12",
+          "description": "can_d7, a Motioncore CAN bus"
+        },
+        {
+          "const": "13",
+          "description": "can_d8, a Motioncore CAN bus"
+        },
+        {
+          "const": "14",
+          "description": "can_d9, a Motioncore CAN bus"
+        },
+        {
+          "const": "15",
+          "description": "can_d10, a Motioncore CAN bus"
+        },
+        {
+          "const": "16",
+          "description": "can_d11, a Motioncore CAN bus"
+        },
+        {
+          "const": "17",
+          "description": "can_d12, a Motioncore CAN bus"
+        },
+        {
+          "const": "18",
+          "description": "can_d13, a Motioncore CAN bus"
+        },
+        {
+          "const": "19",
+          "description": "can_d14, a Motioncore CAN bus"
+        },
+        {
+          "const": "20",
+          "description": "can_d15, a Motioncore CAN bus"
+        },
+        {
+          "const": "21",
+          "description": "can_d16, a Motioncore CAN bus"
+        },
+        {
+          "const": "22",
+          "description": "can_d17, a Motioncore CAN bus"
+        },
+        {
+          "const": "23",
+          "description": "can_d18, a Motioncore CAN bus"
+        },
+        {
+          "const": "24",
+          "description": "can_d19, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_S0",
+          "description": "can_s0, a Systemcore CAN bus"
+        },
+        {
+          "const": "CAN_S1",
+          "description": "can_s1, a Systemcore CAN bus"
+        },
+        {
+          "const": "CAN_S2",
+          "description": "can_s2, a Systemcore CAN bus"
+        },
+        {
+          "const": "CAN_S3",
+          "description": "can_s3, a Systemcore CAN bus"
+        },
+        {
+          "const": "CAN_S4",
+          "description": "can_s4, a Systemcore CAN bus"
+        },
+        {
+          "const": "CAN_D0",
+          "description": "can_d0, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D1",
+          "description": "can_d1, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D2",
+          "description": "can_d2, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D3",
+          "description": "can_d3, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D4",
+          "description": "can_d4, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D5",
+          "description": "can_d5, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D6",
+          "description": "can_d6, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D7",
+          "description": "can_d7, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D8",
+          "description": "can_d8, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D9",
+          "description": "can_d9, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D10",
+          "description": "can_d10, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D11",
+          "description": "can_d11, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D12",
+          "description": "can_d12, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D13",
+          "description": "can_d13, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D14",
+          "description": "can_d14, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D15",
+          "description": "can_d15, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D16",
+          "description": "can_d16, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D17",
+          "description": "can_d17, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D18",
+          "description": "can_d18, a Motioncore CAN bus"
+        },
+        {
+          "const": "CAN_D19",
+          "description": "can_d19, a Motioncore CAN bus"
+        },
+        {
+          "type": "string",
+          "pattern": "\\D",
+          "description": "A CANivore's name, for CTRE devices only"
+        }
+      ]
+    }
+  }
 }

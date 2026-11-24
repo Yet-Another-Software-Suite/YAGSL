@@ -122,6 +122,34 @@ class SwerveDriveSchemaTest {
   }
 
   @ParameterizedTest
+  @ValueSource(strings = {"", "0", "4", "5", "24", "CAN_S0", "CAN_S4", "CAN_D0", "CAN_D19", "rio", "My CANivore"})
+  void schemas_acceptEveryCanbus(String canbus) throws IOException {
+    ObjectNode module = (ObjectNode) getInstance("modules/fl.json");
+    ((ObjectNode) module.get("drive")).put("canbus", canbus);
+    ((ObjectNode) module.get("angle")).put("canbus", canbus);
+    ((ObjectNode) module.get("absoluteEncoder")).put("canbus", canbus);
+    Set<ValidationMessage> moduleErrors = getSchema("module.json").validate(module);
+    assertTrue(moduleErrors.isEmpty(), () -> "expected canbus \"" + canbus + "\" to be valid, got " + moduleErrors);
+
+    ObjectNode swerve = (ObjectNode) getInstance("swervedrive.json");
+    ((ObjectNode) swerve.get("gyro")).put("canbus", canbus);
+    Set<ValidationMessage> swerveErrors = getSchema("swervedrive.json").validate(swerve);
+    assertTrue(swerveErrors.isEmpty(), () -> "expected canbus \"" + canbus + "\" to be valid, got " + swerveErrors);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"25", "100"})
+  void schemas_rejectACanbusNumberThatDoesNotExist(String canbus) throws IOException {
+    ObjectNode module = (ObjectNode) getInstance("modules/fl.json");
+    ((ObjectNode) module.get("drive")).put("canbus", canbus);
+    assertFalse(getSchema("module.json").validate(module).isEmpty(), "expected canbus " + canbus + " to be rejected");
+
+    ObjectNode swerve = (ObjectNode) getInstance("swervedrive.json");
+    ((ObjectNode) swerve.get("gyro")).put("canbus", canbus);
+    assertFalse(getSchema("swervedrive.json").validate(swerve).isEmpty(), "expected canbus " + canbus + " to be rejected");
+  }
+
+  @ParameterizedTest
   @ValueSource(strings = {"talonfx_falcon", "talonfx_falcon500"})
   void moduleSchema_acceptsFalconMotors(String type) throws IOException {
     ObjectNode instance = (ObjectNode) getInstance("modules/fl.json");
