@@ -45,3 +45,7 @@ jobs:
       - name: Unit tests against YAMS source
         run: ./gradlew test -PyamsSource=../YAMS/yams/java
         working-directory: ${{ env.workingDirectory }}
+      - name: Test summary
+        if: always()
+        run: python3 ../.github/scripts/test_summary.py "Unit tests against YAMS source" build/test-results/test
+        working-directory: ${{ env.workingDirectory }}

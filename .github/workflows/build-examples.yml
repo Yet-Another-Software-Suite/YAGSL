@@ -6,11 +6,13 @@ on:
       - "examples/**"
       - "yagsl/**"
       - ".github/workflows/build-examples.yml"
+      - ".github/scripts/test_summary.py"
   pull_request:
     paths:
       - "examples/**"
       - "yagsl/**"
       - ".github/workflows/build-examples.yml"
+      - ".github/scripts/test_summary.py"
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -39,4 +41,8 @@ jobs:
       # block) and runs its simulation smoke test.
       - name: Build and test
         run: chmod +x gradlew && ./gradlew build
+        working-directory: examples/${{ matrix.example }}
+      - name: Test summary
+        if: always()
+        run: python3 ../../.github/scripts/test_summary.py "${{ matrix.example }} example tests" build/test-results/test
         working-directory: examples/${{ matrix.example }}
