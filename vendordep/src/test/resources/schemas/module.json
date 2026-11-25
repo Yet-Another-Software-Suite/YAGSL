@@ -263,6 +263,111 @@
     "absoluteEncoderOffset",
     "location"
   ],
+  "allOf": [
+    {
+      "description": "Only a SPARK MAX, SPARK Flex or Thrifty Nova angle motor controller reads an absolute encoder plugged into it.",
+      "if": {
+        "properties": {
+          "angle": {
+            "properties": {
+              "type": {
+                "not": {
+                  "pattern": "^(sparkmax|sparkflex|nova)_"
+                }
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        },
+        "required": [
+          "angle"
+        ]
+      },
+      "then": {
+        "properties": {
+          "absoluteEncoder": {
+            "properties": {
+              "type": {
+                "not": {
+                  "pattern": "_attached$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "The Thrifty Absolute Encoder only plugs into a Thrifty Nova angle motor controller.",
+      "if": {
+        "properties": {
+          "angle": {
+            "properties": {
+              "type": {
+                "not": {
+                  "pattern": "^nova_"
+                }
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        },
+        "required": [
+          "angle"
+        ]
+      },
+      "then": {
+        "properties": {
+          "absoluteEncoder": {
+            "properties": {
+              "type": {
+                "not": {
+                  "const": "thrifty_attached"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "A Thrifty Nova can't read a 5 V analog encoder: use analog_attached.",
+      "if": {
+        "properties": {
+          "angle": {
+            "properties": {
+              "type": {
+                "pattern": "^nova_"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        },
+        "required": [
+          "angle"
+        ]
+      },
+      "then": {
+        "properties": {
+          "absoluteEncoder": {
+            "properties": {
+              "type": {
+                "not": {
+                  "const": "analog5v_attached"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
   "definitions": {
     "canbus": {
       "type": "string",

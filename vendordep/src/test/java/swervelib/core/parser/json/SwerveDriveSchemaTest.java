@@ -1,5 +1,6 @@
 package swervelib.core.parser.json;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class SwerveDriveSchemaTest {
@@ -155,6 +157,8 @@ class SwerveDriveSchemaTest {
     ObjectNode instance = (ObjectNode) getInstance("modules/fl.json");
     ((ObjectNode) instance.get("drive")).put("type", type);
     ((ObjectNode) instance.get("angle")).put("type", type);
+    // A TalonFX angle motor can't read an absolute encoder plugged into it, so the module uses a CANcoder.
+    ((ObjectNode) instance.get("absoluteEncoder")).put("type", "cancoder_can");
     Set<ValidationMessage> errors = getSchema("module.json").validate(instance);
     assertTrue(errors.isEmpty(), "expected " + type + " to be a valid motor type, got " + errors);
   }
@@ -181,5 +185,32 @@ class SwerveDriveSchemaTest {
     instance.remove("drive");
     Set<ValidationMessage> errors = getSchema("pidfproperties.json").validate(instance);
     assertFalse(errors.isEmpty(), "expected validation errors for missing 'drive' field");
+  }
+
+  // -- Absolute encoders plugged into the angle motor controller ---------------
+
+  /**
+   * The module schema flags an absolute encoder the angle motor controller can't read, which YAGSL fails on at startup:
+   * any _attached type on a TalonFX or TalonFXS, thrifty_attached without a Nova, and analog5v_attached on a Nova.
+   */
+  @ParameterizedTest
+  @CsvSource({
+      "talonfx_krakenx60, revthroughbore_attached, false",
+      "talonfxs_minion,   dutycycle_attached,      false",
+      "talonfx_krakenx60, cancoder_can,            true",
+      "sparkmax_neo,      thrifty_attached,        false",
+      "sparkflex_vortex,  thrifty_attached,        false",
+      "sparkmax_neo,      thrifty_analog,          true",
+      "nova_neo,          thrifty_attached,        true",
+      "nova_neo,          analog5v_attached,       false",
+      "nova_neo,          analog_attached,         true",
+      "sparkmax_neo,      analog5v_attached,       true",
+      "sparkflex_vortex,  revthroughbore_attached, true"})
+  void moduleSchema_checksAttachedEncoders(String angle, String encoder, boolean valid) throws IOException {
+    ObjectNode instance = (ObjectNode) getInstance("modules/fl.json");
+    ((ObjectNode) instance.get("angle")).put("type", angle);
+    ((ObjectNode) instance.get("absoluteEncoder")).put("type", encoder);
+    Set<ValidationMessage> errors = getSchema("module.json").validate(instance);
+    assertEquals(valid, errors.isEmpty(), encoder + " on a " + angle + " angle motor controller: " + errors);
   }
 }
