@@ -213,4 +213,17 @@ class SwerveDriveSchemaTest {
     Set<ValidationMessage> errors = getSchema("module.json").validate(instance);
     assertEquals(valid, errors.isEmpty(), encoder + " on a " + angle + " angle motor controller: " + errors);
   }
+
+  /**
+   * The module schema only takes an absolute encoder gear ratio above 0 and up to 1: the encoder turns that many times
+   * per module turn, and an absolute encoder only reads one rotation.
+   */
+  @ParameterizedTest
+  @CsvSource({"1, true", "0.5, true", "0.01, true", "1.01, false", "2, false", "0, false", "-1, false"})
+  void moduleSchema_checksAbsoluteEncoderGearRatio(double gearRatio, boolean valid) throws IOException {
+    ObjectNode instance = (ObjectNode) getInstance("modules/fl.json");
+    instance.put("absoluteEncoderGearRatio", gearRatio);
+    Set<ValidationMessage> errors = getSchema("module.json").validate(instance);
+    assertEquals(valid, errors.isEmpty(), "absoluteEncoderGearRatio " + gearRatio + ": " + errors);
+  }
 }

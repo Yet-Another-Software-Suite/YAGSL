@@ -42,7 +42,8 @@ public class ModuleJson
    */
   public boolean               absoluteEncoderInverted = false;
   /**
-   * Reduction ratio for the absolute encoder to the motor. X where "X:1"
+   * How many times the absolute encoder turns for each turn of the module, X where "X:1". An absolute encoder only reads
+   * one rotation, so this is above 0 and up to 1.
    */
   public double absoluteEncoderGearRatio = 1;
   /**

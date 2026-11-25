@@ -233,8 +233,9 @@
     "absoluteEncoderGearRatio": {
       "type": "number",
       "exclusiveMinimum": 0,
+      "maximum": 1,
       "default": 1,
-      "description": "Reduction between the absolute encoder and the module, X where X:1. Used when the module reads the absolute encoder itself rather than through the angle motor controller."
+      "description": "How many times the absolute encoder turns for each turn of the module, X where X:1. An absolute encoder only reads one rotation, so it can't turn more than once per module turn: more than 0, up to 1."
     },
     "location": {
       "type": "object",
