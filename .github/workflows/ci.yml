@@ -41,6 +41,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 25
+      # Caches Gradle's downloads between runs, so the test jobs, which start at once, don't each fetch
+      # every dependency from Maven Central and the vendors' servers.
+      - uses: gradle/actions/setup-gradle@v6
       - run: chmod +x gradlew
       # Without the YAMS vendordeps, YAMS comes only from its source.
       - name: Use the YAMS source in place of the YAMS vendordeps
@@ -102,6 +105,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 25
+      # Caches Gradle's downloads between runs, so the test jobs, which start at once, don't each fetch
+      # every dependency from Maven Central and the vendors' servers.
+      - uses: gradle/actions/setup-gradle@v6
       - run: chmod +x gradlew
       - name: Use the YAMS source in place of the YAMS vendordeps
         run: rm vendordeps/yams_commands2.json vendordeps/yams_commands3.json
