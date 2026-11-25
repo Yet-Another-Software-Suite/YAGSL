@@ -29,6 +29,7 @@ loadScripts(document, 'script');</script>
 <ul id="navbar-top-firstrow" class="nav-list" title="Navigation">
 <li><a href="index.html">Overview</a></li>
 <li><a href="overview-tree.html">Tree</a></li>
+<li><a href="deprecated-list.html">Deprecated</a></li>
 <li class="nav-bar-cell1-rev">Index</li>
 <li><a href="search.html">Search</a></li>
 <li><a href="help-doc.html#index">Help</a></li>
@@ -66,7 +67,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="swervelib/core/parser/json/ModuleJson.html#absoluteEncoderGearRatio" class="member-name-link">absoluteEncoderGearRatio</a> - Variable in class swervelib.core.parser.json.<a href="swervelib/core/parser/json/ModuleJson.html" title="class in swervelib.core.parser.json">ModuleJson</a></dt>
 <dd>
-<div class="block">Reduction ratio for the absolute encoder to the motor.</div>
+<div class="block">How many times the absolute encoder turns for each turn of the module, X where "X:1".</div>
 </dd>
 <dt><a href="swervelib/core/parser/json/ModuleJson.html#absoluteEncoderInverted" class="member-name-link">absoluteEncoderInverted</a> - Variable in class swervelib.core.parser.json.<a href="swervelib/core/parser/json/ModuleJson.html" title="class in swervelib.core.parser.json">ModuleJson</a></dt>
 <dd>
@@ -78,7 +79,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/reflections/REVDevices.AbsoluteEncoder.html#ANALOG" class="member-name-link">ANALOG</a> - Enum constant in enum class swervelib.core.parser.deserializer.reflections.<a href="swervelib/core/parser/deserializer/reflections/REVDevices.AbsoluteEncoder.html" title="enum class in swervelib.core.parser.deserializer.reflections">REVDevices.AbsoluteEncoder</a></dt>
 <dd>
-<div class="block">Analog input <a href="https://codedocs.revrobotics.com/java/com/revrobotics/spark/FeedbackSensor.html#kAnalogSensor" title="class or interface in com.revrobotics.spark" class="external-link"><code>FeedbackSensor.kAnalogSensor</code></a></div>
+<div class="block">Analog encoder on the SPARK's analog input, read by the module.</div>
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/reflections/ThriftyBotDevices.AbsoluteEncoder.html#ANALOG" class="member-name-link">ANALOG</a> - Enum constant in enum class swervelib.core.parser.deserializer.reflections.<a href="swervelib/core/parser/deserializer/reflections/ThriftyBotDevices.AbsoluteEncoder.html" title="enum class in swervelib.core.parser.deserializer.reflections">ThriftyBotDevices.AbsoluteEncoder</a></dt>
 <dd>
@@ -86,7 +87,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/reflections/REVDevices.AbsoluteEncoder.html#ANALOG5V" class="member-name-link">ANALOG5V</a> - Enum constant in enum class swervelib.core.parser.deserializer.reflections.<a href="swervelib/core/parser/deserializer/reflections/REVDevices.AbsoluteEncoder.html" title="enum class in swervelib.core.parser.deserializer.reflections">REVDevices.AbsoluteEncoder</a></dt>
 <dd>
-<div class="block">Analog input <a href="https://codedocs.revrobotics.com/java/com/revrobotics/spark/FeedbackSensor.html#kAnalogSensor" title="class or interface in com.revrobotics.spark" class="external-link"><code>FeedbackSensor.kAnalogSensor</code></a></div>
+<div class="block">Analog encoder on the SPARK's analog input, read by the module.</div>
+</dd>
+<dt><a href="swervelib/core/parser/deserializer/reflections/REVDevices.html#analogRotations(double,double,boolean)" class="member-name-link">analogRotations(double, double, boolean)</a> - Static method in class swervelib.core.parser.deserializer.reflections.<a href="swervelib/core/parser/deserializer/reflections/REVDevices.html" title="class in swervelib.core.parser.deserializer.reflections">REVDevices</a></dt>
+<dd>
+<div class="block">Convert an analog encoder's voltage to its angle.</div>
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/ReflectionsManager.AbsoluteEncoder.html#ANDYMARK" class="member-name-link">ANDYMARK</a> - Enum constant in enum class swervelib.core.parser.deserializer.<a href="swervelib/core/parser/deserializer/ReflectionsManager.AbsoluteEncoder.html" title="enum class in swervelib.core.parser.deserializer">ReflectionsManager.AbsoluteEncoder</a></dt>
 <dd>
@@ -185,6 +190,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#canIdWarning" class="member-name-link">canIdWarning</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">An <code>Alert</code> for if the CAN ID is greater than 40.</div>
 </dd>
 <dt><a href="swervelib/core/parser/json/DeviceJson.html#channel" class="member-name-link">channel</a> - Variable in class swervelib.core.parser.json.<a href="swervelib/core/parser/json/DeviceJson.html" title="class in swervelib.core.parser.json">DeviceJson</a></dt>
@@ -240,18 +246,22 @@ along the way (drive/azimuth motor controllers, absolute encoders, and the gyro)
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#desiredChassisSpeeds" class="member-name-link">desiredChassisSpeeds</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Describes the desired forward, sideways and angular velocity of the robot.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#desiredChassisSpeedsObj" class="member-name-link">desiredChassisSpeedsObj</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Describes the desired forward, sideways and angular velocity of the robot.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#desiredStates" class="member-name-link">desiredStates</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">An array of rotation and velocity values describing the desired state of each swerve module</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#desiredStatesObj" class="member-name-link">desiredStatesObj</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Desired swerve module states object</div>
 </dd>
 <dt><a href="swervelib/core/parser/json/DeviceJson.html" class="type-name-link" title="class in swervelib.core.parser.json">DeviceJson</a> - Class in <a href="swervelib/core/parser/json/package-summary.html">swervelib.core.parser.json</a></dt>
@@ -319,10 +329,12 @@ along the way (drive/azimuth motor controllers, absolute encoders, and the gyro)
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#endCtrlCycle()" class="member-name-link">endCtrlCycle()</a> - Static method in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Update the Control cycle time.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#endOdomCycle()" class="member-name-link">endOdomCycle()</a> - Static method in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Update the odom cycle time.</div>
 </dd>
 <dt><a href="swervelib/core/parser/SwerveParser.SwerveDriveDevices.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in record class swervelib.core.parser.<a href="swervelib/core/parser/SwerveParser.SwerveDriveDevices.html" title="class in swervelib.core.parser">SwerveParser.SwerveDriveDevices</a></dt>
@@ -354,6 +366,7 @@ along the way (drive/azimuth motor controllers, absolute encoders, and the gyro)
 <dl class="index">
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#forwardDirection" class="member-name-link">forwardDirection</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The direction the robot should be facing when the "Robot Rotation" is zero or blank.</div>
 </dd>
 <dt><a href="swervelib/core/parser/json/modules/LocationJson.html#front" class="member-name-link">front</a> - Variable in class swervelib.core.parser.json.modules.<a href="swervelib/core/parser/json/modules/LocationJson.html" title="class in swervelib.core.parser.json.modules">LocationJson</a></dt>
@@ -528,6 +541,7 @@ port.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html#HIGH" class="member-name-link">HIGH</a> - Enum constant in enum class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html" title="enum class in swervelib.core.telemetry">SwerveDriveTelemetry.TelemetryVerbosity</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Full swerve drive data is sent back in both human and machine readable forms.</div>
 </dd>
 </dl>
@@ -539,6 +553,7 @@ port.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#i2cLockupWarning" class="member-name-link">i2cLockupWarning</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">An <code>Alert</code> for if there is an I2C lockup issue on the roboRIO.</div>
 </dd>
 <dt><a href="swervelib/core/parser/json/DeviceJson.html#id" class="member-name-link">id</a> - Variable in class swervelib.core.parser.json.<a href="swervelib/core/parser/json/DeviceJson.html" title="class in swervelib.core.parser.json">DeviceJson</a></dt>
@@ -547,6 +562,7 @@ port.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html#INFO" class="member-name-link">INFO</a> - Enum constant in enum class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html" title="enum class in swervelib.core.telemetry">SwerveDriveTelemetry.TelemetryVerbosity</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Medium telemetry data, swerve directory</div>
 </dd>
 <dt><a href="swervelib/core/parser/json/ModuleJson.html#inverted" class="member-name-link">inverted</a> - Variable in class swervelib.core.parser.json.<a href="swervelib/core/parser/json/ModuleJson.html" title="class in swervelib.core.parser.json">ModuleJson</a></dt>
@@ -555,6 +571,7 @@ port.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#isSimulation" class="member-name-link">isSimulation</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">State of simulation of the Robot, used to optimize retrieval.</div>
 </dd>
 <dt><a href="swervelib/core/parser/Cache.html#isStale()" class="member-name-link">isStale()</a> - Method in class swervelib.core.parser.<a href="swervelib/core/parser/Cache.html" title="class in swervelib.core.parser">Cache</a></dt>
@@ -584,6 +601,7 @@ port.</div>
 <dd>&nbsp;</dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html#LOW" class="member-name-link">LOW</a> - Enum constant in enum class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html" title="enum class in swervelib.core.telemetry">SwerveDriveTelemetry.TelemetryVerbosity</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Low telemetry data, only post the robot position on the field.</div>
 </dd>
 </dl>
@@ -591,34 +609,42 @@ port.</div>
 <dl class="index">
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html#MACHINE" class="member-name-link">MACHINE</a> - Enum constant in enum class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html" title="enum class in swervelib.core.telemetry">SwerveDriveTelemetry.TelemetryVerbosity</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Only send the machine readable data related to swerve drive.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#maxAngularVelocity" class="member-name-link">maxAngularVelocity</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The maximum achievable angular velocity of the robot.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#maxSpeed" class="member-name-link">maxSpeed</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The maximum achievable speed of the modules, used to adjust the size of the vectors.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#measuredChassisSpeeds" class="member-name-link">measuredChassisSpeeds</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The maximum achievable angular velocity of the robot.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#measuredChassisSpeedsObj" class="member-name-link">measuredChassisSpeedsObj</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The maximum achievable angular velocity of the robot.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#measuredStates" class="member-name-link">measuredStates</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">An array of rotation and velocity values describing the measured state of each swerve module</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#measuredStatesObj" class="member-name-link">measuredStatesObj</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Measured swerve module states object.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#moduleCount" class="member-name-link">moduleCount</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The number of swerve modules</div>
 </dd>
 <dt><a href="swervelib/core/parser/json/ModuleJson.html" class="type-name-link" title="class in swervelib.core.parser.json">ModuleJson</a> - Class in <a href="swervelib/core/parser/json/package-summary.html">swervelib.core.parser.json</a></dt>
@@ -680,6 +706,7 @@ port.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html#NONE" class="member-name-link">NONE</a> - Enum constant in enum class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html" title="enum class in swervelib.core.telemetry">SwerveDriveTelemetry.TelemetryVerbosity</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">No telemetry data is sent back.</div>
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/reflections/ThriftyBotDevices.MotorControllerType.html#NOVA" class="member-name-link">NOVA</a> - Enum constant in enum class swervelib.core.parser.deserializer.reflections.<a href="swervelib/core/parser/deserializer/reflections/ThriftyBotDevices.MotorControllerType.html" title="enum class in swervelib.core.parser.deserializer.reflections">ThriftyBotDevices.MotorControllerType</a></dt>
@@ -744,6 +771,7 @@ containing the parsed configuration.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html#POSE" class="member-name-link">POSE</a> - Enum constant in enum class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html" title="enum class in swervelib.core.telemetry">SwerveDriveTelemetry.TelemetryVerbosity</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Info level + field info</div>
 </dd>
 </dl>
@@ -818,14 +846,17 @@ Motioncore CAN buses.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#robotRotation" class="member-name-link">robotRotation</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The robot's current rotation based on odometry or gyro readings</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#robotRotationObj" class="member-name-link">robotRotationObj</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The robot's current rotation based on odometry or gyro readings</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#rotationUnit" class="member-name-link">rotationUnit</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The units of the module rotations and robot rotation</div>
 </dd>
 </dl>
@@ -837,14 +868,17 @@ Motioncore CAN buses.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#serialCommsIssueWarning" class="member-name-link">serialCommsIssueWarning</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">NavX serial comm issue.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#sizeFrontBack" class="member-name-link">sizeFrontBack</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The distance between the front and back modules.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#sizeLeftRight" class="member-name-link">sizeLeftRight</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The distance between the left and right modules.</div>
 </dd>
 <dt><a href="swervelib/core/parser/json/DeviceJson.VENDOR.html#SMARTIO" class="member-name-link">SMARTIO</a> - Enum constant in enum class swervelib.core.parser.json.<a href="swervelib/core/parser/json/DeviceJson.VENDOR.html" title="enum class in swervelib.core.parser.json">DeviceJson.VENDOR</a></dt>
@@ -881,10 +915,12 @@ Motioncore CAN buses.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#startCtrlCycle()" class="member-name-link">startCtrlCycle()</a> - Static method in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Start the ctrl timer to measure cycle time, independent of periodic loops.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#startOdomCycle()" class="member-name-link">startOdomCycle()</a> - Static method in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Start the odom cycle timer to calculate how long each odom took.</div>
 </dd>
 <dt><a href="swervelib/core/parser/json/PhysicalPropertiesJson.html#statorCurrentLimit" class="member-name-link">statorCurrentLimit</a> - Variable in class swervelib.core.parser.json.<a href="swervelib/core/parser/json/PhysicalPropertiesJson.html" title="class in swervelib.core.parser.json">PhysicalPropertiesJson</a></dt>
@@ -929,12 +965,18 @@ Motioncore CAN buses.</div>
 <dd>&nbsp;</dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" class="type-name-link" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a> - Class in <a href="swervelib/core/telemetry/package-summary.html">swervelib.core.telemetry</a></dt>
 <dd>
-<div class="block">Telemetry to describe the <a href="https://yet-another-software-suite.github.io/YAMS/javadocs/yams/core/mechanisms/swerve/SwerveDrive.html" title="class or interface in yams.core.mechanisms.swerve" class="external-link"><code>SwerveDrive</code></a> following frc-web-components.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Nothing reads this class, so its settings do nothing. YAMS publishes the swerve drive's telemetry: set
+it with <code>SwerveDriveConfig.withTelemetry(name, new SwerveDriveTelemetryConfig(TelemetryVerbosity))</code>.</div>
+</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#%3Cinit%3E()" class="member-name-link">SwerveDriveTelemetry()</a> - Constructor for class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
+&nbsp;</dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html" class="type-name-link" title="enum class in swervelib.core.telemetry">SwerveDriveTelemetry.TelemetryVerbosity</a> - Enum Class in <a href="swervelib/core/telemetry/package-summary.html">swervelib.core.telemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Verbosity of telemetry data sent back.</div>
 </dd>
 <dt><a href="swervelib/commands2/package-summary.html">swervelib.commands2</a> - package swervelib.commands2</dt>
@@ -1087,10 +1129,12 @@ type.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#updateData()" class="member-name-link">updateData()</a> - Static method in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Upload data to smartdashboard</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#updateSettings" class="member-name-link">updateSettings</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Update the telemetry settings that infrequently change.</div>
 </dd>
 <dt><a href="swervelib/core/parser/Cache.html#updateSupplier(java.util.function.Supplier)" class="member-name-link">updateSupplier(Supplier)</a> - Method in class swervelib.core.parser.<a href="swervelib/core/parser/Cache.html" title="class in swervelib.core.parser">Cache</a></dt>
@@ -1099,6 +1143,7 @@ type.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#updateSwerveTelemetrySettings()" class="member-name-link">updateSwerveTelemetrySettings()</a> - Static method in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Update only the settings that infrequently or never change.</div>
 </dd>
 <dt><a href="swervelib/core/parser/Cache.html#updateValidityPeriod(long)" class="member-name-link">updateValidityPeriod(long)</a> - Method in class swervelib.core.parser.<a href="swervelib/core/parser/Cache.html" title="class in swervelib.core.parser">Cache</a></dt>
@@ -1154,6 +1199,7 @@ type.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html" title="enum class in swervelib.core.telemetry">SwerveDriveTelemetry.TelemetryVerbosity</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </dd>
 <dt><a href="swervelib/core/parser/deserializer/reflections/CTREDevices.MotorControllerType.html#values()" class="member-name-link">values()</a> - Static method in enum class swervelib.core.parser.deserializer.reflections.<a href="swervelib/core/parser/deserializer/reflections/CTREDevices.MotorControllerType.html" title="enum class in swervelib.core.parser.deserializer.reflections">CTREDevices.MotorControllerType</a></dt>
@@ -1208,11 +1254,13 @@ the order they are declared.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html#values()" class="member-name-link">values()</a> - Static method in enum class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.TelemetryVerbosity.html" title="enum class in swervelib.core.telemetry">SwerveDriveTelemetry.TelemetryVerbosity</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </dd>
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#verbosity" class="member-name-link">verbosity</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The current telemetry verbosity level.</div>
 </dd>
 </dl>
@@ -1220,6 +1268,7 @@ the order they are declared.</div>
 <dl class="index">
 <dt><a href="swervelib/core/telemetry/SwerveDriveTelemetry.html#wheelLocations" class="member-name-link">wheelLocations</a> - Static variable in class swervelib.core.telemetry.<a href="swervelib/core/telemetry/SwerveDriveTelemetry.html" title="class in swervelib.core.telemetry">SwerveDriveTelemetry</a></dt>
 <dd>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The Locations of the swerve drive wheels.</div>
 </dd>
 </dl>
