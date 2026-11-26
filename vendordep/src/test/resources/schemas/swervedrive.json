@@ -16,7 +16,7 @@
             "custom"
           ],
           "type": "string",
-          "description": "The gyroscope type. Use \"custom\" for a gyro YAGSL has no built-in type for; SwerveParser skips creating a gyro device for \"custom\" and expects the SwerveDriveConfig you pass to SwerveParser.createSwerveDrive(...)/createSwerveDriveDevices(...) to already have .withGyro(...) (and optionally .withGyroOffset(...)/.withGyroVelocity(...)) set."
+          "description": "The gyroscope type. Use \"custom\" for a gyro YAGSL has no built-in type for; SwerveParser skips creating a gyro device for \"custom\" and expects the SwerveDriveConfig you pass to SwerveParser.createSwerveDrive(...)/createSwerveDriveDevices(...) to already have .withGyro(...) (and optionally .withGyroVelocity(...)) set."
         },
         "id": {
           "type": "number",
