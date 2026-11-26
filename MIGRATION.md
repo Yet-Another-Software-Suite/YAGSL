@@ -423,7 +423,7 @@ A Commands v3 `Mechanism` has no `periodic()`. Call `updateTelemetry()` from
 | `getYaw()`, `getPitch()`, `getRoll()`, `getGyroRotation3d()` | `getGyroRotation3d()` |
 | `getGyro()` | `createSwerveDriveDevices(cfg).gyro()` |
 | `setGyro(Rotation3d)` | `resetOdometry(Pose2d)` |
-| `setGyroOffset(Rotation3d)` | `SwerveDriveConfig.withGyroOffset(Angle)` |
+| `setGyroOffset(Rotation3d)` | `resetOdometry(Pose2d)`: the pose estimator keeps the offset between the gyro and the pose |
 | `addVisionMeasurement(...)`, `setVisionMeasurementStdDevs(...)` | Same |
 | `getRobotVelocity()`, `getFieldVelocity()` | `getRobotRelativeSpeed()`, `getFieldRelativeSpeed()` |
 | `getStates()` | `getModuleStates()`. Also new: `getDesiredModuleStates()`, `getDesiredChassisSpeeds()`. |
