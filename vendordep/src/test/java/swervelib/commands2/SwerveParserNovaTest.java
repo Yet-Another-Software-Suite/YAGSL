@@ -31,9 +31,11 @@ class SwerveParserNovaTest {
   @TempDir static Path configDir;
 
   private static final String[] MODULES = {"fl", "fr", "bl", "br"};
+
   /** Absolute encoders wired to each azimuth Nova's data port, one per data port encoder type. */
   private static final String[] ENCODERS = {
-      "revthroughbore_attached", "thrifty_attached", "srxmag_attached", "canandmag_attached"};
+    "revthroughbore_attached", "thrifty_attached", "srxmag_attached", "canandmag_attached"
+  };
 
   @BeforeAll
   static void writeConfig() throws IOException {
@@ -56,12 +58,22 @@ class SwerveParserNovaTest {
       double left = i % 2 == 0 ? 12 : -12;
       Files.writeString(
           modules.resolve(MODULES[i] + ".json"),
-          "{\"drive\":{\"type\":\"nova_neo\",\"id\":" + (50 + i * 2) + ",\"canbus\":\"\"},"
-              + "\"angle\":{\"type\":\"nova_minion\",\"id\":" + (51 + i * 2) + ",\"canbus\":\"\"},"
-              + "\"absoluteEncoder\":{\"type\":\"" + ENCODERS[i] + "\",\"id\":0,\"canbus\":\"\"},"
+          "{\"drive\":{\"type\":\"nova_neo\",\"id\":"
+              + (50 + i * 2)
+              + ",\"canbus\":\"\"},"
+              + "\"angle\":{\"type\":\"nova_minion\",\"id\":"
+              + (51 + i * 2)
+              + ",\"canbus\":\"\"},"
+              + "\"absoluteEncoder\":{\"type\":\""
+              + ENCODERS[i]
+              + "\",\"id\":0,\"canbus\":\"\"},"
               + "\"inverted\":{\"drive\":false,\"angle\":false},"
               + "\"absoluteEncoderOffset\":0,\"absoluteEncoderInverted\":false,"
-              + "\"location\":{\"front\":" + front + ",\"left\":" + left + "}}");
+              + "\"location\":{\"front\":"
+              + front
+              + ",\"left\":"
+              + left
+              + "}}");
     }
   }
 
@@ -83,7 +95,8 @@ class SwerveParserNovaTest {
     for (String name : MODULES) {
       SwerveModule module = devices.swerveDrive().getModule(name).orElseThrow();
       assertEquals(neo.freeSpeed, module.getDriveMotorController().getDCMotor().freeSpeed, 1e-9);
-      assertEquals(minion.freeSpeed, module.getAzimuthMotorController().getDCMotor().freeSpeed, 1e-9);
+      assertEquals(
+          minion.freeSpeed, module.getAzimuthMotorController().getDCMotor().freeSpeed, 1e-9);
     }
   }
 

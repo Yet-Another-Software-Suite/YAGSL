@@ -43,7 +43,9 @@ class SwerveParserNavxTest {
     Path modules = Files.createDirectories(configDir.resolve("modules"));
     Files.writeString(
         configDir.resolve("swervedrive.json"),
-        "{\"gyro\":" + gyro + ","
+        "{\"gyro\":"
+            + gyro
+            + ","
             + "\"gyroAxis\":\"yaw\",\"gyroInvert\":false,"
             + "\"modules\":[\"fl.json\",\"fr.json\",\"bl.json\",\"br.json\"]}");
     Files.writeString(
@@ -58,12 +60,22 @@ class SwerveParserNavxTest {
       double left = i % 2 == 0 ? 12 : -12;
       Files.writeString(
           modules.resolve(MODULES[i] + ".json"),
-          "{\"drive\":{\"type\":\"talonfx_krakenx60\",\"id\":" + (30 + i * 3) + ",\"canbus\":\"\"},"
-              + "\"angle\":{\"type\":\"talonfx_krakenx60\",\"id\":" + (31 + i * 3) + ",\"canbus\":\"\"},"
-              + "\"absoluteEncoder\":{\"type\":\"cancoder_can\",\"id\":" + (32 + i * 3) + ",\"canbus\":\"\"},"
+          "{\"drive\":{\"type\":\"talonfx_krakenx60\",\"id\":"
+              + (30 + i * 3)
+              + ",\"canbus\":\"\"},"
+              + "\"angle\":{\"type\":\"talonfx_krakenx60\",\"id\":"
+              + (31 + i * 3)
+              + ",\"canbus\":\"\"},"
+              + "\"absoluteEncoder\":{\"type\":\"cancoder_can\",\"id\":"
+              + (32 + i * 3)
+              + ",\"canbus\":\"\"},"
               + "\"inverted\":{\"drive\":false,\"angle\":false},"
               + "\"absoluteEncoderOffset\":0,\"absoluteEncoderInverted\":false,"
-              + "\"location\":{\"front\":" + front + ",\"left\":" + left + "}}");
+              + "\"location\":{\"front\":"
+              + front
+              + ",\"left\":"
+              + left
+              + "}}");
     }
   }
 

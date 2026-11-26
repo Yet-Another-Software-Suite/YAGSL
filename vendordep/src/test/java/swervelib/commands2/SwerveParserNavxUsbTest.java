@@ -25,7 +25,8 @@ class SwerveParserNavxUsbTest {
 
   @BeforeAll
   static void writeConfig() throws IOException {
-    SwerveParserNavxTest.writeConfig(configDir, "{\"type\":\"navx3_usb\",\"id\":0,\"canbus\":\"\",\"channel\":1}");
+    SwerveParserNavxTest.writeConfig(
+        configDir, "{\"type\":\"navx3_usb\",\"id\":0,\"canbus\":\"\",\"channel\":1}");
   }
 
   @Test

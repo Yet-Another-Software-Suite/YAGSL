@@ -460,7 +460,7 @@ public class SwerveParser {
     // (withGyroInverted) itself, so the gyro attitude is passed through untouched.
     Pair<Supplier<Rotation3d>, Object> gyro = swerveDriveJson.gyro.getGyro();
     config
-        .withGyro(gyro.getFirst())
+        .withRotation(gyro.getFirst())
         .withGyroHeadingAxis(GyroAxis.valueOf(swerveDriveJson.gyroAxis.toUpperCase()))
         .withGyroInverted(swerveDriveJson.gyroInvert);
     return gyro.getSecond();

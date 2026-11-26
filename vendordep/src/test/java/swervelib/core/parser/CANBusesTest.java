@@ -21,13 +21,29 @@ class CANBusesTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"0, CAN_S0", "1, CAN_S1", "2, CAN_S2", "3, CAN_S3", "4, CAN_S4", "5, CAN_D0", "24, CAN_D19", "' 1 ', CAN_S1"})
+  @CsvSource({
+    "0, CAN_S0",
+    "1, CAN_S1",
+    "2, CAN_S2",
+    "3, CAN_S3",
+    "4, CAN_S4",
+    "5, CAN_D0",
+    "24, CAN_D19",
+    "' 1 ', CAN_S1"
+  })
   void busNumberIsThatCanPort(String canbus, CANPort expected) {
     assertEquals(Optional.of(expected), CANBuses.getCANPort(canbus));
   }
 
   @ParameterizedTest
-  @CsvSource({"CAN_S0, CAN_S0", "CAN_S1, CAN_S1", "CAN_S4, CAN_S4", "CAN_D0, CAN_D0", "CAN_D19, CAN_D19", "' CAN_S2 ', CAN_S2"})
+  @CsvSource({
+    "CAN_S0, CAN_S0",
+    "CAN_S1, CAN_S1",
+    "CAN_S4, CAN_S4",
+    "CAN_D0, CAN_D0",
+    "CAN_D19, CAN_D19",
+    "' CAN_S2 ', CAN_S2"
+  })
   void canPortNameIsThatCanPort(String canbus, CANPort expected) {
     assertEquals(Optional.of(expected), CANBuses.getCANPort(canbus));
     assertEquals(expected, CANBuses.requireCANPort(canbus, "REV"));
@@ -49,7 +65,10 @@ class CANBusesTest {
   @Test
   void requireCANPortRejectsVendorSpecificBuses() {
     assertEquals(CANPort.CAN_S2, CANBuses.requireCANPort("2", "REV"));
-    var e = assertThrows(IllegalArgumentException.class, () -> CANBuses.requireCANPort("canivore", "Thrifty Bot"));
+    var e =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> CANBuses.requireCANPort("canivore", "Thrifty Bot"));
     assertTrue(e.getMessage().startsWith("Thrifty Bot devices only use"), e.getMessage());
     assertTrue(e.getMessage().contains("\"CAN_S1\" for can_s1"), e.getMessage());
   }

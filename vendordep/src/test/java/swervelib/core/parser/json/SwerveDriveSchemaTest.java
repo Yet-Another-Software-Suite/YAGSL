@@ -124,19 +124,36 @@ class SwerveDriveSchemaTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {"", "0", "4", "5", "24", "CAN_S0", "CAN_S4", "CAN_D0", "CAN_D19", "rio", "My CANivore"})
+  @ValueSource(
+      strings = {
+        "",
+        "0",
+        "4",
+        "5",
+        "24",
+        "CAN_S0",
+        "CAN_S4",
+        "CAN_D0",
+        "CAN_D19",
+        "rio",
+        "My CANivore"
+      })
   void schemas_acceptEveryCanbus(String canbus) throws IOException {
     ObjectNode module = (ObjectNode) getInstance("modules/fl.json");
     ((ObjectNode) module.get("drive")).put("canbus", canbus);
     ((ObjectNode) module.get("angle")).put("canbus", canbus);
     ((ObjectNode) module.get("absoluteEncoder")).put("canbus", canbus);
     Set<ValidationMessage> moduleErrors = getSchema("module.json").validate(module);
-    assertTrue(moduleErrors.isEmpty(), () -> "expected canbus \"" + canbus + "\" to be valid, got " + moduleErrors);
+    assertTrue(
+        moduleErrors.isEmpty(),
+        () -> "expected canbus \"" + canbus + "\" to be valid, got " + moduleErrors);
 
     ObjectNode swerve = (ObjectNode) getInstance("swervedrive.json");
     ((ObjectNode) swerve.get("gyro")).put("canbus", canbus);
     Set<ValidationMessage> swerveErrors = getSchema("swervedrive.json").validate(swerve);
-    assertTrue(swerveErrors.isEmpty(), () -> "expected canbus \"" + canbus + "\" to be valid, got " + swerveErrors);
+    assertTrue(
+        swerveErrors.isEmpty(),
+        () -> "expected canbus \"" + canbus + "\" to be valid, got " + swerveErrors);
   }
 
   @ParameterizedTest
@@ -144,11 +161,15 @@ class SwerveDriveSchemaTest {
   void schemas_rejectACanbusNumberThatDoesNotExist(String canbus) throws IOException {
     ObjectNode module = (ObjectNode) getInstance("modules/fl.json");
     ((ObjectNode) module.get("drive")).put("canbus", canbus);
-    assertFalse(getSchema("module.json").validate(module).isEmpty(), "expected canbus " + canbus + " to be rejected");
+    assertFalse(
+        getSchema("module.json").validate(module).isEmpty(),
+        "expected canbus " + canbus + " to be rejected");
 
     ObjectNode swerve = (ObjectNode) getInstance("swervedrive.json");
     ((ObjectNode) swerve.get("gyro")).put("canbus", canbus);
-    assertFalse(getSchema("swervedrive.json").validate(swerve).isEmpty(), "expected canbus " + canbus + " to be rejected");
+    assertFalse(
+        getSchema("swervedrive.json").validate(swerve).isEmpty(),
+        "expected canbus " + canbus + " to be rejected");
   }
 
   @ParameterizedTest
@@ -157,7 +178,8 @@ class SwerveDriveSchemaTest {
     ObjectNode instance = (ObjectNode) getInstance("modules/fl.json");
     ((ObjectNode) instance.get("drive")).put("type", type);
     ((ObjectNode) instance.get("angle")).put("type", type);
-    // A TalonFX angle motor can't read an absolute encoder plugged into it, so the module uses a CANcoder.
+    // A TalonFX angle motor can't read an absolute encoder plugged into it, so the module uses a
+    // CANcoder.
     ((ObjectNode) instance.get("absoluteEncoder")).put("type", "cancoder_can");
     Set<ValidationMessage> errors = getSchema("module.json").validate(instance);
     assertTrue(errors.isEmpty(), "expected " + type + " to be a valid motor type, got " + errors);
@@ -195,23 +217,26 @@ class SwerveDriveSchemaTest {
    */
   @ParameterizedTest
   @CsvSource({
-      "talonfx_krakenx60, revthroughbore_attached, false",
-      "talonfxs_minion,   dutycycle_attached,      false",
-      "talonfx_krakenx60, cancoder_can,            true",
-      "sparkmax_neo,      thrifty_attached,        false",
-      "sparkflex_vortex,  thrifty_attached,        false",
-      "sparkmax_neo,      thrifty_analog,          true",
-      "nova_neo,          thrifty_attached,        true",
-      "nova_neo,          analog5v_attached,       false",
-      "nova_neo,          analog_attached,         true",
-      "sparkmax_neo,      analog5v_attached,       true",
-      "sparkflex_vortex,  revthroughbore_attached, true"})
-  void moduleSchema_checksAttachedEncoders(String angle, String encoder, boolean valid) throws IOException {
+    "talonfx_krakenx60, revthroughbore_attached, false",
+    "talonfxs_minion,   dutycycle_attached,      false",
+    "talonfx_krakenx60, cancoder_can,            true",
+    "sparkmax_neo,      thrifty_attached,        false",
+    "sparkflex_vortex,  thrifty_attached,        false",
+    "sparkmax_neo,      thrifty_analog,          true",
+    "nova_neo,          thrifty_attached,        true",
+    "nova_neo,          analog5v_attached,       false",
+    "nova_neo,          analog_attached,         true",
+    "sparkmax_neo,      analog5v_attached,       true",
+    "sparkflex_vortex,  revthroughbore_attached, true"
+  })
+  void moduleSchema_checksAttachedEncoders(String angle, String encoder, boolean valid)
+      throws IOException {
     ObjectNode instance = (ObjectNode) getInstance("modules/fl.json");
     ((ObjectNode) instance.get("angle")).put("type", angle);
     ((ObjectNode) instance.get("absoluteEncoder")).put("type", encoder);
     Set<ValidationMessage> errors = getSchema("module.json").validate(instance);
-    assertEquals(valid, errors.isEmpty(), encoder + " on a " + angle + " angle motor controller: " + errors);
+    assertEquals(
+        valid, errors.isEmpty(), encoder + " on a " + angle + " angle motor controller: " + errors);
   }
 
   /**
@@ -219,8 +244,17 @@ class SwerveDriveSchemaTest {
    * per module turn, and an absolute encoder only reads one rotation.
    */
   @ParameterizedTest
-  @CsvSource({"1, true", "0.5, true", "0.01, true", "1.01, false", "2, false", "0, false", "-1, false"})
-  void moduleSchema_checksAbsoluteEncoderGearRatio(double gearRatio, boolean valid) throws IOException {
+  @CsvSource({
+    "1, true",
+    "0.5, true",
+    "0.01, true",
+    "1.01, false",
+    "2, false",
+    "0, false",
+    "-1, false"
+  })
+  void moduleSchema_checksAbsoluteEncoderGearRatio(double gearRatio, boolean valid)
+      throws IOException {
     ObjectNode instance = (ObjectNode) getInstance("modules/fl.json");
     instance.put("absoluteEncoderGearRatio", gearRatio);
     Set<ValidationMessage> errors = getSchema("module.json").validate(instance);
