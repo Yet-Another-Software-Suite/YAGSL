@@ -140,7 +140,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
    */
   public Command zeroGyro()
   {
-    return Commands.runOnce(drive::zeroGyro, this).withName("Zero Gyro");
+    return Commands.runOnce(drive::zeroOdometryHeading, this).withName("Zero Gyro");
   }
 
   public SwerveInputStream getAngularVelocityStream(DoubleSupplier x, DoubleSupplier y, DoubleSupplier rot)
@@ -149,13 +149,14 @@ public class SwerveDriveSubsystem extends SubsystemBase
   }
 
   /**
-   * Get the current heading of the robot, as reported by odometry.
+   * Get the current heading of the robot, as reported by odometry. Field relative driving uses it, and vision
+   * measurements correct it.
    *
    * @return {@link Rotation2d} of the robot's heading.
    */
   public Rotation2d getHeading()
   {
-    return drive.getGyroRotation3d().toRotation2d();
+    return drive.getRotation();
   }
 
   /**

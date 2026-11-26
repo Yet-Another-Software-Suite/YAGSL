@@ -151,7 +151,7 @@ public class SwerveDriveMechanism implements Mechanism
    */
   public Command zeroGyro()
   {
-    return run(coroutine -> drive.zeroGyro()).named("Zero Gyro");
+    return run(coroutine -> drive.zeroOdometryHeading()).named("Zero Gyro");
   }
 
   /**
@@ -175,13 +175,14 @@ public class SwerveDriveMechanism implements Mechanism
   }
 
   /**
-   * Get the current heading of the robot, as reported by the gyro.
+   * Get the current heading of the robot, as reported by odometry. Field relative driving uses it, and vision
+   * measurements correct it.
    *
    * @return {@link Rotation2d} of the robot's heading.
    */
   public Rotation2d getHeading()
   {
-    return drive.getGyroRotation3d().toRotation2d();
+    return drive.getRotation();
   }
 
   /**

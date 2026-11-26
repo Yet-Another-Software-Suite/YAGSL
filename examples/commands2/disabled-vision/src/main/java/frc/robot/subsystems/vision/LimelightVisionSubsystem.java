@@ -114,8 +114,13 @@ public class LimelightVisionSubsystem extends SubsystemBase
     // yaw (NavX, ADIS16470, ADXRS450, or otherwise) is perfectly sufficient for MegaTag2, and feeding real pitch and
     // roll from a full IMU is optional. Depending on your camera mount and how noisy that extra data is, it could
     // help or hurt the resulting pose just as easily.
+    //
+    // The yaw is the odometry heading, not the gyro's: MegaTag2 needs the robot's heading on the field, and resetting
+    // odometry (or zeroing it) turns the odometry heading without turning the gyro.
+    Rotation3d gyro = drivetrain.getGyroRotation3d();
     limelight.getSettings()
-             .withRobotOrientation(new Orientation3d(drivetrain.getGyroRotation3d(),
+             .withRobotOrientation(new Orientation3d(new Rotation3d(gyro.getX(), gyro.getY(),
+                                                                    drivetrain.getHeading().getRadians()),
                                                      drivetrain.getGyroAngularVelocity()))
              .save();
 
