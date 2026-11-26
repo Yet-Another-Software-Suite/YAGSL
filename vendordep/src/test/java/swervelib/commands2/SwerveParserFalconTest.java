@@ -54,12 +54,26 @@ class SwerveParserFalconTest {
       double left = i % 2 == 0 ? 12 : -12;
       Files.writeString(
           modules.resolve(MODULES[i] + ".json"),
-          "{\"drive\":{\"type\":\"" + motor + "\",\"id\":" + (10 + i * 3) + ",\"canbus\":\"\"},"
-              + "\"angle\":{\"type\":\"" + motor + "\",\"id\":" + (11 + i * 3) + ",\"canbus\":\"\"},"
-              + "\"absoluteEncoder\":{\"type\":\"cancoder_can\",\"id\":" + (12 + i * 3) + ",\"canbus\":\"\"},"
+          "{\"drive\":{\"type\":\""
+              + motor
+              + "\",\"id\":"
+              + (10 + i * 3)
+              + ",\"canbus\":\"\"},"
+              + "\"angle\":{\"type\":\""
+              + motor
+              + "\",\"id\":"
+              + (11 + i * 3)
+              + ",\"canbus\":\"\"},"
+              + "\"absoluteEncoder\":{\"type\":\"cancoder_can\",\"id\":"
+              + (12 + i * 3)
+              + ",\"canbus\":\"\"},"
               + "\"inverted\":{\"drive\":false,\"angle\":false},"
               + "\"absoluteEncoderOffset\":0,\"absoluteEncoderInverted\":false,"
-              + "\"location\":{\"front\":" + front + ",\"left\":" + left + "}}");
+              + "\"location\":{\"front\":"
+              + front
+              + ",\"left\":"
+              + left
+              + "}}");
     }
   }
 
@@ -80,7 +94,8 @@ class SwerveParserFalconTest {
     for (String name : MODULES) {
       SwerveModule module = devices.swerveDrive().getModule(name).orElseThrow();
       assertEquals(falcon.freeSpeed, module.getDriveMotorController().getDCMotor().freeSpeed, 1e-9);
-      assertEquals(falcon.freeSpeed, module.getAzimuthMotorController().getDCMotor().freeSpeed, 1e-9);
+      assertEquals(
+          falcon.freeSpeed, module.getAzimuthMotorController().getDCMotor().freeSpeed, 1e-9);
     }
   }
 }

@@ -9,8 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
-import org.wpilib.units.measure.Time;
-import yams.core.motorcontrollers.SmartMotorController;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,9 +25,11 @@ import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.math.kinematics.SwerveModuleVelocity;
 import org.wpilib.simulation.DriverStationSim;
 import org.wpilib.simulation.SimHooks;
+import org.wpilib.units.measure.Time;
 import yams.commands2.config.SwerveDriveConfig;
 import yams.commands2.swerve.SwerveDrive;
 import yams.core.mechanisms.swerve.SwerveModule;
+import yams.core.motorcontrollers.SmartMotorController;
 
 /**
  * Drives a simulated swerve drive with the default gains the config generator (config.yagsl.com) fills in for each
@@ -54,34 +54,35 @@ abstract class SimGainsTest {
   private static final double DRIVE_TARGET_MPS = 3;
 
   /** Drive p, angle p, angle d, the same as the config generator's lib/default-gains.ts. The rest are 0. */
-  static final Map<String, double[]> DEFAULT_GAINS = Map.ofEntries(
-      Map.entry("talonfx_krakenx44", new double[]{1, 15, 0.3}),
-      Map.entry("talonfx_krakenx60", new double[]{1, 15, 0.3}),
-      Map.entry("talonfx_falcon", new double[]{1, 15, 0.3}),
-      Map.entry("talonfxs_neo", new double[]{1, 15, 0.3}),
-      Map.entry("talonfxs_neo2", new double[]{1, 15, 0.3}),
-      Map.entry("talonfxs_neo550", new double[]{1, 8, 0.6}),
-      Map.entry("talonfxs_vortex", new double[]{1, 15, 0.3}),
-      Map.entry("talonfxs_pulsar", new double[]{1, 15, 0.3}),
-      Map.entry("sparkmax_neo", new double[]{1, 40, 0.3}),
-      Map.entry("sparkmax_neo2", new double[]{1, 40, 0.3}),
-      Map.entry("sparkmax_neo550", new double[]{4, 12, 0.6}),
-      Map.entry("sparkmax_vortex", new double[]{1, 40, 0.3}),
-      Map.entry("sparkmax_pulsar", new double[]{1, 30, 0.3}),
-      Map.entry("sparkmax_minion", new double[]{1, 30, 0.3}),
-      Map.entry("talonfxs_minion", new double[]{1, 15, 0.3}),
-      Map.entry("sparkflex_neo", new double[]{1, 40, 0.3}),
-      Map.entry("sparkflex_neo2", new double[]{1, 40, 0.3}),
-      Map.entry("sparkflex_neo550", new double[]{4, 12, 0.6}),
-      Map.entry("sparkflex_vortex", new double[]{1, 40, 0.3}),
-      Map.entry("sparkflex_minion", new double[]{1, 30, 0.3}),
-      Map.entry("sparkflex_pulsar", new double[]{1, 30, 0.3}),
-      Map.entry("nova_neo", new double[]{2, 40, 0.3}),
-      Map.entry("nova_neo2", new double[]{2, 40, 0.3}),
-      Map.entry("nova_neo550", new double[]{4, 12, 0.6}),
-      Map.entry("nova_vortex", new double[]{2, 40, 0.3}),
-      Map.entry("nova_minion", new double[]{2, 30, 0.3}),
-      Map.entry("nova_pulsar", new double[]{2, 30, 0.3}));
+  static final Map<String, double[]> DEFAULT_GAINS =
+      Map.ofEntries(
+          Map.entry("talonfx_krakenx44", new double[] {1, 15, 0.3}),
+          Map.entry("talonfx_krakenx60", new double[] {1, 15, 0.3}),
+          Map.entry("talonfx_falcon", new double[] {1, 15, 0.3}),
+          Map.entry("talonfxs_neo", new double[] {1, 15, 0.3}),
+          Map.entry("talonfxs_neo2", new double[] {1, 15, 0.3}),
+          Map.entry("talonfxs_neo550", new double[] {1, 8, 0.6}),
+          Map.entry("talonfxs_vortex", new double[] {1, 15, 0.3}),
+          Map.entry("talonfxs_pulsar", new double[] {1, 15, 0.3}),
+          Map.entry("sparkmax_neo", new double[] {1, 40, 0.3}),
+          Map.entry("sparkmax_neo2", new double[] {1, 40, 0.3}),
+          Map.entry("sparkmax_neo550", new double[] {4, 12, 0.6}),
+          Map.entry("sparkmax_vortex", new double[] {1, 40, 0.3}),
+          Map.entry("sparkmax_pulsar", new double[] {1, 30, 0.3}),
+          Map.entry("sparkmax_minion", new double[] {1, 30, 0.3}),
+          Map.entry("talonfxs_minion", new double[] {1, 15, 0.3}),
+          Map.entry("sparkflex_neo", new double[] {1, 40, 0.3}),
+          Map.entry("sparkflex_neo2", new double[] {1, 40, 0.3}),
+          Map.entry("sparkflex_neo550", new double[] {4, 12, 0.6}),
+          Map.entry("sparkflex_vortex", new double[] {1, 40, 0.3}),
+          Map.entry("sparkflex_minion", new double[] {1, 30, 0.3}),
+          Map.entry("sparkflex_pulsar", new double[] {1, 30, 0.3}),
+          Map.entry("nova_neo", new double[] {2, 40, 0.3}),
+          Map.entry("nova_neo2", new double[] {2, 40, 0.3}),
+          Map.entry("nova_neo550", new double[] {4, 12, 0.6}),
+          Map.entry("nova_vortex", new double[] {2, 40, 0.3}),
+          Map.entry("nova_minion", new double[] {2, 30, 0.3}),
+          Map.entry("nova_pulsar", new double[] {2, 30, 0.3}));
 
   /**
    * Drive gear ratio, azimuth gear ratio: the config generator's default. The gains were also checked on the
@@ -113,9 +114,13 @@ abstract class SimGainsTest {
 
   static String pidf(String motor) {
     double[] g = DEFAULT_GAINS.get(motor);
-    return String.format(Locale.ROOT,
+    return String.format(
+        Locale.ROOT,
         "{\"drive\":{\"p\":%s,\"i\":0,\"d\":0,\"s\":0,\"v\":0,\"a\":0},"
-            + "\"angle\":{\"p\":%s,\"i\":0,\"d\":%s,\"s\":0,\"v\":0,\"a\":0}}", g[0], g[1], g[2]);
+            + "\"angle\":{\"p\":%s,\"i\":0,\"d\":%s,\"s\":0,\"v\":0,\"a\":0}}",
+        g[0],
+        g[1],
+        g[2]);
   }
 
   @BeforeAll
@@ -133,35 +138,59 @@ abstract class SimGainsTest {
     SimHooks.resumeTiming();
   }
 
-  private static Path writeConfig(String motor, double driveGearing, double azimuthGearing, String pidf)
-      throws IOException {
+  private static Path writeConfig(
+      String motor, double driveGearing, double azimuthGearing, String pidf) throws IOException {
     Path dir = Files.createTempDirectory(tempDir, motor);
     Path modules = Files.createDirectories(dir.resolve("modules"));
     String[] names = {"fl", "fr", "bl", "br"};
     if (drivesBuilt >= MAX_DRIVES_PER_JVM) {
-      throw new IllegalStateException("Out of CAN IDs: build at most " + MAX_DRIVES_PER_JVM + " drives per test JVM");
+      throw new IllegalStateException(
+          "Out of CAN IDs: build at most " + MAX_DRIVES_PER_JVM + " drives per test JVM");
     }
     int drive = drivesBuilt++;
-    Files.writeString(dir.resolve("swervedrive.json"),
-        "{\"gyro\":{\"type\":\"pigeon2_can\",\"id\":" + (49 + drive) + ",\"canbus\":\"\"},"
+    Files.writeString(
+        dir.resolve("swervedrive.json"),
+        "{\"gyro\":{\"type\":\"pigeon2_can\",\"id\":"
+            + (49 + drive)
+            + ",\"canbus\":\"\"},"
             + "\"gyroAxis\":\"yaw\",\"gyroInvert\":false,"
             + "\"modules\":[\"fl.json\",\"fr.json\",\"bl.json\",\"br.json\"]}");
     Files.writeString(modules.resolve("pidfproperties.json"), pidf);
-    Files.writeString(modules.resolve("physicalproperties.json"), String.format(Locale.ROOT,
-        "{\"gearing\":{\"drive\":{\"gearRatio\":%s,\"diameter\":4},\"angle\":{\"gearRatio\":%s}},"
-            + "\"statorCurrentLimit\":{\"drive\":40,\"angle\":20}}", driveGearing, azimuthGearing));
+    Files.writeString(
+        modules.resolve("physicalproperties.json"),
+        String.format(
+            Locale.ROOT,
+            "{\"gearing\":{\"drive\":{\"gearRatio\":%s,\"diameter\":4},\"angle\":{\"gearRatio\":%s}},"
+                + "\"statorCurrentLimit\":{\"drive\":40,\"angle\":20}}",
+            driveGearing,
+            azimuthGearing));
     for (int i = 0; i < names.length; i++) {
       double front = i < 2 ? 10.875 : -10.875;
       double left = i % 2 == 0 ? 10.875 : -10.875;
       int driveId = 1 + 8 * drive + 2 * i;
       int angleId = driveId + 1;
-      Files.writeString(modules.resolve(names[i] + ".json"),
-          "{\"drive\":{\"type\":\"" + motor + "\",\"id\":" + driveId + ",\"canbus\":\"\"},"
-              + "\"angle\":{\"type\":\"" + motor + "\",\"id\":" + angleId + ",\"canbus\":\"\"},"
-              + "\"absoluteEncoder\":{\"type\":\"cancoder_can\",\"id\":" + (33 + 4 * drive + i) + ",\"canbus\":\"\"},"
+      Files.writeString(
+          modules.resolve(names[i] + ".json"),
+          "{\"drive\":{\"type\":\""
+              + motor
+              + "\",\"id\":"
+              + driveId
+              + ",\"canbus\":\"\"},"
+              + "\"angle\":{\"type\":\""
+              + motor
+              + "\",\"id\":"
+              + angleId
+              + ",\"canbus\":\"\"},"
+              + "\"absoluteEncoder\":{\"type\":\"cancoder_can\",\"id\":"
+              + (33 + 4 * drive + i)
+              + ",\"canbus\":\"\"},"
               + "\"inverted\":{\"drive\":false,\"angle\":false},"
               + "\"absoluteEncoderOffset\":0,\"absoluteEncoderInverted\":false,"
-              + "\"location\":{\"front\":" + front + ",\"left\":" + left + "}}");
+              + "\"location\":{\"front\":"
+              + front
+              + ",\"left\":"
+              + left
+              + "}}");
     }
     return dir;
   }
@@ -196,23 +225,34 @@ abstract class SimGainsTest {
   }
 
   /** How one module answered a 0 to 90 degree azimuth step and a 0 to 3 m/s drive step. */
-  record Response(double azimuthSettle, double azimuthPeak, double azimuthFinal,
-                  double driveSettle, double drivePeak, double driveFinal) {
+  record Response(
+      double azimuthSettle,
+      double azimuthPeak,
+      double azimuthFinal,
+      double driveSettle,
+      double drivePeak,
+      double driveFinal) {
 
     boolean passes() {
       return azimuthSettle <= 0.75
-             && azimuthPeak <= AZIMUTH_TARGET_DEG + 15
-             && Math.abs(azimuthFinal - AZIMUTH_TARGET_DEG) <= 1.5
-             && driveSettle <= 1.0
-             && drivePeak <= DRIVE_TARGET_MPS * 1.1
-             && Math.abs(driveFinal - DRIVE_TARGET_MPS) <= 0.03 * DRIVE_TARGET_MPS;
+          && azimuthPeak <= AZIMUTH_TARGET_DEG + 15
+          && Math.abs(azimuthFinal - AZIMUTH_TARGET_DEG) <= 1.5
+          && driveSettle <= 1.0
+          && drivePeak <= DRIVE_TARGET_MPS * 1.1
+          && Math.abs(driveFinal - DRIVE_TARGET_MPS) <= 0.03 * DRIVE_TARGET_MPS;
     }
 
     @Override
     public String toString() {
-      return String.format(Locale.ROOT,
+      return String.format(
+          Locale.ROOT,
           "azimuth: settle %.2fs peak %.1f final %.2f deg | drive: settle %.2fs peak %.2f final %.3f m/s",
-          azimuthSettle, azimuthPeak, azimuthFinal, driveSettle, drivePeak, driveFinal);
+          azimuthSettle,
+          azimuthPeak,
+          azimuthFinal,
+          driveSettle,
+          drivePeak,
+          driveFinal);
     }
   }
 
@@ -241,14 +281,18 @@ abstract class SimGainsTest {
     SimHooks.resumeTiming();
     SwerveParser.parse(writeConfig(motor, driveGearing, azimuthGearing, pidf).toFile());
     SubsystemBase subsystem = new SubsystemBase() {};
-    SwerveDrive drive = SwerveParser.createSwerveDrive(new SwerveDriveConfig().withSubsystem(subsystem));
+    SwerveDrive drive =
+        SwerveParser.createSwerveDrive(new SwerveDriveConfig().withSubsystem(subsystem));
     CommandScheduler.getInstance().unregisterSubsystem(subsystem);
     realTime = motor.startsWith("talonfx");
     if (realTime) {
       for (SwerveModule module : drive.getModules()) {
-        for (SmartMotorController motorController : new SmartMotorController[]{
-            module.getDriveMotorController(), module.getAzimuthMotorController()}) {
-          motorController.applyConfig(motorController.getConfig().withSimulationPeriod(REAL_TIME_PERIOD));
+        for (SmartMotorController motorController :
+            new SmartMotorController[] {
+              module.getDriveMotorController(), module.getAzimuthMotorController()
+            }) {
+          motorController.applyConfig(
+              motorController.getConfig().withSimulationPeriod(REAL_TIME_PERIOD));
         }
       }
     }
@@ -272,7 +316,9 @@ abstract class SimGainsTest {
       drive.setAzimuthAngles(Rotation2d.fromDegrees(AZIMUTH_TARGET_DEG));
       step(drive);
       // A module may flip and point the other way; that is the same heading for a wheel.
-      finalAz = AZIMUTH_TARGET_DEG - foldedError(module.getState().angle.getDegrees(), AZIMUTH_TARGET_DEG);
+      finalAz =
+          AZIMUTH_TARGET_DEG
+              - foldedError(module.getState().angle.getDegrees(), AZIMUTH_TARGET_DEG);
       settleAz = settle(settleAz, finalAz, AZIMUTH_TARGET_DEG, 2, i);
       if (!Double.isNaN(settleAz) || reachedAz) {
         reachedAz = true;
@@ -291,7 +337,8 @@ abstract class SimGainsTest {
       }
       drive.setSwerveModuleStates(states);
       step(drive);
-      // Speed along the commanded heading, so a flipped module driving backwards counts as forwards.
+      // Speed along the commanded heading, so a flipped module driving backwards counts as
+      // forwards.
       finalDr = module.getState().velocity * module.getState().angle.getCos();
       peakDr = Math.max(peakDr, finalDr);
       settleDr = settle(settleDr, finalDr, DRIVE_TARGET_MPS, 0.05 * DRIVE_TARGET_MPS, i);
@@ -309,13 +356,21 @@ abstract class SimGainsTest {
       throws IOException {
     String pidf = pidf(motor);
     SwerveDrive drive = build(motor, driveGearing, azimuthGearing, pidf);
-    // Two tries: Phoenix simulates on its own thread, so a TalonFX or TalonFXS run now and then sees a one-loop blip
+    // Two tries: Phoenix simulates on its own thread, so a TalonFX or TalonFXS run now and then
+    // sees a one-loop blip
     // that an identical run does not. Gains that are wrong fail both.
     Response response = measure(drive);
-    System.out.printf(Locale.ROOT, "SIMGAINS %s %.2f/%.2f %s%n", motor, driveGearing, azimuthGearing, response);
+    System.out.printf(
+        Locale.ROOT, "SIMGAINS %s %.2f/%.2f %s%n", motor, driveGearing, azimuthGearing, response);
     if (!response.passes()) {
       response = measure(drive);
-      System.out.printf(Locale.ROOT, "SIMGAINS %s %.2f/%.2f retry %s%n", motor, driveGearing, azimuthGearing, response);
+      System.out.printf(
+          Locale.ROOT,
+          "SIMGAINS %s %.2f/%.2f retry %s%n",
+          motor,
+          driveGearing,
+          azimuthGearing,
+          response);
     }
     assertTrue(response.passes(), motor + " with " + pidf + ": " + response);
   }
@@ -324,63 +379,64 @@ abstract class SimGainsTest {
 class SimGainsTalonFXTest extends SimGainsTest {
   @Override
   String[] motors() {
-    return new String[]{"talonfx_krakenx60", "talonfx_krakenx44", "talonfx_falcon"};
+    return new String[] {"talonfx_krakenx60", "talonfx_krakenx44", "talonfx_falcon"};
   }
 }
 
 class SimGainsTalonFXSNeoTest extends SimGainsTest {
   @Override
   String[] motors() {
-    return new String[]{"talonfxs_neo", "talonfxs_neo2", "talonfxs_neo550"};
+    return new String[] {"talonfxs_neo", "talonfxs_neo2", "talonfxs_neo550"};
   }
 }
 
 class SimGainsTalonFXSOtherTest extends SimGainsTest {
   @Override
   String[] motors() {
-    // talonfxs_pulsar is left out: YAMS's TalonFXS simulation of the Pulsar does not drive, whatever the gains.
-    return new String[]{"talonfxs_vortex", "talonfxs_minion"};
+    // talonfxs_pulsar is left out: YAMS's TalonFXS simulation of the Pulsar does not drive,
+    // whatever the gains.
+    return new String[] {"talonfxs_vortex", "talonfxs_minion"};
   }
 }
 
 class SimGainsSparkMaxNeoTest extends SimGainsTest {
   @Override
   String[] motors() {
-    return new String[]{"sparkmax_neo", "sparkmax_neo2", "sparkmax_neo550"};
+    return new String[] {"sparkmax_neo", "sparkmax_neo2", "sparkmax_neo550"};
   }
 }
 
 class SimGainsSparkMaxOtherTest extends SimGainsTest {
   @Override
   String[] motors() {
-    return new String[]{"sparkmax_vortex", "sparkmax_pulsar", "sparkmax_minion"};
+    return new String[] {"sparkmax_vortex", "sparkmax_pulsar", "sparkmax_minion"};
   }
 }
 
 class SimGainsSparkFlexNeoTest extends SimGainsTest {
   @Override
   String[] motors() {
-    return new String[]{"sparkflex_neo", "sparkflex_neo2", "sparkflex_neo550"};
+    return new String[] {"sparkflex_neo", "sparkflex_neo2", "sparkflex_neo550"};
   }
 }
 
 class SimGainsSparkFlexOtherTest extends SimGainsTest {
   @Override
   String[] motors() {
-    return new String[]{"sparkflex_vortex", "sparkflex_minion", "sparkflex_pulsar"};
+    return new String[] {"sparkflex_vortex", "sparkflex_minion", "sparkflex_pulsar"};
   }
 }
 
 class SimGainsNovaNeoTest extends SimGainsTest {
   @Override
   String[] motors() {
-    return new String[]{"nova_neo", "nova_neo2", "nova_neo550"};
+    return new String[] {"nova_neo", "nova_neo2", "nova_neo550"};
   }
 }
 
 class SimGainsNovaOtherTest extends SimGainsTest {
   @Override
   String[] motors() {
-    return new String[]{"nova_vortex", "nova_minion", "nova_pulsar"};
+    return new String[] {"nova_vortex", "nova_minion", "nova_pulsar"};
   }
 }
