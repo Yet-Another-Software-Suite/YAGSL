@@ -1,0 +1,12 @@
+$schema: https://api.gitbook.com/gitbook-docs.yaml
+site:
+  title: YAGSL
+  structure:
+    - type: space
+      key: space-1
+      title: YAGSL
+      path: yagsl
+      default: true
+      content:
+        directory: ./yagsl
+        language: en
